@@ -32,20 +32,9 @@ It also lints JSON.
 
 You can also run `bun fix` to apply any safe fixes automatically.
 
-### `bun test`
+### `bun run test`
 
-> [!NOTE]
-> This is just a placeholder for now. We will add more details later once tests are formally added.
-
-Run the tests. We mostly using [Vitest](https://vitest.dev/) - a replacement of [Jest](https://jestjs.io/).
-
-You can filter the tests to be run by `bun test [match]`, for example, `bun test foo` will only run test files that contain `foo`.
-
-Config options are often under the `test` field of `vitest.config.ts` or `vite.config.ts`.
-
-Vitest runs in [watch mode by default](https://vitest.dev/guide/features.html#watch-mode), so you can modify the code and see the test result automatically, which is great for [test-driven development](https://en.wikipedia.org/wiki/Test-driven_development). To run the test only once, you can do `bun test --run`.
-
-For some projects, we might have multiple types of tests set up. For example `bun test:unit` for unit tests, `bun test:e2e` for end-to-end tests. `bun test` commonly run them together, you can run them separately as needed.
+Run the API tests.
 
 ### `bun docs`
 
