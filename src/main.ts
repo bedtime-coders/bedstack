@@ -4,11 +4,7 @@ import { Elysia } from 'elysia';
 const app = new Elysia()
   .use(setupApp)
   .get('/', ({ redirect }) => redirect('/swagger'))
-  .listen({
-    port: 3000,
-    hostname: 'localhost'
-  });
-
+  .listen(3000);
 console.log(
   `🦊 Elysia is running! Access Swagger UI at http://${app.server?.hostname}:${app.server?.port}/swagger`,
 );
