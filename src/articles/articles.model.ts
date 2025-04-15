@@ -34,6 +34,9 @@ export const articleRelations = relations(articles, ({ one, many }) => ({
   favoritedBy: many(favoriteArticles, {
     relationName: 'favoriteArticle',
   }),
+  comments: many(comments, {
+    relationName: 'articleComments',
+  }),
 }));
 
 export const favoriteArticles = pgTable(
@@ -66,3 +69,29 @@ export const favoriteArticleRelations = relations(
     }),
   }),
 );
+
+export const comments = pgTable('comments', {
+  id: serial('id').primaryKey().notNull(),
+  body: text('body').notNull(),
+  articleId: integer('article_id')
+    .references(() => articles.id, { onDelete: 'cascade' })
+    .notNull(),
+  authorId: integer('author_id')
+    .references(() => users.id, { onDelete: 'cascade' })
+    .notNull(),
+  createdAt: timestamp('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedAt: timestamp('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
+export const commentRelations = relations(comments, ({ one }) => ({
+  article: one(articles, {
+    fields: [comments.articleId],
+    references: [articles.id],
+    relationName: 'articleComments',
+  }),
+  author: one(users, {
+    fields: [comments.authorId],
+    references: [users.id],
+    relationName: 'commentAuthor',
+  }),
+}));

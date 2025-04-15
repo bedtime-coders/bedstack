@@ -17,6 +17,14 @@ export class ProfilesService {
     return await this.generateProfileResponse(user, currentUserId);
   }
 
+  async findByUserId(currentUserId: number | null, targetUserId: number) {
+    const user = await this.repository.findByUserId(targetUserId);
+    if (!user) {
+      throw new NotFoundError('Profile not found');
+    }
+    return await this.generateProfileResponse(user, currentUserId);
+  }
+
   async followUser(currentUserId: number, targetUsername: string) {
     const userToFollow =
       await this.usersRepository.findByUsername(targetUsername);

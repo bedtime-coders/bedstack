@@ -47,11 +47,6 @@ export const setupApp = () => {
               },
             },
           },
-          security: [
-            {
-              tokenAuth: [],
-            },
-          ],
         },
         exclude: ['/'],
         swaggerOptions: {

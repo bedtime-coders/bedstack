@@ -32,12 +32,12 @@ export class ArticlesService {
     return await this.repository.find({ ...query, limit, offset });
   }
 
-  async findBySlug(slug: string) {
+  async findBySlug(slug: string, currentUserId: number | null = null) {
     const article = await this.repository.findBySlug(slug);
     if (!article) {
       throw new NotFoundError('Article not found');
     }
-    return await this.generateArticleResponse(article, null);
+    return await this.generateArticleResponse(article, currentUserId);
   }
 
   async createArticle(article: ArticleToCreateData, currentUserId: number) {
@@ -75,7 +75,7 @@ export class ArticlesService {
       { ...article, slug: newSlug },
       currentUserId,
     );
-    return this.findBySlug(newSlug);
+    return this.findBySlug(newSlug, currentUserId);
   }
 
   async deleteArticle(slug: string, currentUserId: number) {

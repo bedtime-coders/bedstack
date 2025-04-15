@@ -26,7 +26,7 @@ Getting started with this RealWorld project is as easy as installing a few prere
 2. **Ensure Docker daemon is running and spin up the Postgres+Bun container**
 
   ```sh
-  $ bun up
+  $ bun db
   ```
 3. **Migrate the schema to the database**
 

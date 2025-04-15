@@ -16,6 +16,17 @@ export class ProfilesRepository {
     return result[0];
   }
 
+  async findByUserId(targetUserId: number) {
+    const result = await this.db.query.users.findMany({
+      where: eq(users.id, targetUserId),
+      with: { followers: true },
+    });
+    if (result.length === 0) {
+      return null;
+    }
+    return result[0];
+  }
+
   async followUser(currentUserId: number, userToFollow: number) {
     const result = await this.db
       .insert(userFollows)

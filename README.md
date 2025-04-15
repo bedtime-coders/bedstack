@@ -31,10 +31,10 @@
 
     Use the provided example values or replace them with your own.
 
-3. **Ensure Docker daemon is running and spin up the Postgres+Bun container**
+3. **Ensure Docker daemon is running and spin up the Postgres container**
 
     ```sh
-    bun up
+    bun db
     ```
 3. **Migrate the schema to the database**
 
@@ -62,7 +62,7 @@
 1. **Build the app**
 
     ```sh
-    bun build
+    bun run build # not `bun build`!
     ```
 
 2. **Run the server**

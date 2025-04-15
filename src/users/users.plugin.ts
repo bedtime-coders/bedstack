@@ -55,6 +55,11 @@ export const usersPlugin = new Elysia()
           response: ReturnedUserSchema,
           detail: {
             summary: 'Current User',
+            security: [
+              {
+                tokenAuth: [],
+              },
+            ],
           },
         },
       )
@@ -71,6 +76,11 @@ export const usersPlugin = new Elysia()
           response: ReturnedUserSchema,
           detail: {
             summary: 'Update User',
+            security: [
+              {
+                tokenAuth: [],
+              },
+            ],
           },
         },
       ),

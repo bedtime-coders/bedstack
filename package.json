@@ -17,7 +17,7 @@
     "docs": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "up": "./scripts/create-start-container-with-env.sh",
+    "db": "./scripts/create-start-container-with-env.sh",
     "db:generate": "drizzle-kit generate --config=db/config.ts",
     "db:migrate": "drizzle-kit migrate --config=db/config.ts",
     "db:push": "drizzle-kit push --config=db/config.ts",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@elysiajs/swagger": "^1.2.2",
-    "drizzle-orm": "^0.40.0",
+    "drizzle-orm": "^0.41.0",
     "drizzle-typebox": "^0.3.0",
     "elysia": "^1.2.25",
     "jose": "^6.0.9",

@@ -23,6 +23,11 @@ export const profilesPlugin = new Elysia().use(setupProfiles).group(
           response: ReturnedProfileSchema,
           detail: {
             summary: 'Profile',
+            security: [
+              {
+                tokenAuth: [],
+              },
+            ],
           },
         },
       )
@@ -38,6 +43,11 @@ export const profilesPlugin = new Elysia().use(setupProfiles).group(
           response: ReturnedProfileSchema,
           detail: {
             summary: 'Follow Profile',
+            security: [
+              {
+                tokenAuth: [],
+              },
+            ],
           },
         },
       )
@@ -54,6 +64,11 @@ export const profilesPlugin = new Elysia().use(setupProfiles).group(
           response: ReturnedProfileSchema,
           detail: {
             summary: 'Unfollow Profile',
+            security: [
+              {
+                tokenAuth: [],
+              },
+            ],
           },
         },
       ),

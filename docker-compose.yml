@@ -21,27 +21,5 @@ services:
     ports:
       - ${POSTGRES_PORT}:5432
 
-  app:
-    image: node:20-bullseye
-    restart: unless-stopped
-
-    volumes:
-      - ..:/workspaces:cached
-      - ../scripts:/scripts:cached
-
-    # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
-
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
-
-    # depends_on:
-    #   - db
-    # environment:
-    #   - POSTGRES_HOST=db # connect to the Postgres container with Docker Networking
-    #   - POSTGRES_PORT=5432 # use internal port of Postgres container
-
 volumes:
   postgres-data:
