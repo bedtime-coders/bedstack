@@ -196,24 +196,27 @@ export class ArticlesRepository {
 
   async favoriteArticle(slug: string, currentUserId: number) {
     const article = await this.findBySlug(slug);
-    if (!article) return null;
+    if (!article) {
+      return null;
+    }
 
-    const result = await this.db
+    // Insert the favorite and get the updated article state
+    await this.db
       .insert(favoriteArticles)
-      .values({
-        articleId: article.id,
-        userId: currentUserId,
-      })
-      .onConflictDoNothing()
-      .returning();
+      .values({ articleId: article.id, userId: currentUserId })
+      .onConflictDoNothing();
 
-    return article;
+    // Return the updated article state
+    return this.findBySlug(slug);
   }
 
   async unfavoriteArticle(slug: string, currentUserId: number) {
     const article = await this.findBySlug(slug);
-    if (!article) return null;
+    if (!article) {
+      return null;
+    }
 
+    // Delete the favorite and get the updated article state
     await this.db
       .delete(favoriteArticles)
       .where(
@@ -223,6 +226,7 @@ export class ArticlesRepository {
         ),
       );
 
-    return article;
+    // Return the updated article state
+    return this.findBySlug(slug);
   }
 }
