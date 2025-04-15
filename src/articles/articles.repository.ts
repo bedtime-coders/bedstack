@@ -224,4 +224,42 @@ export class ArticlesRepository {
         and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)),
       );
   }
+
+  async favoriteArticle(slug: string, currentUserId: number) {
+    // TODO: Use a transaction to optimize from 1-3 ops to 1 op
+    const article = await this.findBySlug(slug);
+    if (!article) {
+      return null;
+    }
+
+    // Insert the favorite and get the updated article state
+    await this.db
+      .insert(favoriteArticles)
+      .values({ articleId: article.id, userId: currentUserId })
+      .onConflictDoNothing();
+
+    // Return the updated article state
+    return this.findBySlug(slug);
+  }
+
+  async unfavoriteArticle(slug: string, currentUserId: number) {
+    // TODO: Use a transaction to optimize from 1-3 ops to 1 op
+    const article = await this.findBySlug(slug);
+    if (!article) {
+      return null;
+    }
+
+    // Delete the favorite and get the updated article state
+    await this.db
+      .delete(favoriteArticles)
+      .where(
+        and(
+          eq(favoriteArticles.articleId, article.id),
+          eq(favoriteArticles.userId, currentUserId),
+        ),
+      );
+
+    // Return the updated article state
+    return this.findBySlug(slug);
+  }
 }

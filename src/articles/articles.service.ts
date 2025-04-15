@@ -135,4 +135,20 @@ export class ArticlesService {
       },
     };
   }
+
+  async favoriteArticle(slug: string, currentUserId: number) {
+    const article = await this.repository.favoriteArticle(slug, currentUserId);
+    if (!article) {
+      throw new NotFoundError('Article not found');
+    }
+    return await this.generateArticleResponse(article, currentUserId);
+  }
+
+  async unfavoriteArticle(slug: string, currentUserId: number) {
+    const article = await this.repository.unfavoriteArticle(slug, currentUserId);
+    if (!article) {
+      throw new NotFoundError('Article not found');
+    }
+    return await this.generateArticleResponse(article, currentUserId);
+  }
 }
