@@ -1,6 +1,7 @@
 import { MAX_PAGINATION_LIMIT } from '@/constants';
 import type { Profile } from '@profiles/profiles.schema';
 import { type Static, Type } from '@sinclair/typebox';
+import type { ArticleTag } from '@tags/tags.schema';
 import { createInsertSchema, createSelectSchema } from 'drizzle-typebox';
 import { articles, type favoriteArticles } from './articles.model';
 
@@ -8,35 +9,33 @@ export const insertArticleSchemaRaw = createInsertSchema(articles);
 export const selectArticleSchemaRaw = createSelectSchema(articles);
 
 export const InsertArticleSchema = Type.Object({
-  article: Type.Pick(insertArticleSchemaRaw, [
-    'title',
-    'description',
-    'body',
-    'tagList',
+  article: Type.Composite([
+    Type.Pick(insertArticleSchemaRaw, ['title', 'description', 'body']),
+    Type.Object({ tagList: Type.Optional(Type.Array(Type.String())) }),
   ]),
 });
 
 export type ArticleToCreateData = Static<typeof InsertArticleSchema>['article'];
-export type ArticleToCreate = ArticleToCreateData & {
+export type ArticleToCreate = Omit<ArticleToCreateData, 'tagList'> & {
   authorId: number;
   slug: string;
 };
 
 export const UpdateArticleSchema = Type.Object({
-  article: Type.Partial(
-    Type.Pick(insertArticleSchemaRaw, [
-      'title',
-      'description',
-      'body',
-      'tagList',
-    ]),
-  ),
+  article: Type.Composite([
+    Type.Partial(
+      Type.Pick(insertArticleSchemaRaw, ['title', 'description', 'body']),
+    ),
+    Type.Object({
+      tagList: Type.Optional(Type.Array(Type.String())),
+    }),
+  ]),
 });
 
 export type ArticleToUpdateRequest = Static<
   typeof UpdateArticleSchema
 >['article'];
-export type ArticleToUpdate = ArticleToUpdateRequest & {
+export type ArticleToUpdate = Omit<ArticleToUpdateRequest, 'tagList'> & {
   slug: string;
 };
 
@@ -52,6 +51,7 @@ export const ReturnedArticleSchema = Type.Composite([
     favorited: Type.Boolean(),
     favoritesCount: Type.Number(),
   }),
+  Type.Object({ tagList: Type.Array(Type.String()) }),
 ]);
 
 export const ReturnedArticleResponseSchema = Type.Object({
@@ -69,6 +69,7 @@ export type ArticleInDb = Omit<
 > & {
   author: Profile;
   favoritedBy: ArticleFavoritedBy[];
+  tags: ArticleTag[];
 };
 
 export type ArticleFavoritedBy = typeof favoriteArticles.$inferSelect;

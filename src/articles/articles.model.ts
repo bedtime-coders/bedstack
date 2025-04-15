@@ -1,6 +1,5 @@
 import { relations, sql } from 'drizzle-orm';
 import {
-  date,
   integer,
   pgTable,
   primaryKey,
@@ -9,6 +8,7 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 
+import { articleTags } from '@tags/tags.model';
 import { users } from '@users/users.model';
 
 export const articles = pgTable('articles', {
@@ -17,7 +17,6 @@ export const articles = pgTable('articles', {
   title: text('title').notNull(),
   description: text('description').notNull(),
   body: text('body').notNull(),
-  tagList: text('tag_list').array().default([]).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
   authorId: integer('author_id')
@@ -36,6 +35,9 @@ export const articleRelations = relations(articles, ({ one, many }) => ({
   }),
   comments: many(comments, {
     relationName: 'articleComments',
+  }),
+  tags: many(articleTags, {
+    relationName: 'articleTags',
   }),
 }));
 

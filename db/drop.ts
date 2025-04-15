@@ -1,11 +1,20 @@
 import { exit } from 'node:process';
 import { db } from '@/database.providers';
-import { articles, favoriteArticles } from '@articles/articles.model';
+import { articles, comments, favoriteArticles } from '@articles/articles.model';
 import dbConfig from '@db/config';
+import { articleTags, tags } from '@tags/tags.model';
 import { userFollows, users } from '@users/users.model';
 import { getTableName, sql } from 'drizzle-orm';
 
-const tables = [userFollows, favoriteArticles, articles, users];
+const tables = [
+  articleTags,
+  tags,
+  userFollows,
+  favoriteArticles,
+  comments,
+  articles,
+  users,
+];
 console.log('Dropping all tables from the database');
 
 try {

@@ -7,6 +7,7 @@ import {
   getErrorStatusFromCode,
 } from '@errors';
 import { profilesPlugin } from '@profiles/profiles.plugin';
+import { tagsPlugin } from '@tags/tags.plugin';
 import { usersPlugin } from '@users/users.plugin';
 import { Elysia } from 'elysia';
 import { description, title, version } from '../package.json';
@@ -55,6 +56,10 @@ export const setupApp = () => {
       }),
     )
     .group('/api', (app) =>
-      app.use(usersPlugin).use(profilesPlugin).use(articlesPlugin),
+      app
+        .use(usersPlugin)
+        .use(profilesPlugin)
+        .use(articlesPlugin)
+        .use(tagsPlugin),
     );
 };

@@ -38,6 +38,7 @@
       "@profiles/*": ["./src/profiles/*"],
       "@utils/*": ["./src/utils/*"],
       "@articles/*": ["./src/articles/*"],
+      "@tags/*": ["./src/tags/*"],
       "@errors": ["./src/errors.ts"],
       "@config": ["./src/config.ts"]
     },

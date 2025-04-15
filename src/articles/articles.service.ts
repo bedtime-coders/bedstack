@@ -10,12 +10,14 @@ import type {
   ReturnedArticleResponse,
 } from '@articles/articles.schema';
 import type { ProfilesService } from '@profiles/profiles.service';
+import type { TagsService } from '@tags/tags.service';
 import { NotFoundError } from 'elysia';
 
 export class ArticlesService {
   constructor(
     private readonly repository: ArticlesRepository,
     private readonly profilesService: ProfilesService,
+    private readonly tagsService: TagsService,
   ) {}
 
   async find(query: {
@@ -43,13 +45,19 @@ export class ArticlesService {
   async createArticle(article: ArticleToCreateData, currentUserId: number) {
     const articleToCreate: ArticleToCreate = {
       ...article,
-      tagList: article.tagList?.sort() || [],
       authorId: currentUserId,
       slug: slugify(article.title),
     };
+    // TODO: Add transaction to ensure both or none of the operations are done
     const createdArticle = await this.repository.createArticle(articleToCreate);
     if (!createdArticle) {
       throw new BadRequestError('Article was not created');
+    }
+    if (article.tagList) {
+      await this.tagsService.upsertArticleTags(
+        createdArticle.id,
+        article.tagList,
+      );
     }
     return await this.generateArticleResponse(createdArticle, currentUserId);
   }
@@ -59,6 +67,8 @@ export class ArticlesService {
     article: ArticleToUpdateRequest,
     currentUserId: number,
   ) {
+    // TODO: Add transaction to ensure both or none of the operations are done
+    const { tagList, ...articleData } = article;
     const existingArticle = await this.repository.findBySlug(slug);
     if (!existingArticle) {
       throw new NotFoundError('Article not found');
@@ -67,14 +77,19 @@ export class ArticlesService {
       throw new AuthorizationError('Only the author can update the article');
     }
 
-    const newSlug = article.title
-      ? slugify(article.title)
+    const newSlug = articleData.title
+      ? slugify(articleData.title)
       : existingArticle.slug;
     await this.repository.updateArticle(
       existingArticle.id,
-      { ...article, slug: newSlug },
+      { ...articleData, slug: newSlug },
       currentUserId,
     );
+
+    if (tagList) {
+      await this.tagsService.upsertArticleTags(existingArticle.id, tagList);
+    }
+
     return this.findBySlug(newSlug, currentUserId);
   }
 
@@ -86,6 +101,8 @@ export class ArticlesService {
     if (article.authorId !== currentUserId) {
       throw new AuthorizationError('Only the author can delete the article');
     }
+
+    // articleTags will be deleted as well due to the cascade rule
     await this.repository.deleteArticle(slug, currentUserId);
     return {
       message: 'Article deleted',
@@ -107,7 +124,7 @@ export class ArticlesService {
         title: article.title,
         description: article.description,
         body: article.body,
-        tagList: article.tagList,
+        tagList: article.tags.map((tag) => tag.tagName),
         createdAt: article.createdAt,
         updatedAt: article.updatedAt,
         author: authorProfile.profile,
