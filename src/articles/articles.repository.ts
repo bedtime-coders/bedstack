@@ -195,6 +195,7 @@ export class ArticlesRepository {
   }
 
   async favoriteArticle(slug: string, currentUserId: number) {
+    // TODO: Use a transaction to optimize from 1-3 ops to 1 op
     const article = await this.findBySlug(slug);
     if (!article) {
       return null;
