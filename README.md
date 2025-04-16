@@ -69,6 +69,7 @@
 
     ```sh
     bun preview
+    ```
 
 ### Contributing
 
