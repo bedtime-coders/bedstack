@@ -3,11 +3,11 @@
 <img src="docs/public/logo-mini.png" alt="Logo for Bedstack RealWorld example" width=200>
 <h1>Bedstack</h1>
 
-###### _[RealWorld](https://realworld-docs.netlify.app/) example app for [Bun](https://bun.sh/) + [ElysiaJS](https://elysiajs.com/) + [Drizzle](https://orm.drizzle.team/)_
+[bedstack.js.org](https://bedstack.js.org)
 
-[![Tests Status](https://github.com/agnyz/bedstack/actions/workflows/tests.yml/badge.svg?event=push&branch=main)](https://github.com/agnyz/bedstack/actions/workflows/tests.yml?query=branch%3Amain) [![RealWorld](https://img.shields.io/badge/RealWorld-compliant-success?labelColor=2f1c42)](https://github.com/gothinkster/realworld) [![Bed Puns](https://img.shields.io/badge/bed%20puns-welcome-limegreen)](https://discord.gg/8UcP9QB5AV) [![GitHub License](https://img.shields.io/github/license/agnyz/bedstack)](https://github.com/agnyz/bedstack/blob/main/LICENSE) [![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/agnyz/bedstack?utm_source=oss&utm_medium=github&utm_campaign=agnyz%2Fbedstack&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://github.com/agnyz/bedstack/pulls) 
+[RealWorld](https://realworld-docs.netlify.app/) example app for [Bun](https://bun.sh/) + [ElysiaJS](https://elysiajs.com/) + [Drizzle](https://orm.drizzle.team/)
 
-#### Visit https://bedstack.js.org to learn more about the stack you don't want to sleep on 🛌💤
+[![Tests Status](https://github.com/agnyz/bedstack/actions/workflows/tests.yml/badge.svg?event=push&branch=main)](https://github.com/agnyz/bedstack/actions/workflows/tests.yml?query=branch%3Amain) [![RealWorld](https://img.shields.io/badge/RealWorld%20API-compatible-success?labelColor=2f1c42)](https://realworld-docs.netlify.app/specifications/backend/endpoints) ![Featured on CodebaseShow](https://img.shields.io/badge/CodebaseShow-approved-success?labelColor=2c3669) [![GitHub License](https://img.shields.io/github/license/agnyz/bedstack)](https://github.com/agnyz/bedstack/blob/main/LICENSE) [![Star bedstack on GitHub](https://img.shields.io/github/stars/agnyz/bedstack)](https://github.com/agnyz/bedstack) 
 
 ## Let's share a BED - join our [Discord server](https://discord.gg/8UcP9QB5AV) 
 
