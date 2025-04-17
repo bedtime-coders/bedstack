@@ -16,7 +16,7 @@ import {
   ReturnedCommentsResponse,
 } from './comments/comments.schema';
 
-export const articlesPlugin = new Elysia().use(setupArticles).group(
+export const articlesController = new Elysia().use(setupArticles).group(
   '/articles',
   {
     detail: {
