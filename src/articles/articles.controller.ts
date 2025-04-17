@@ -1,20 +1,13 @@
 import { setupArticles } from '@articles/articles.module';
-import {
-  ArticleFeedQuerySchema,
-  DeleteArticleResponse,
-  InsertArticleSchema,
-  ListArticlesQuerySchema,
-  ReturnedArticleListSchema,
-  ReturnedArticleResponseSchema,
-  UpdateArticleSchema,
-} from '@articles/articles.schema';
 import { Elysia, t } from 'elysia';
 import {
-  AddCommentSchema,
-  DeleteCommentResponse,
-  ReturnedCommentResponse,
-  ReturnedCommentsResponse,
-} from './comments/comments.schema';
+  ArticleResponseDto,
+  CreateArticleDto,
+  ListArticlesQueryDto,
+  ListArticlesResponseDto,
+  UpdateArticleDto,
+} from './dto';
+import { CommentResponseDto, CreateCommentDto } from '@comments/dto';
 
 export const articlesController = new Elysia().use(setupArticles).group(
   '/articles',
@@ -35,8 +28,8 @@ export const articlesController = new Elysia().use(setupArticles).group(
             ),
           }),
         {
-          query: ListArticlesQuerySchema,
-          response: ReturnedArticleListSchema,
+          query: ListArticlesQueryDto,
+          response: ListArticlesResponseDto,
           detail: {
             summary: 'List Articles',
           },
@@ -51,8 +44,8 @@ export const articlesController = new Elysia().use(setupArticles).group(
           ),
         {
           beforeHandle: app.store.authService.requireLogin,
-          body: InsertArticleSchema,
-          response: ReturnedArticleResponseSchema,
+          body: CreateArticleDto,
+          response: ArticleResponseDto,
           detail: {
             summary: 'Create Article',
             security: [
@@ -75,8 +68,8 @@ export const articlesController = new Elysia().use(setupArticles).group(
           }),
         {
           beforeHandle: app.store.authService.requireLogin,
-          query: ArticleFeedQuerySchema,
-          response: ReturnedArticleListSchema,
+          query: ListArticlesQueryDto,
+          response: ListArticlesResponseDto,
           detail: {
             summary: 'Artifle Feed',
             security: [
@@ -97,7 +90,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
             ),
           ),
         {
-          response: ReturnedArticleResponseSchema,
+          response: ArticleResponseDto,
           detail: {
             summary: 'Get Article',
           },
@@ -113,8 +106,8 @@ export const articlesController = new Elysia().use(setupArticles).group(
           ),
         {
           beforeHandle: app.store.authService.requireLogin,
-          body: UpdateArticleSchema,
-          response: ReturnedArticleResponseSchema,
+          body: UpdateArticleDto,
+          response: ArticleResponseDto,
           detail: {
             summary: 'Update Article',
             security: [
@@ -127,14 +120,14 @@ export const articlesController = new Elysia().use(setupArticles).group(
       )
       .delete(
         '/:slug',
-        async ({ params, store, request }) =>
-          store.articlesService.deleteArticle(
+        async ({ params, store, request }) => {
+          await store.articlesService.deleteArticle(
             params.slug,
             await store.authService.getUserIdFromHeader(request.headers),
-          ),
+          );
+        },
         {
           beforeHandle: app.store.authService.requireLogin,
-          response: DeleteArticleResponse,
           detail: {
             summary: 'Delete Article',
             security: [
@@ -157,11 +150,8 @@ export const articlesController = new Elysia().use(setupArticles).group(
         },
         {
           beforeHandle: app.store.authService.requireLogin,
-          params: t.Object({
-            slug: t.String(),
-          }),
-          body: AddCommentSchema,
-          response: ReturnedCommentResponse,
+          body: CreateCommentDto,
+          response: CommentResponseDto,
           detail: {
             summary: 'Add Comment to Article',
           },
@@ -181,10 +171,9 @@ export const articlesController = new Elysia().use(setupArticles).group(
           };
         },
         {
-          params: t.Object({
-            slug: t.String(),
+          response: t.Object({
+            comments: t.Array(CommentResponseDto),
           }),
-          response: ReturnedCommentsResponse,
           detail: {
             summary: 'Get Comments from Article',
           },
@@ -198,7 +187,6 @@ export const articlesController = new Elysia().use(setupArticles).group(
             Number.parseInt(params.id, 10),
             await store.authService.getUserIdFromHeader(request.headers),
           );
-          return {};
         },
         {
           beforeHandle: app.store.authService.requireLogin,
@@ -206,7 +194,6 @@ export const articlesController = new Elysia().use(setupArticles).group(
             slug: t.String(),
             id: t.String(),
           }),
-          response: DeleteCommentResponse,
           detail: {
             summary: 'Delete Comment',
           },
@@ -221,7 +208,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
           ),
         {
           beforeHandle: app.store.authService.requireLogin,
-          response: ReturnedArticleResponseSchema,
+          response: ArticleResponseDto,
           detail: {
             summary: 'Favorite Article',
             security: [
@@ -241,7 +228,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
           ),
         {
           beforeHandle: app.store.authService.requireLogin,
-          response: ReturnedArticleResponseSchema,
+          response: ArticleResponseDto,
           detail: {
             summary: 'Unfavorite Article',
             security: [

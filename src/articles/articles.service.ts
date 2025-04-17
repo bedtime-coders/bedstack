@@ -1,14 +1,6 @@
 import { AuthorizationError, BadRequestError } from '@/errors';
 import { slugify } from '@/utils/slugify';
 import type { ArticlesRepository } from '@articles/articles.repository';
-import type {
-  ArticleInDb,
-  ArticleToCreate,
-  ArticleToCreateData,
-  ArticleToUpdateRequest,
-  ReturnedArticleList,
-  ReturnedArticleResponse,
-} from '@articles/articles.schema';
 import type { ProfilesService } from '@profiles/profiles.service';
 import type { TagsService } from '@tags/tags.service';
 import { NotFoundError } from 'elysia';
@@ -145,7 +137,10 @@ export class ArticlesService {
   }
 
   async unfavoriteArticle(slug: string, currentUserId: number) {
-    const article = await this.repository.unfavoriteArticle(slug, currentUserId);
+    const article = await this.repository.unfavoriteArticle(
+      slug,
+      currentUserId,
+    );
     if (!article) {
       throw new NotFoundError('Article not found');
     }

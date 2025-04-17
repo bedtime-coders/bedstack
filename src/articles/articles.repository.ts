@@ -1,10 +1,6 @@
-import type {
-  ArticleToCreate,
-  ArticleToUpdate,
-} from '@/articles/articles.schema';
 import type { Database } from '@/database.providers';
-import { userFollows, users } from '@/users/users.model';
-import { articles, favoriteArticles } from '@articles/articles.model';
+import { userFollows, users } from '@users/users.model';
+import { articles, favoriteArticles } from '@articles/schema';
 import { articleTags } from '@tags/tags.model';
 import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 
