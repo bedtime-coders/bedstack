@@ -2,15 +2,15 @@
 import { users } from '@/users/users.model';
 import { articleTags } from '@tags/tags.model';
 import { relations } from 'drizzle-orm';
-import { comments } from '../comments/schema';
 import {
   integer,
+  primaryKey,
   serial,
   pgTable as table,
   text,
   timestamp,
-  primaryKey,
 } from 'drizzle-orm/pg-core';
+import { comments } from '../comments/schema';
 
 export const articles = table('articles', {
   id: serial('id').primaryKey(),
