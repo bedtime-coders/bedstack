@@ -15,6 +15,51 @@ Each domain feature (e.g. `articles`, `profiles`, `tags`) is isolated into a top
 * **Mapper** - Transforms data between layers
 * **Schema** - Defines database tables and relations
 
+```mermaid
+graph TD
+  subgraph Controller Layer
+    C1[articles.controller.ts]
+    C2[comments.controller.ts]
+    C3[tags.controller.ts]
+  end
+
+  subgraph Service Layer
+    S1[articles.service.ts]
+    S2[comments.service.ts]
+    S3[tags.service.ts]
+  end
+
+  subgraph Repository Layer
+    R1[articles.repository.ts]
+    R2[comments.repository.ts]
+    R3[tags.repository.ts]
+  end
+
+  subgraph Schema Layer
+    SC1[articles.schema.ts]
+    SC2[comments.schema.ts]
+    SC3[tags.schema.ts]
+    SC4[article-tags.schema.ts]
+  end
+
+  subgraph Mapper Layer
+    M1[articles.mapper.ts]
+    M2[comments.mapper.ts]
+    M3[tags.mapper.ts]
+  end
+
+  C1 --> S1 --> R1 --> SC1
+  C2 --> S2 --> R2 --> SC2
+  C3 --> S3 --> R3 --> SC3
+
+  S1 --> M1
+  S2 --> M2
+  S3 --> M3
+
+  SC1 --> SC4
+  SC3 --> SC4
+```
+
 ## Layer Responsibilities
 
 ### 1. Controller Layer (Client-facing)
