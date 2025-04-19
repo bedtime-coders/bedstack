@@ -1,45 +1,48 @@
 import { AuthorizationError, BadRequestError } from '@/errors';
 import { slugify } from '@/utils/slugify';
 import type { ArticlesRepository } from '@articles/articles.repository';
-import type { ProfilesService } from '@profiles/profiles.service';
 import type { TagsService } from '@tags/tags.service';
 import { NotFoundError } from 'elysia';
-import type {
-  CreateArticleInput,
-  NewArticleRow,
-  UpdateArticleInput,
-} from './interfaces';
+import type { CreateArticleInput, UpdateArticleInput } from './interfaces';
 import { toNewArticleRow, toResponse } from './mappers/articles.mapper';
+import type { ProfilesRepository } from '@/profiles/profiles.repository';
 
 export class ArticlesService {
   constructor(
     private readonly repository: ArticlesRepository,
-    private readonly profilesService: ProfilesService,
+    private readonly profilesRepository: ProfilesRepository,
     private readonly tagsService: TagsService,
   ) {}
 
   async find(
-    query: {
-      offset?: number;
-      limit?: number;
+    filters: {
       tag?: string;
       author?: string;
       favorited?: string;
     },
     options: {
-      followedAuthors?: boolean;
+      pagination?: {
+        offset?: number;
+        limit?: number;
+      };
       currentUserId?: number;
+      personalization?: {
+        followedAuthors?: boolean;
+      };
     } = {},
   ) {
-    const limit = query.limit || 20;
-    const offset = query.offset || 0;
-    const currentUserId = options.currentUserId ?? null;
-    return await this.repository.find({
-      ...query,
-      limit,
-      offset,
-      ...options,
+    const { pagination, currentUserId, personalization } = options;
+    const { offset = 0, limit = 20 } = pagination ?? {};
+    const { followedAuthors } = personalization ?? {};
+    // TODO: should we check for currentUserId here, or throw an error?
+    const followedAuthorIds =
+      followedAuthors && currentUserId
+        ? await this.profilesRepository.findFollowedUserIds(currentUserId)
+        : undefined;
+    return await this.repository.find(filters, {
+      pagination: { offset, limit },
       currentUserId,
+      personalization: { followedAuthors },
     });
   }
 

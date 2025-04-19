@@ -1,4 +1,4 @@
-import * as articlesSchema from '@articles/schema';
+import * as articlesSchema from '@articles/articles.schema';
 import * as commentsSchema from '@comments/schema';
 import { dbCredentialsString } from '@db/config';
 import * as tagsSchema from '@tags/tags.model';

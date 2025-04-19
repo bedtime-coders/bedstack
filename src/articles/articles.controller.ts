@@ -21,12 +21,13 @@ export const articlesController = new Elysia().use(setupArticles).group(
     app
       .get(
         '/',
-        async ({ query, store, request }) =>
-          store.articlesService.find(query, {
+        async ({ query, store, request }) => {
+          return await store.articlesService.find(query, {
             currentUserId: await store.authService.getOptionalUserIdFromHeader(
               request.headers,
             ),
-          }),
+          });
+        },
         {
           query: ListArticlesQueryDto,
           response: ArticlesResponseDto,
