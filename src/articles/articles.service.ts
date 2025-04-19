@@ -1,11 +1,20 @@
 import { AuthorizationError, BadRequestError } from '@/errors';
+import type { ProfilesRepository } from '@/profiles/profiles.repository';
 import { slugify } from '@/utils/slugify';
 import type { ArticlesRepository } from '@articles/articles.repository';
 import type { TagsService } from '@tags/tags.service';
 import { NotFoundError } from 'elysia';
-import type { CreateArticleInput, UpdateArticleInput } from './interfaces';
-import { toNewArticleRow, toResponse } from './mappers/articles.mapper';
-import type { ProfilesRepository } from '@/profiles/profiles.repository';
+import type {
+  Article,
+  ArticleRow,
+  CreateArticleInput,
+  UpdateArticleInput,
+} from './interfaces';
+import {
+  toDomain,
+  toNewArticleRow,
+  toResponse,
+} from './mappers/articles.mapper';
 
 export class ArticlesService {
   constructor(
@@ -30,7 +39,7 @@ export class ArticlesService {
         followedAuthors?: boolean;
       };
     } = {},
-  ) {
+  ): Promise<{ articles: Article[]; articlesCount: number }> {
     const { pagination, currentUserId, personalization } = options;
     const { offset = 0, limit = 20 } = pagination ?? {};
     const { followedAuthors } = personalization ?? {};
@@ -39,11 +48,16 @@ export class ArticlesService {
       followedAuthors && currentUserId
         ? await this.profilesRepository.findFollowedUserIds(currentUserId)
         : undefined;
-    return await this.repository.find(filters, {
-      pagination: { offset, limit },
+    const { articles, articlesCount } = await this.repository.find(filters, {
+      offset,
+      limit,
       currentUserId,
-      personalization: { followedAuthors },
+      followedAuthorIds,
     });
+    return {
+      articles: articles.map((article) => toDomain(article, { currentUserId })),
+      articlesCount,
+    };
   }
 
   async findBySlug(slug: string, currentUserId: number | null = null) {

@@ -1,5 +1,5 @@
 import { slugify } from '@/utils/slugify';
-import type { CreateArticleDto, ArticleResponseDto } from '../dto';
+import type { ArticleResponseDto, CreateArticleDto } from '../dto';
 import type {
   Article,
   ArticleRow,
@@ -35,32 +35,25 @@ export function toDomain(
   };
 }
 
-export function toResponse(
-  article: ArticleRow,
-  currentUserId: number | null,
-): ArticleResponseDto {
+export function toResponse(article: Article): ArticleResponseDto {
   // TODO: use the `toResponse` mapper from profiles, or make this an input
   const authorProfile = {
     username: article.author.username,
     bio: article.author.bio,
     image: article.author.image,
-    following: !!article.author.followers.find(
-      (follower) => follower.followerId === currentUserId,
-    ),
+    following: article.author.following,
   };
   return {
     slug: article.slug,
     title: article.title,
     description: article.description,
     body: article.body,
-    tagList: article.tags.map((tag) => tag.tagName),
+    tagList: article.tagList,
     createdAt: article.createdAt.toISOString(),
     updatedAt: article.updatedAt.toISOString(),
     author: authorProfile,
-    favorited: !!article.favoritedBy.find(
-      (user) => user.userId === currentUserId,
-    ),
-    favoritesCount: article.favoritedBy.length,
+    favorited: article.favorited,
+    favoritesCount: article.favoritesCount,
   };
 }
 

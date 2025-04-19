@@ -3,12 +3,12 @@ import { CommentResponseDto, CreateCommentDto } from '@comments/dto';
 import { Elysia, t } from 'elysia';
 import {
   ArticleResponseDto,
+  ArticlesResponseDto,
   CreateArticleDto,
   ListArticlesQueryDto,
-  ArticlesResponseDto,
   UpdateArticleDto,
 } from './dto';
-import { toCreateArticleInput } from './mappers/articles.mapper';
+import { toCreateArticleInput, toResponse } from './mappers/articles.mapper';
 
 export const articlesController = new Elysia().use(setupArticles).group(
   '/articles',
@@ -22,18 +22,28 @@ export const articlesController = new Elysia().use(setupArticles).group(
       .get(
         '/',
         async ({ query, store, request }) => {
-          return await store.articlesService.find(query, {
-            currentUserId: await store.authService.getOptionalUserIdFromHeader(
+          const currentUserId =
+            await store.authService.getOptionalUserIdFromHeader(
               request.headers,
-            ),
-          });
+            );
+
+          // TODO: should we assign the defaults here, in the service, or both?
+          const { offset = 0, limit = 20, tag, author, favorited } = query;
+
+          const { articles, articlesCount } = await store.articlesService.find(
+            { tag, author, favorited },
+            { pagination: { offset, limit }, currentUserId },
+          );
+
+          return {
+            articles: articles.map((article) => toResponse(article)),
+            articlesCount,
+          };
         },
         {
           query: ListArticlesQueryDto,
           response: ArticlesResponseDto,
-          detail: {
-            summary: 'List Articles',
-          },
+          detail: { summary: 'List Articles' },
         },
       )
       .post(
