@@ -1,8 +1,9 @@
 import type { IArticle } from '../interfaces/article.interface';
-import type { ArticleInDb } from '../interfaces/article-in-db.interface';
+import type { ArticleRow } from '../interfaces/article-row.interface';
+import type { ArticleResponseDto } from '../dto/article-response.dto';
 
 export function toDomain(
-  article: ArticleInDb,
+  article: ArticleRow,
   { currentUserId }: { currentUserId: number | null },
 ): IArticle {
   return {
@@ -25,5 +26,25 @@ export function toDomain(
         (follower) => follower.followerId === currentUserId,
       ),
     },
+  };
+}
+
+export function toResponse(article: IArticle): ArticleResponseDto {
+  return {
+    slug: article.slug,
+    title: article.title,
+    description: article.description,
+    tagList: article.tagList,
+    favorited: article.favorited,
+    favoritesCount: article.favoritesCount,
+    author: {
+      username: article.author.username,
+      bio: article.author.bio,
+      image: article.author.image,
+      following: false, // TODO
+    },
+    body: 'TODO',
+    createdAt: article.createdAt.toISOString(),
+    updatedAt: article.updatedAt.toISOString(),
   };
 }
