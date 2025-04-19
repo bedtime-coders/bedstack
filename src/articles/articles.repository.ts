@@ -3,6 +3,8 @@ import { userFollows, users } from '@users/users.model';
 import { articles, favoriteArticles } from '@articles/schema';
 import { articleTags } from '@tags/tags.model';
 import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
+import type { Article, IArticle } from './interfaces/article.interface';
+import { toDomain } from './mappers/to-domain.mapper';
 
 export class ArticlesRepository {
   constructor(private readonly db: Database) {}
@@ -23,7 +25,7 @@ export class ArticlesRepository {
     author?: string;
     favorited?: string;
     followedAuthors?: boolean;
-  }) {
+  }): Promise<{ articles: Article[]; articlesCount: number }> {
     const authorFilters = [];
     if (author) {
       authorFilters.push(eq(users.username, author));
@@ -154,7 +156,7 @@ export class ArticlesRepository {
     return { articles: limitedResults, articlesCount: resultsCount[0].count };
   }
 
-  async findBySlug(slug: string) {
+  async findBySlug(slug: string): Promise<IArticle | null> {
     const result = await this.db.query.articles.findFirst({
       where: eq(articles.slug, slug),
       with: {
@@ -167,11 +169,10 @@ export class ArticlesRepository {
         tags: true,
       },
     });
-    if (!result) return null;
-    return result;
+    return result ? toDomain(result, { currentUserId }) : null;
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<IArticle | null> {
     const result = await this.db.query.articles.findFirst({
       where: eq(articles.id, id),
       with: {
@@ -184,8 +185,7 @@ export class ArticlesRepository {
         tags: true,
       },
     });
-    if (!result) return null;
-    return result;
+    return result ? toDomain(result, { currentUserId }) : null;
   }
 
   async createArticle(article: ArticleToCreate) {

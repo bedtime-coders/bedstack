@@ -2,35 +2,36 @@
 
 ## Overview
 
-This service uses a **Layered Architecture** to keep our code clean, clear, and easy to maintain.
+This service uses a modular, flat, feature-sliced, **Layered Architecture** inspired by the [NestJS philosophy](https://docs.nestjs.com/#philosophy).
 
-We mostly follow the [NestJS philosophy](https://docs.nestjs.com/#philosophy), but interpret it to fit our needs.
-
-We separate the system into 3 layers:
+We separate the system into 3 main layers:
 
 1.	**Controller** – Talks to the client
 2.	**Service** – Handles the business logic
-3.	**Repository** – Talks to the database
+3.	**Repository** – Interacts with the database
+
+Each domain feature (e.g. `articles`, `profiles`, `tags`) is isolated into a top-level module folder, containing the above layers, and also:
+
+* **Mapper** - Transforms data between layers
+* **Schema** - Defines database tables and relations
+
+## Layer Responsibilities
 
 ### 1. Controller Layer (Client-facing)
 
-- Receives data from the client (DTO)
-- Returns data to the client (DTO)
-- Validates data types
-- Calls the service layer
-- Can shape requests and responses, without performing any business logic
-
----
+- Handles HTTP routes, request params, and responses
+- Validates data transfer objects (DTOs)
+- Thin, delegates to the service layer
+- Shapes requests and responses, without performing any business logic
 
 ### 2. Service Layer (Business Logic)
 
+- Implements the use cases
 - Contains the business logic
-- Can perform any kind of calculation or transformation as long as it's part of the business rules
+- Delegates data formatting to mappers
 - Validates logic rules (e.g., checking if a user can register)
-- Handles errors and logging
 - Calls the repository layer to get or save data
-
----
+- Contains logic that remains valid even if the transport layer changes (e.g. REST, GraphQL, RPC)
 
 ### 3. Repository Layer (Database Access)
 
@@ -38,73 +39,55 @@ We separate the system into 3 layers:
 - Only responsible for saving and retrieving data
 - **No** assumptions about validation
 - **No** business logic should go here
+- Handles pagination, sorting, and other database-specific operations
+- Returns raw database rows, not domain entities
 
-## Types we use 
+### Additional Layers
 
-> [!NOTE]
-> We will use the `User` entity as an example for the rest of this document.
+#### Mapper (Data Transformation)
 
-To keep things clear & scalable, we separate each "entity" into three types:
+- Transforms Row types from the database to domain entities or DTOs
+- Performs camelCase vs. snake_case mapping if needed
+- Convers Date to ISO strings for output, etc.
 
-| Type                                                | Associated Layer | Purpose                                        |
-| --------------------------------------------------- | ---------------- | ---------------------------------------------- |
-| `CreateUserDto`, `UpdateUserDto`, `UserResponseDto` | Controller       | Used to talk with the client                   |
-| `IUser`                                             | All              | Common contract shared between layers          |
-| `User`                                              | Repository       | Defines how the data is stored in the database |
+#### Schema (Database Definitions)
 
-## Type Design Principles
+- Defines schemas using an ORM (e.g. `pgTable()` with Drizzle ORM and PostgreSQL)
+- Optionally defines table relations (e.g. `relations()` with Drizzle ORM)
 
-1. **Interfaces vs Classes**:
-   - Use interfaces (`IUser`) to define contracts between layers
-   - Use classes (`User`) for concrete implementations. The (database) entity is a concrete implementation of the interface.
-   - This separation allows for better testing and flexibility
+## Type Conventions
 
-2. **Canonical Forms**:
-   - Store canonical forms in the database (e.g., `birthdate`)
-   - The canonical form is represented in the entity (`User`) *and* the interface (`IUser`)
-   - The DTO might use a different form, e.g. `CreateUserDto` might use `age` instead of `birthdate`
-   - Use mappers to convert between forms
+| Type                                                | Layer | Purpose                                        |
+| --------------------------------------------------- | ----- | ---------------------------------------------- |
+| `CreateThingDto`, `UpdateThingDto` | Controller       | Validates incoming input (e.g. via TypeBox)                   |
+| `ThingDto`                                             | Controller              | Shapes outgoing responses          |
+| `Thing`                                              | Service (Domain)       | Represents the business entity |
+| `ThingRow`                                           | Repository            | Represents the database row, can be inferred from schema (e.g. using `InferSelectModel` with Drizzle ORM) |
 
-3. **System vs Domain Properties**:
-   - System properties (`id`, `createdAt`, `updatedAt`) are managed by the base entity
-   - Domain properties (e.g. `email`, `name`) are defined in the interface, enforced by the entity, and controlled by the DTOs
+## Design Principles
 
-## Examples
+### 1. Flat, feature-sliced folder layout
 
-### Example 1: Can register?
+* Each feature (e.g. `articles/`, `comments/`) contains all its layers in one folder
+* No deep nesting, no shared `controllers/`, `services/` folders
 
-```typescript
-canRegister(user: Partial<IUser>) {
-  if (user.email.endsWith('@banned.com')) {
-    throw new ForbiddenException('Email domain is not allowed');
-  }
+### 2. One thing per file
 
-  if (!this.isOldEnough(user.birthdate)) {
-    throw new ForbiddenException('User must be at least 13 years old');
-  }
-}
-```
+* DTOs are defined in `dto/` folder, one file per DTO
+* Domain entities are interfaces in `interfaces/`, one per file
+* Row types are colocated in `interfaces/` and inferred from Drizzle schema
 
-This check lives in the service layer because:
+### 3. Relation-aware schema layer
 
-- It's business logic
-- It could change based on product decisions
-- It might be reused across different controllers (`signup`, `adminCreateUser`, etc.)
-- If tomorrow we add GraphQL on top of our REST, this logic will remain the same
+Table relations are colocated with their schema definition unless they grow large.
 
-### Example 2: Normalize email
+### 4. Public API is shaped at the controller level
 
-```typescript
-normalizeEmail(email: string) {
-  return email.toLowerCase().trim();
-}
-```
-
-Also clearly service-level: it’s a standardized rule, not controller-specific logic.
+DTOs match the RealWorld spec (e.g., `{ article: ... }`) but this wrapping is handled in the controller, not baked into types.
 
 ## See also
 
-- **Project structure** - see [Project Structure](#TODO)
+- More on **Project structure** - see [Project Structure](#PROJECT_STRUCTURE.md)
 - **Contributing** - see [Developer's Guide](CONTRIBUTING.md)
-- **Diagrams** - see [Diagrams](#TODO)
-- **Documentation (for consumers)** - see [RealWorld Backend Specifications](https://realworld-docs.netlify.app/specifications/backend/introduction/)
+- **API Documentation** - see [RealWorld Backend Specifications](https://realworld-docs.netlify.app/specifications/backend/introduction/)
+- **Drizzle ORM Documentation** - see [Drizzle ORM](https://orm.drizzle.team/)
