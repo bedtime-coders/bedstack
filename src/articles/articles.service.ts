@@ -65,7 +65,7 @@ export class ArticlesService {
     if (!article) {
       throw new NotFoundError('Article not found');
     }
-    return toResponse(article, currentUserId);
+    return toDomain(article, { currentUserId });
   }
 
   async createArticle(article: CreateArticleInput, currentUserId: number) {
@@ -84,7 +84,7 @@ export class ArticlesService {
       );
     }
 
-    return toResponse(createdArticle, currentUserId);
+    return toDomain(createdArticle, { currentUserId });
   }
 
   async updateArticle(
@@ -98,7 +98,7 @@ export class ArticlesService {
     if (!existingArticle) {
       throw new NotFoundError('Article not found');
     }
-    if (existingArticle.authorId !== currentUserId) {
+    if (existingArticle.author.id !== currentUserId) {
       throw new AuthorizationError('Only the author can update the article');
     }
 
@@ -123,7 +123,7 @@ export class ArticlesService {
     if (!article) {
       throw new NotFoundError('Article not found');
     }
-    if (article.authorId !== currentUserId) {
+    if (article.author.id !== currentUserId) {
       throw new AuthorizationError('Only the author can delete the article');
     }
 
@@ -140,7 +140,7 @@ export class ArticlesService {
     if (!article) {
       throw new NotFoundError('Article not found');
     }
-    return toResponse(article, currentUserId);
+    return toDomain(article, { currentUserId });
   }
 
   async unfavoriteArticle(slug: string, currentUserId: number) {
@@ -151,6 +151,6 @@ export class ArticlesService {
     if (!article) {
       throw new NotFoundError('Article not found');
     }
-    return toResponse(article, currentUserId);
+    return toDomain(article, { currentUserId });
   }
 }
