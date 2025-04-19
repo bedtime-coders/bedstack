@@ -22,8 +22,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
       .get(
         '/',
         async ({ query, store, request }) =>
-          store.articlesService.find({
-            ...query,
+          store.articlesService.find(query, {
             currentUserId: await store.authService.getOptionalUserIdFromHeader(
               request.headers,
             ),
@@ -60,19 +59,18 @@ export const articlesController = new Elysia().use(setupArticles).group(
       .get(
         '/feed',
         async ({ query, store, request }) =>
-          store.articlesService.find({
-            ...query,
+          store.articlesService.find(query, {
+            followedAuthors: true,
             currentUserId: await store.authService.getUserIdFromHeader(
               request.headers,
             ),
-            followedAuthors: true,
           }),
         {
           beforeHandle: app.store.authService.requireLogin,
           query: ListArticlesQueryDto,
           response: ArticlesResponseDto,
           detail: {
-            summary: 'Artifle Feed',
+            summary: 'Article Feed',
             security: [
               {
                 tokenAuth: [],

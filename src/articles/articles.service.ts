@@ -18,18 +18,29 @@ export class ArticlesService {
     private readonly tagsService: TagsService,
   ) {}
 
-  async find(query: {
-    currentUserId: number | null;
-    offset?: number;
-    limit?: number;
-    tag?: string;
-    author?: string;
-    favorited?: string;
-    followedAuthors?: boolean;
-  }) {
+  async find(
+    query: {
+      offset?: number;
+      limit?: number;
+      tag?: string;
+      author?: string;
+      favorited?: string;
+    },
+    options: {
+      followedAuthors?: boolean;
+      currentUserId?: number;
+    } = {},
+  ) {
     const limit = query.limit || 20;
     const offset = query.offset || 0;
-    return await this.repository.find({ ...query, limit, offset });
+    const currentUserId = options.currentUserId ?? null;
+    return await this.repository.find({
+      ...query,
+      limit,
+      offset,
+      ...options,
+      currentUserId,
+    });
   }
 
   async findBySlug(slug: string, currentUserId: number | null = null) {
