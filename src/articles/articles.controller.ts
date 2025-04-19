@@ -69,13 +69,30 @@ export const articlesController = new Elysia().use(setupArticles).group(
       )
       .get(
         '/feed',
-        async ({ query, store, request }) =>
-          store.articlesService.find(query, {
-            followedAuthors: true,
-            currentUserId: await store.authService.getUserIdFromHeader(
-              request.headers,
-            ),
-          }),
+        async ({ query, store, request }) => {
+          const currentUserId = await store.authService.getUserIdFromHeader(
+            request.headers,
+          );
+
+          // TODO: should we assign the defaults here, in the service, or both?
+          const { offset = 0, limit = 20, tag, author, favorited } = query;
+
+          // TODO: do we need both currentUserId and personalization?
+          const { articles, articlesCount } = await store.articlesService.find(
+            { tag, author, favorited },
+            {
+              personalization: {
+                followedAuthors: true,
+              },
+              pagination: { offset, limit },
+              currentUserId,
+            },
+          );
+          return {
+            articles: articles.map((article) => toResponse(article)),
+            articlesCount,
+          };
+        },
         {
           beforeHandle: app.store.authService.requireLogin,
           query: ListArticlesQueryDto,
