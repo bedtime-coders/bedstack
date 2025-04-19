@@ -1,11 +1,12 @@
 import type { Profile } from '@/profiles/profiles.schema';
 
-export interface IArticle {
+export interface Article {
   id: number;
   slug: string;
   title: string;
   description: string;
   tagList: string[];
+  body: string;
   createdAt: Date;
   updatedAt: Date;
   favorited: boolean;
