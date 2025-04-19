@@ -4,6 +4,12 @@ import type { ArticlesRepository } from '@articles/articles.repository';
 import type { ProfilesService } from '@profiles/profiles.service';
 import type { TagsService } from '@tags/tags.service';
 import { NotFoundError } from 'elysia';
+import type {
+  CreateArticleInput,
+  NewArticleRow,
+  UpdateArticleInput,
+} from './interfaces';
+import { toNewArticleRow, toResponse } from './mappers/articles.mapper';
 
 export class ArticlesService {
   constructor(
@@ -20,7 +26,7 @@ export class ArticlesService {
     author?: string;
     favorited?: string;
     followedAuthors?: boolean;
-  }): Promise<ReturnedArticleList> {
+  }) {
     const limit = query.limit || 20;
     const offset = query.offset || 0;
     return await this.repository.find({ ...query, limit, offset });
@@ -31,32 +37,31 @@ export class ArticlesService {
     if (!article) {
       throw new NotFoundError('Article not found');
     }
-    return await this.generateArticleResponse(article, currentUserId);
+    return toResponse(article, currentUserId);
   }
 
-  async createArticle(article: ArticleToCreateData, currentUserId: number) {
-    const articleToCreate: ArticleToCreate = {
-      ...article,
-      authorId: currentUserId,
-      slug: slugify(article.title),
-    };
-    // TODO: Add transaction to ensure both or none of the operations are done
-    const createdArticle = await this.repository.createArticle(articleToCreate);
+  async createArticle(article: CreateArticleInput, currentUserId: number) {
+    const newArticle = toNewArticleRow(article, currentUserId);
+
+    const createdArticle = await this.repository.createArticle(newArticle);
+
     if (!createdArticle) {
       throw new BadRequestError('Article was not created');
     }
-    if (article.tagList) {
+
+    if (article.tagList.length) {
       await this.tagsService.upsertArticleTags(
         createdArticle.id,
         article.tagList,
       );
     }
-    return await this.generateArticleResponse(createdArticle, currentUserId);
+
+    return toResponse(createdArticle, currentUserId);
   }
 
   async updateArticle(
     slug: string,
-    article: ArticleToUpdateRequest,
+    article: UpdateArticleInput,
     currentUserId: number,
   ) {
     // TODO: Add transaction to ensure both or none of the operations are done
@@ -102,38 +107,12 @@ export class ArticlesService {
     };
   }
 
-  async generateArticleResponse(
-    article: ArticleInDb,
-    currentUserId: number | null,
-  ): Promise<ReturnedArticleResponse> {
-    const authorProfile = await this.profilesService.generateProfileResponse(
-      article.author,
-      currentUserId,
-    );
-    return {
-      article: {
-        slug: article.slug,
-        title: article.title,
-        description: article.description,
-        body: article.body,
-        tagList: article.tags.map((tag) => tag.tagName),
-        createdAt: article.createdAt,
-        updatedAt: article.updatedAt,
-        author: authorProfile.profile,
-        favorited: !!article.favoritedBy.find(
-          (user) => user.userId === currentUserId,
-        ),
-        favoritesCount: article.favoritedBy.length,
-      },
-    };
-  }
-
   async favoriteArticle(slug: string, currentUserId: number) {
     const article = await this.repository.favoriteArticle(slug, currentUserId);
     if (!article) {
       throw new NotFoundError('Article not found');
     }
-    return await this.generateArticleResponse(article, currentUserId);
+    return toResponse(article, currentUserId);
   }
 
   async unfavoriteArticle(slug: string, currentUserId: number) {
@@ -144,6 +123,6 @@ export class ArticlesService {
     if (!article) {
       throw new NotFoundError('Article not found');
     }
-    return await this.generateArticleResponse(article, currentUserId);
+    return toResponse(article, currentUserId);
   }
 }

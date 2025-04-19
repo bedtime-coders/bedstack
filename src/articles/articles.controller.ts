@@ -5,9 +5,10 @@ import {
   ArticleResponseDto,
   CreateArticleDto,
   ListArticlesQueryDto,
-  ListArticlesResponseDto,
+  ArticlesResponseDto,
   UpdateArticleDto,
 } from './dto';
+import { toCreateArticleInput } from './mappers/articles.mapper';
 
 export const articlesController = new Elysia().use(setupArticles).group(
   '/articles',
@@ -29,7 +30,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
           }),
         {
           query: ListArticlesQueryDto,
-          response: ListArticlesResponseDto,
+          response: ArticlesResponseDto,
           detail: {
             summary: 'List Articles',
           },
@@ -39,7 +40,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
         '/',
         async ({ body, request, store }) =>
           store.articlesService.createArticle(
-            body.article,
+            toCreateArticleInput(body.article),
             await store.authService.getUserIdFromHeader(request.headers),
           ),
         {
@@ -69,7 +70,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
         {
           beforeHandle: app.store.authService.requireLogin,
           query: ListArticlesQueryDto,
-          response: ListArticlesResponseDto,
+          response: ArticlesResponseDto,
           detail: {
             summary: 'Artifle Feed',
             security: [
