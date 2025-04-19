@@ -78,3 +78,22 @@ export function toNewArticleRow(
     authorId,
   };
 }
+
+export function toResponseFromFeedRow(row: ArticleFeedRow): ArticleResponseDto {
+  return {
+    slug: row.slug,
+    title: row.title,
+    description: row.description,
+    tagList: row.tagList,
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
+    favorited: row.favorited,
+    favoritesCount: row.favoritesCount,
+    author: {
+      username: row.author.username,
+      bio: row.author.bio,
+      image: row.author.image,
+      following: row.author.following,
+    },
+  };
+}

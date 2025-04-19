@@ -36,6 +36,9 @@ export class ArticlesService {
       };
       currentUserId?: number;
       personalization?: {
+        /**
+         * Whether to include articles from followed authors. If not specified, all articles will be returned
+         */
         followedAuthors?: boolean;
       };
     } = {},

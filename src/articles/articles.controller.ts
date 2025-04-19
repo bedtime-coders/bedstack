@@ -48,11 +48,16 @@ export const articlesController = new Elysia().use(setupArticles).group(
       )
       .post(
         '/',
-        async ({ body, request, store }) =>
-          store.articlesService.createArticle(
+        async ({ body, request, store }) => {
+          const currentUserId = await store.authService.getUserIdFromHeader(
+            request.headers,
+          );
+          const article = await store.articlesService.createArticle(
             toCreateArticleInput(body.article),
-            await store.authService.getUserIdFromHeader(request.headers),
-          ),
+            currentUserId,
+          );
+          return toResponse(article);
+        },
         {
           beforeHandle: app.store.authService.requireLogin,
           body: CreateArticleDto,
@@ -109,13 +114,15 @@ export const articlesController = new Elysia().use(setupArticles).group(
       )
       .get(
         '/:slug',
-        async ({ params, store, request }) =>
-          store.articlesService.findBySlug(
+        async ({ params, store, request }) => {
+          const article = await store.articlesService.findBySlug(
             params.slug,
             await store.authService.getOptionalUserIdFromHeader(
               request.headers,
             ),
-          ),
+          );
+          return toResponse(article);
+        },
         {
           response: ArticleResponseDto,
           detail: {
@@ -125,18 +132,40 @@ export const articlesController = new Elysia().use(setupArticles).group(
       )
       .put(
         '/:slug',
-        async ({ params, body, store, request }) =>
-          store.articlesService.updateArticle(
+        async ({ params, body, store, request }) => {
+          const article = await store.articlesService.updateArticle(
             params.slug,
             body.article,
             await store.authService.getUserIdFromHeader(request.headers),
-          ),
+          );
+          return toResponse(article);
+        },
         {
           beforeHandle: app.store.authService.requireLogin,
           body: UpdateArticleDto,
           response: ArticleResponseDto,
           detail: {
             summary: 'Update Article',
+            security: [
+              {
+                tokenAuth: [],
+              },
+            ],
+          },
+        },
+      )
+      .delete(
+        '/:slug',
+        async ({ params, store, request }) => {
+          await store.articlesService.deleteArticle(
+            params.slug,
+            await store.authService.getUserIdFromHeader(request.headers),
+          );
+        },
+        {
+          beforeHandle: app.store.authService.requireLogin,
+          detail: {
+            summary: 'Delete Article',
             security: [
               {
                 tokenAuth: [],
@@ -228,11 +257,13 @@ export const articlesController = new Elysia().use(setupArticles).group(
       )
       .post(
         '/:slug/favorite',
-        async ({ params, store, request }) =>
-          store.articlesService.favoriteArticle(
+        async ({ params, store, request }) => {
+          const article = await store.articlesService.favoriteArticle(
             params.slug,
             await store.authService.getUserIdFromHeader(request.headers),
-          ),
+          );
+          return toResponse(article);
+        },
         {
           beforeHandle: app.store.authService.requireLogin,
           response: ArticleResponseDto,
@@ -248,11 +279,13 @@ export const articlesController = new Elysia().use(setupArticles).group(
       )
       .delete(
         '/:slug/favorite',
-        async ({ params, store, request }) =>
-          store.articlesService.unfavoriteArticle(
+        async ({ params, store, request }) => {
+          const article = await store.articlesService.unfavoriteArticle(
             params.slug,
             await store.authService.getUserIdFromHeader(request.headers),
-          ),
+          );
+          return toResponse(article);
+        },
         {
           beforeHandle: app.store.authService.requireLogin,
           response: ArticleResponseDto,
