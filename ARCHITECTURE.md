@@ -87,7 +87,7 @@ DTOs match the RealWorld spec (e.g., `{ article: ... }`) but this wrapping is ha
 
 ## See also
 
-- More on **Project structure** - see [Project Structure](#PROJECT_STRUCTURE.md)
+- More on **Project structure** - see [Project Structure](PROJECT_STRUCTURE.md)
 - **Contributing** - see [Developer's Guide](CONTRIBUTING.md)
 - **API Documentation** - see [RealWorld Backend Specifications](https://realworld-docs.netlify.app/specifications/backend/introduction/)
 - **Drizzle ORM Documentation** - see [Drizzle ORM](https://orm.drizzle.team/)
