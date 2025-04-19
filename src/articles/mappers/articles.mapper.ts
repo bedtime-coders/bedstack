@@ -1,6 +1,6 @@
-import type { IArticle } from '../interfaces/article.interface';
-import type { ArticleRow } from '../interfaces/article-row.interface';
 import type { ArticleResponseDto } from '../dto/article-response.dto';
+import type { ArticleRow } from '../interfaces/article-row.interface';
+import type { IArticle } from '../interfaces/article.interface';
 
 export function toDomain(
   article: ArticleRow,

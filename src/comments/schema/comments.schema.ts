@@ -1,6 +1,6 @@
+import { users } from '@users/users.model';
 import { sql } from 'drizzle-orm';
 import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
-import { users } from '@users/users.model';
 import { articles } from '../../articles/schema';
 
 export const comments = pgTable('comments', {

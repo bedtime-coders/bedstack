@@ -1,5 +1,5 @@
-import { Type, type Static } from '@sinclair/typebox';
 import { ArticleResponseDto } from '@articles/dto';
+import { type Static, Type } from '@sinclair/typebox';
 import { UserResponseDto } from '@users/dto';
 
 export const CommentResponseDto = Type.Object({

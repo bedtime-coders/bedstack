@@ -1,6 +1,6 @@
+import { users } from '@users/users.model';
 import { integer, pgTable, primaryKey, timestamp } from 'drizzle-orm/pg-core';
 import { articles } from './articles.schema';
-import { users } from '@users/users.model';
 
 export const favoriteArticles = pgTable(
   'favorite_articles',

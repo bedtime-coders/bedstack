@@ -1,5 +1,5 @@
 import { MAX_PAGINATION_LIMIT } from '@constants';
-import { Type, type Static } from '@sinclair/typebox';
+import { type Static, Type } from '@sinclair/typebox';
 
 export const ArticleFeedQueryDto = Type.Object({
   limit: Type.Optional(

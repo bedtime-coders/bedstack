@@ -1,7 +1,7 @@
 import type { Database } from '@/database.providers';
-import { userFollows, users } from '@users/users.model';
 import { articles, favoriteArticles } from '@articles/schema';
 import { articleTags } from '@tags/tags.model';
+import { userFollows, users } from '@users/users.model';
 import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import type { Article, IArticle } from './interfaces/article.interface';
 import { toDomain } from './mappers/to-domain.mapper';

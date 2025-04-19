@@ -1,7 +1,7 @@
-import { relations } from 'drizzle-orm';
 import { users } from '@users/users.model';
-import { favoriteArticles } from './favorite-articles.schema';
+import { relations } from 'drizzle-orm';
 import { articles } from './articles.schema';
+import { favoriteArticles } from './favorite-articles.schema';
 
 export const favoriteArticleRelations = relations(
   favoriteArticles,

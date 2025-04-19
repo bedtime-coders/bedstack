@@ -1,7 +1,7 @@
-import { relations } from 'drizzle-orm';
-import { users } from '@users/users.model';
-import { comments } from './comments.schema';
 import { articles } from '@articles/schema';
+import { users } from '@users/users.model';
+import { relations } from 'drizzle-orm';
+import { comments } from './comments.schema';
 
 export const commentRelations = relations(comments, ({ one }) => ({
   article: one(articles, {

@@ -1,11 +1,11 @@
+import { users } from '@/users/users.model';
 import {
   integer,
-  pgTable as table,
   serial,
+  pgTable as table,
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
-import { users } from '@/users/users.model';
 
 export const articles = table('articles', {
   id: serial('id').primaryKey(),

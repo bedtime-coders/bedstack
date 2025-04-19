@@ -1,5 +1,5 @@
-import type { Database } from '@/database.providers';
 import { articles, comments } from '@/articles/schema/favorite-articles.schema';
+import type { Database } from '@/database.providers';
 import { and, desc, eq } from 'drizzle-orm';
 import type { CommentToCreate } from './comments.schema';
 

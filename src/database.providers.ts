@@ -1,8 +1,8 @@
+import * as articlesSchema from '@articles/schema';
+import * as commentsSchema from '@comments/schema';
 import { dbCredentialsString } from '@db/config';
 import * as tagsSchema from '@tags/tags.model';
 import * as usersSchema from '@users/users.model';
-import * as articlesSchema from '@articles/schema';
-import * as commentsSchema from '@comments/schema';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 

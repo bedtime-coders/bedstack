@@ -1,4 +1,4 @@
-import { Type, type Static } from '@sinclair/typebox';
+import { type Static, Type } from '@sinclair/typebox';
 import { ArticleFeedQueryDto } from './article-feed-query.dto';
 
 export const ListArticlesQueryDto = Type.Composite([

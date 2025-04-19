@@ -1,4 +1,5 @@
 import { setupArticles } from '@articles/articles.module';
+import { CommentResponseDto, CreateCommentDto } from '@comments/dto';
 import { Elysia, t } from 'elysia';
 import {
   ArticleResponseDto,
@@ -7,7 +8,6 @@ import {
   ListArticlesResponseDto,
   UpdateArticleDto,
 } from './dto';
-import { CommentResponseDto, CreateCommentDto } from '@comments/dto';
 
 export const articlesController = new Elysia().use(setupArticles).group(
   '/articles',
