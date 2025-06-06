@@ -1,5 +1,9 @@
 import { slugify } from '@/utils/slugify';
-import type { ArticleResponseDto, CreateArticleDto } from '../dto';
+import type {
+  ArticleFeedResponseDto,
+  ArticleResponseDto,
+  CreateArticleDto,
+} from '../dto';
 import type {
   ArticleFeedRow,
   ArticleRow,
@@ -91,6 +95,22 @@ export function toFeedDomain(article: ArticleFeedRow): IArticleFeed {
     tagList: article.tagList,
     createdAt: article.createdAt,
     updatedAt: article.updatedAt,
+    favorited: article.favorited,
+    favoritesCount: article.favoritesCount,
+    author: article.author,
+  };
+}
+
+export function toFeedResponse(
+  article: IArticleFeed,
+): ArticleFeedResponseDto['article'] {
+  return {
+    slug: article.slug,
+    title: article.title,
+    description: article.description,
+    tagList: article.tagList,
+    createdAt: article.createdAt.toISOString(),
+    updatedAt: article.updatedAt.toISOString(),
     favorited: article.favorited,
     favoritesCount: article.favoritesCount,
     author: article.author,

@@ -8,7 +8,11 @@ import {
   ListArticlesQueryDto,
   UpdateArticleDto,
 } from './dto';
-import { toCreateArticleInput, toResponse } from './mappers/articles.mapper';
+import {
+  toCreateArticleInput,
+  toFeedResponse,
+  toResponse,
+} from './mappers/articles.mapper';
 
 export const articlesController = new Elysia().use(setupArticles).group(
   '/articles',
@@ -35,7 +39,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
           );
 
           return {
-            articles: articles.map((article) => toResponse(article).article),
+            articles: articles.map((article) => toFeedResponse(article)),
             articlesCount,
           };
         },
@@ -91,7 +95,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
             },
           );
           return {
-            articles: articles.map((article) => toResponse(article).article),
+            articles: articles.map((article) => toFeedResponse(article)),
             articlesCount,
           };
         },
