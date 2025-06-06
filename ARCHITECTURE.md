@@ -64,19 +64,20 @@ graph TD
 
 ### 1. Controller Layer (Client-facing)
 
-- Handles HTTP routes, request params, and responses
-- Validates data transfer objects (DTOs)
-- Thin, delegates to the service layer
-- Shapes requests and responses, without performing any business logic
+- Receives data from the client (DTO)
+- Returns data to the client (DTO)
+- Validates data types
+- Calls the service layer
+- Can shape requests and responses, without performing any business logic
 
 ### 2. Service Layer (Business Logic)
 
-- Implements the use cases
 - Contains the business logic
-- Delegates data formatting to mappers
+- Can perform any kind of calculation or transformation as long as it's part of the business rules
 - Validates logic rules (e.g., checking if a user can register)
+- Handles errors and logging
 - Calls the repository layer to get or save data
-- Contains logic that remains valid even if the transport layer changes (e.g. REST, GraphQL, RPC)
+- Can receive controller-level DTOs, but must map or validate them before passing data to the repository
 
 ### 3. Repository Layer (Database Access)
 
@@ -102,14 +103,13 @@ graph TD
 
 ## Type Conventions
 
-| Type                               | Layer            | Purpose                                                                                                   |
-| ---------------------------------- | ---------------- | --------------------------------------------------------------------------------------------------------- |
-| `CreateThingDto`, `UpdateThingDto` | Controller       | Validates incoming input (e.g. via TypeBox)                                                               |
-| `ThingDto`                         | Controller       | Shapes outgoing responses                                                                                 |
-| `Thing`                            | Service (Domain) | Represents the business entity                                                                            |
-| `ThingRow`                         | Repository       | Represents the database row, can be inferred from schema (e.g. using `InferSelectModel` with Drizzle ORM) |
+| Type                                                   | Layer      | Purpose                                        |
+| ------------------------------------------------------ | ---------- | ---------------------------------------------- |
+| `CreateThingDto`, `UpdateThingDto`, `ThingResponseDto` | Controller | Used to talk with the client                   |
+| `IThing`                                               | All        | Common contract shared between layers          |
+| `Thing`                                                | Repository | Defines how the data is stored in the database |
 
-## Design Principles
+## General Design Principles
 
 ### 1. Flat, feature-sliced folder layout
 
@@ -129,6 +129,58 @@ Table relations are colocated with their schema definition unless they grow larg
 ### 4. Public API is shaped at the controller level
 
 DTOs match the RealWorld spec (e.g., `{ article: ... }`) but this wrapping is handled in the controller, not baked into types.
+
+## Type Design Principles
+
+1. **Interfaces vs Classes**:
+
+   - Use interfaces (`IUser`) to define contracts between layers
+   - Use classes (`User`) for concrete implementations. The (database) entity is a concrete implementation of the interface.
+   - This separation allows for better testing and flexibility
+
+2. **Canonical Forms**:
+
+   - Store canonical forms in the database (e.g., `birthdate`)
+   - The canonical form is represented in the entity (`User`) _and_ the interface (`IUser`)
+   - The DTO might use a different form, e.g. `CreateUserDto` might use `age` instead of `birthdate`
+   - Use mappers to convert between forms
+
+3. **System vs Domain Properties**:
+   - System properties (`id`, `createdAt`, `updatedAt`) are managed by the base entity
+   - Domain properties (e.g. `email`, `name`) are defined in the interface, enforced by the entity, and controlled by the DTOs
+
+## Examples
+
+### Example 1: Can register?
+
+```typescript
+canRegister(user: Partial<IUser>) {
+  if (user.email.endsWith('@banned.com')) {
+    throw new ForbiddenException('Email domain is not allowed');
+  }
+
+  if (!this.isOldEnough(user.birthdate)) {
+    throw new ForbiddenException('User must be at least 13 years old');
+  }
+}
+```
+
+This check lives in the service layer because:
+
+- It's business logic
+- It could change based on product decisions
+- It might be reused across different controllers (`signup`, `adminCreateUser`, etc.)
+- If tomorrow we add GraphQL on top of our REST, this logic will remain the same
+
+### Example 2: Normalize email
+
+```typescript
+normalizeEmail(email: string) {
+  return email.toLowerCase().trim();
+}
+```
+
+Also clearly service-level: it's a standardized rule, not controller-specific logic.
 
 ## See also
 
