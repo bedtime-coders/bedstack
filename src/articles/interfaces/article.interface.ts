@@ -1,6 +1,6 @@
 import type { Profile } from '@/profiles/profiles.schema';
 
-export interface Article {
+export type IArticle = {
   id: number;
   slug: string;
   title: string;
@@ -18,4 +18,4 @@ export interface Article {
   > & {
     following: boolean;
   };
-}
+};

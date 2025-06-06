@@ -1,25 +1,25 @@
 import { AuthorizationError, BadRequestError } from '@/errors';
-import type { ProfilesRepository } from '@/profiles/profiles.repository';
+import type { ProfilesService } from '@/profiles/profiles.service';
 import { slugify } from '@/utils/slugify';
 import type { ArticlesRepository } from '@articles/articles.repository';
 import type { TagsService } from '@tags/tags.service';
 import { NotFoundError } from 'elysia';
 import type {
-  Article,
-  ArticleRow,
   CreateArticleInput,
+  IArticle,
+  IArticleFeed,
   UpdateArticleInput,
 } from './interfaces';
 import {
   toDomain,
+  toFeedDomain,
   toNewArticleRow,
-  toResponse,
 } from './mappers/articles.mapper';
 
 export class ArticlesService {
   constructor(
     private readonly repository: ArticlesRepository,
-    private readonly profilesRepository: ProfilesRepository,
+    private readonly profilesService: ProfilesService,
     private readonly tagsService: TagsService,
   ) {}
 
@@ -42,28 +42,33 @@ export class ArticlesService {
         followedAuthors?: boolean;
       };
     } = {},
-  ): Promise<{ articles: Article[]; articlesCount: number }> {
+  ): Promise<{ articles: IArticleFeed[]; articlesCount: number }> {
     const { pagination, currentUserId, personalization } = options;
     const { offset = 0, limit = 20 } = pagination ?? {};
     const { followedAuthors } = personalization ?? {};
-    // TODO: should we check for currentUserId here, or throw an error?
+
     const followedAuthorIds =
       followedAuthors && currentUserId
-        ? await this.profilesRepository.findFollowedUserIds(currentUserId)
+        ? await this.profilesService.findFollowedUserIds(currentUserId)
         : undefined;
+
     const { articles, articlesCount } = await this.repository.find(filters, {
       offset,
       limit,
       currentUserId,
       followedAuthorIds,
     });
+
     return {
-      articles: articles.map((article) => toDomain(article, { currentUserId })),
+      articles: articles.map((article) => toFeedDomain(article)),
       articlesCount,
     };
   }
 
-  async findBySlug(slug: string, currentUserId: number | null = null) {
+  async findBySlug(
+    slug: string,
+    currentUserId: number | null = null,
+  ): Promise<IArticle> {
     const article = await this.repository.findBySlug(slug);
     if (!article) {
       throw new NotFoundError('Article not found');
@@ -71,9 +76,11 @@ export class ArticlesService {
     return toDomain(article, { currentUserId });
   }
 
-  async createArticle(article: CreateArticleInput, currentUserId: number) {
+  async createArticle(
+    article: CreateArticleInput,
+    currentUserId: number,
+  ): Promise<IArticle> {
     const newArticle = toNewArticleRow(article, currentUserId);
-
     const createdArticle = await this.repository.createArticle(newArticle);
 
     if (!createdArticle) {
@@ -94,9 +101,7 @@ export class ArticlesService {
     slug: string,
     article: UpdateArticleInput,
     currentUserId: number,
-  ) {
-    // TODO: Add transaction to ensure both or none of the operations are done
-    const { tagList, ...articleData } = article;
+  ): Promise<IArticle> {
     const existingArticle = await this.repository.findBySlug(slug);
     if (!existingArticle) {
       throw new NotFoundError('Article not found');
@@ -105,23 +110,26 @@ export class ArticlesService {
       throw new AuthorizationError('Only the author can update the article');
     }
 
-    const newSlug = articleData.title
-      ? slugify(articleData.title)
-      : existingArticle.slug;
-    await this.repository.updateArticle(
-      existingArticle.id,
-      { ...articleData, slug: newSlug },
+    const updatedArticle = await this.repository.updateArticle(
+      slug,
+      {
+        ...article,
+        slug: article.title ? slugify(article.title) : undefined,
+      },
       currentUserId,
     );
 
-    if (tagList) {
-      await this.tagsService.upsertArticleTags(existingArticle.id, tagList);
+    if (article.tagList) {
+      await this.tagsService.upsertArticleTags(
+        updatedArticle.id,
+        article.tagList,
+      );
     }
 
-    return this.findBySlug(newSlug, currentUserId);
+    return toDomain(updatedArticle, { currentUserId });
   }
 
-  async deleteArticle(slug: string, currentUserId: number) {
+  async deleteArticle(slug: string, currentUserId: number): Promise<void> {
     const article = await this.repository.findBySlug(slug);
     if (!article) {
       throw new NotFoundError('Article not found');
@@ -130,12 +138,7 @@ export class ArticlesService {
       throw new AuthorizationError('Only the author can delete the article');
     }
 
-    // articleTags will be deleted as well due to the cascade rule
     await this.repository.deleteArticle(slug, currentUserId);
-    return {
-      message: 'Article deleted',
-      slug: article.slug,
-    };
   }
 
   async favoriteArticle(slug: string, currentUserId: number) {

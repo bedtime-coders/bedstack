@@ -27,7 +27,6 @@ export const articlesController = new Elysia().use(setupArticles).group(
               request.headers,
             );
 
-          // TODO: should we assign the defaults here, in the service, or both?
           const { offset = 0, limit = 20, tag, author, favorited } = query;
 
           const { articles, articlesCount } = await store.articlesService.find(
@@ -36,7 +35,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
           );
 
           return {
-            articles: articles.map((article) => toResponse(article)),
+            articles: articles.map((article) => toResponse(article).article),
             articlesCount,
           };
         },
@@ -79,12 +78,10 @@ export const articlesController = new Elysia().use(setupArticles).group(
             request.headers,
           );
 
-          // TODO: should we assign the defaults here, in the service, or both?
-          const { offset = 0, limit = 20, tag, author, favorited } = query;
+          const { offset = 0, limit = 20 } = query;
 
-          // TODO: do we need both currentUserId and personalization?
           const { articles, articlesCount } = await store.articlesService.find(
-            { tag, author, favorited },
+            {},
             {
               personalization: {
                 followedAuthors: true,
@@ -94,7 +91,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
             },
           );
           return {
-            articles: articles.map((article) => toResponse(article)),
+            articles: articles.map((article) => toResponse(article).article),
             articlesCount,
           };
         },
@@ -146,26 +143,6 @@ export const articlesController = new Elysia().use(setupArticles).group(
           response: ArticleResponseDto,
           detail: {
             summary: 'Update Article',
-            security: [
-              {
-                tokenAuth: [],
-              },
-            ],
-          },
-        },
-      )
-      .delete(
-        '/:slug',
-        async ({ params, store, request }) => {
-          await store.articlesService.deleteArticle(
-            params.slug,
-            await store.authService.getUserIdFromHeader(request.headers),
-          );
-        },
-        {
-          beforeHandle: app.store.authService.requireLogin,
-          detail: {
-            summary: 'Delete Article',
             security: [
               {
                 tokenAuth: [],

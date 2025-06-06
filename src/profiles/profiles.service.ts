@@ -78,4 +78,8 @@ export class ProfilesService {
       },
     };
   }
+
+  async findFollowedUserIds(currentUserId: number): Promise<number[]> {
+    return this.repository.findFollowedUserIds(currentUserId);
+  }
 }

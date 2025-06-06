@@ -149,7 +149,10 @@ export class ArticlesRepository {
       .select({ count: count() })
       .from(resultsQuery);
 
-    return { articles: limitedResults, articlesCount: resultsCount[0].count };
+    return {
+      articles: limitedResults,
+      articlesCount: resultsCount[0].count,
+    };
   }
 
   async findBySlug(slug: string): Promise<ArticleRow | null> {
@@ -158,7 +161,9 @@ export class ArticlesRepository {
         where: eq(articles.slug, slug),
         with: {
           author: {
-            with: { followers: true },
+            with: {
+              followers: true,
+            },
           },
           favoritedBy: true,
           tags: true,
@@ -183,33 +188,40 @@ export class ArticlesRepository {
     return result ?? null;
   }
 
-  async createArticle(article: NewArticleRow) {
+  async createArticle(article: NewArticleRow): Promise<ArticleRow> {
     const results = await this.db.insert(articles).values(article).returning();
     const newArticle = results[0];
-    return this.findById(newArticle.id);
+    const result = await this.findById(newArticle.id);
+    if (!result) {
+      throw new Error(`Article with id ${newArticle.id} not found`);
+    }
+    return result;
   }
 
   async updateArticle(
-    articleId: number,
+    slug: string,
     article: UpdateArticleRow,
     currentUserId: number,
-  ) {
-    const filteredArticle = Object.fromEntries(
-      Object.entries(article).filter(([_, value]) => value !== undefined),
-    );
-    await this.db
+  ): Promise<ArticleRow> {
+    const results = await this.db
       .update(articles)
       .set({
-        ...filteredArticle,
+        ...article,
         updatedAt: new Date(),
       })
-      .where(
-        and(eq(articles.id, articleId), eq(articles.authorId, currentUserId)),
-      );
+      .where(and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)))
+      .returning();
+
+    const updatedArticle = results[0];
+    const result = await this.findById(updatedArticle.id);
+    if (!result) {
+      throw new Error(`Article with id ${updatedArticle.id} not found`);
+    }
+    return result;
   }
 
-  async deleteArticle(slug: string, currentUserId: number) {
-    return await this.db
+  async deleteArticle(slug: string, currentUserId: number): Promise<void> {
+    await this.db
       .delete(articles)
       .where(
         and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)),

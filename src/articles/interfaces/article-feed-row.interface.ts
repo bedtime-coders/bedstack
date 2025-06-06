@@ -1,5 +1,6 @@
-// TODO: We might want to extend or use `ArticleRow`
-export interface ArticleFeedRow {
+import type { ArticleRow } from './article-row.interface';
+
+export type ArticleFeedRow = {
   slug: string;
   title: string;
   description: string;
@@ -14,4 +15,4 @@ export interface ArticleFeedRow {
     image: string;
     following: boolean;
   };
-}
+};

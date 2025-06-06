@@ -1,16 +1,18 @@
 import { slugify } from '@/utils/slugify';
 import type { ArticleResponseDto, CreateArticleDto } from '../dto';
 import type {
-  Article,
+  ArticleFeedRow,
   ArticleRow,
   CreateArticleInput,
+  IArticle,
+  IArticleFeed,
   NewArticleRow,
 } from '../interfaces';
 
 export function toDomain(
   article: ArticleRow,
   { currentUserId }: { currentUserId: number | null },
-): Article {
+): IArticle {
   return {
     id: article.id, // TODO: Do we need this?
     slug: article.slug,
@@ -35,7 +37,7 @@ export function toDomain(
   };
 }
 
-export function toResponse(article: Article): ArticleResponseDto {
+export function toResponse(article: IArticle): ArticleResponseDto {
   // TODO: use the `toResponse` mapper from profiles, or make this an input
   const authorProfile = {
     username: article.author.username,
@@ -44,16 +46,18 @@ export function toResponse(article: Article): ArticleResponseDto {
     following: article.author.following,
   };
   return {
-    slug: article.slug,
-    title: article.title,
-    description: article.description,
-    body: article.body,
-    tagList: article.tagList,
-    createdAt: article.createdAt.toISOString(),
-    updatedAt: article.updatedAt.toISOString(),
-    author: authorProfile,
-    favorited: article.favorited,
-    favoritesCount: article.favoritesCount,
+    article: {
+      slug: article.slug,
+      title: article.title,
+      description: article.description,
+      body: article.body,
+      tagList: article.tagList,
+      createdAt: article.createdAt.toISOString(),
+      updatedAt: article.updatedAt.toISOString(),
+      author: authorProfile,
+      favorited: article.favorited,
+      favoritesCount: article.favoritesCount,
+    },
   };
 }
 
@@ -79,21 +83,16 @@ export function toNewArticleRow(
   };
 }
 
-export function toResponseFromFeedRow(row: ArticleFeedRow): ArticleResponseDto {
+export function toFeedDomain(article: ArticleFeedRow): IArticleFeed {
   return {
-    slug: row.slug,
-    title: row.title,
-    description: row.description,
-    tagList: row.tagList,
-    createdAt: row.createdAt.toISOString(),
-    updatedAt: row.updatedAt.toISOString(),
-    favorited: row.favorited,
-    favoritesCount: row.favoritesCount,
-    author: {
-      username: row.author.username,
-      bio: row.author.bio,
-      image: row.author.image,
-      following: row.author.following,
-    },
+    slug: article.slug,
+    title: article.title,
+    description: article.description,
+    tagList: article.tagList,
+    createdAt: article.createdAt,
+    updatedAt: article.updatedAt,
+    favorited: article.favorited,
+    favoritesCount: article.favoritesCount,
+    author: article.author,
   };
 }
