@@ -6,14 +6,14 @@ This service uses a modular, flat, feature-sliced, **Layered Architecture** insp
 
 We separate the system into 3 main layers:
 
-1.	**Controller** – Talks to the client
-2.	**Service** – Handles the business logic
-3.	**Repository** – Interacts with the database
+1. **Controller** – Talks to the client
+2. **Service** – Handles the business logic
+3. **Repository** – Interacts with the database
 
 Each domain feature (e.g. `articles`, `profiles`, `tags`) is isolated into a top-level module folder, containing the above layers, and also:
 
-* **Mapper** - Transforms data between layers
-* **Schema** - Defines database tables and relations
+- **Mapper** - Transforms data between layers
+- **Schema** - Defines database tables and relations
 
 ```mermaid
 graph TD
@@ -102,25 +102,25 @@ graph TD
 
 ## Type Conventions
 
-| Type                                                | Layer | Purpose                                        |
-| --------------------------------------------------- | ----- | ---------------------------------------------- |
-| `CreateThingDto`, `UpdateThingDto` | Controller       | Validates incoming input (e.g. via TypeBox)                   |
-| `ThingDto`                                             | Controller              | Shapes outgoing responses          |
-| `Thing`                                              | Service (Domain)       | Represents the business entity |
-| `ThingRow`                                           | Repository            | Represents the database row, can be inferred from schema (e.g. using `InferSelectModel` with Drizzle ORM) |
+| Type                               | Layer            | Purpose                                                                                                   |
+| ---------------------------------- | ---------------- | --------------------------------------------------------------------------------------------------------- |
+| `CreateThingDto`, `UpdateThingDto` | Controller       | Validates incoming input (e.g. via TypeBox)                                                               |
+| `ThingDto`                         | Controller       | Shapes outgoing responses                                                                                 |
+| `Thing`                            | Service (Domain) | Represents the business entity                                                                            |
+| `ThingRow`                         | Repository       | Represents the database row, can be inferred from schema (e.g. using `InferSelectModel` with Drizzle ORM) |
 
 ## Design Principles
 
 ### 1. Flat, feature-sliced folder layout
 
-* Each feature (e.g. `articles/`, `comments/`) contains all its layers in one folder
-* No deep nesting, no shared `controllers/`, `services/` folders
+- Each feature (e.g. `articles/`, `comments/`) contains all its layers in one folder
+- No deep nesting, no shared `controllers/`, `services/` folders
 
 ### 2. One thing per file
 
-* DTOs are defined in `dto/` folder, one file per DTO
-* Domain entities are interfaces in `interfaces/`, one per file
-* Row types are colocated in `interfaces/` and inferred from Drizzle schema
+- DTOs are defined in `dto/` folder, one file per DTO
+- Domain entities are interfaces in `interfaces/`, one per file
+- Row types are colocated in `interfaces/` and inferred from Drizzle schema
 
 ### 3. Relation-aware schema layer
 
