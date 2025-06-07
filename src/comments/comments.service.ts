@@ -86,7 +86,9 @@ export class CommentsService {
           ? comment.author.followers.some((f) => f.followerId === currentUserId)
           : false,
       },
-      article: toDomain(article, { currentUserId: currentUserId ?? null }),
+      article: toDomain(article, {
+        currentUserId: currentUserId ?? undefined,
+      }),
     }));
   }
 

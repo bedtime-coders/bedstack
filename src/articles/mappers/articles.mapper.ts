@@ -1,6 +1,5 @@
 import { slugify } from '@/utils/slugify';
 import type { CommentResponse } from '@comments/interfaces/comment-response.interface';
-import type { ParsedProfileSchema } from '@profiles/profiles.schema';
 import type {
   ArticleResponseDto,
   ArticlesResponseDto,
@@ -15,16 +14,31 @@ import type {
   NewArticleRow,
 } from '../interfaces';
 
+/**
+ * Additional options for the `toDomain` mapper.
+ */
+type ToDomainOptions = {
+  /**
+   * The tag list to use for the article.
+   * If provided, will be used as the updated tag list for the article, instead of the existing tag list.
+   */
+  tagList?: string[];
+  /**
+   * The current user id. If provided, the response will include information about the current user's favorite status for the article.
+   */
+  currentUserId?: number;
+};
+
 export function toDomain(
   article: ArticleRow,
-  { currentUserId }: { currentUserId: number | null },
+  { tagList, currentUserId }: ToDomainOptions,
 ): IArticle {
   return {
     id: article.id, // TODO: Do we need this?
     slug: article.slug,
     title: article.title,
     description: article.description,
-    tagList: article.tags.map((t) => t.tagName),
+    tagList: tagList ?? article.tags.map((t) => t.tagName),
     createdAt: article.createdAt,
     updatedAt: article.updatedAt,
     favorited: !!article.favoritedBy.find(

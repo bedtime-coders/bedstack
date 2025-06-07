@@ -73,7 +73,7 @@ export class ArticlesService {
     if (!article) {
       throw new NotFoundError('Article not found');
     }
-    return toDomain(article, { currentUserId });
+    return toDomain(article, { currentUserId: currentUserId ?? undefined });
   }
 
   async createArticle(
@@ -87,14 +87,21 @@ export class ArticlesService {
       throw new BadRequestError('Article was not created');
     }
 
+    let { tagList } = article;
     if (article.tagList.length) {
-      await this.tagsService.upsertArticleTags(
+      const upsertArticleTagsResult = await this.tagsService.upsertArticleTags(
         createdArticle.id,
         article.tagList,
       );
+      if (upsertArticleTagsResult) {
+        tagList = upsertArticleTagsResult.map((t) => t.tagName);
+      }
     }
 
-    return toDomain(createdArticle, { currentUserId });
+    return toDomain(createdArticle, {
+      currentUserId: currentUserId ?? undefined,
+      tagList,
+    });
   }
 
   async updateArticle(
