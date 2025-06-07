@@ -2,7 +2,7 @@
 
 This document describes the file structure and organization of the codebase. The layout is flat and feature-sliced, with each domain feature (e.g., articles, comments) self-contained.
 
-We favor **separation of concerns** over minimalism, and follow a **one file per thing** rule.
+We follow a **one file per thing** rule to maintain clear organization.
 
 ## Top-Level Overview
 

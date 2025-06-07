@@ -2,7 +2,7 @@
 
 ## Overview
 
-This service uses a modular, flat, feature-sliced, **Layered Architecture** inspired by the [NestJS philosophy](https://docs.nestjs.com/#philosophy).
+This service uses a modular **Layered Architecture** inspired by the [NestJS philosophy](https://docs.nestjs.com/#philosophy). We favor **separation of concerns** over minimalism to maintain clear boundaries between different parts of the system.
 
 We separate the system into 3 main layers:
 
