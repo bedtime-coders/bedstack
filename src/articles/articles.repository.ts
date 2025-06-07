@@ -86,12 +86,54 @@ export class ArticlesRepository {
       .from(articles)
       .innerJoin(users, eq(users.id, articles.authorId))
       .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
-      .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id))
-      .where(and(...authorFilters))
-      .groupBy(articles.id, users.id)
-      .orderBy(desc(articles.createdAt));
+      .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id));
 
-    const limitedResults = await baseQuery.limit(limit).offset(offset);
+    // Apply tag filter if specified
+    if (tag) {
+      baseQuery.where(
+        and(
+          ...authorFilters,
+          sql`exists (
+            select 1 from ${articleTags}
+            where ${articleTags.articleId} = ${articles.id}
+            and ${articleTags.tagName} = ${tag}
+          )`,
+        ),
+      );
+    } else {
+      // Only apply author filters if no tag filter
+      baseQuery.where(and(...authorFilters));
+    }
+
+    // Apply favorited filter if specified
+    if (favorited) {
+      const favoritedByUser = await this.db
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.username, favorited))
+        .limit(1);
+
+      if (!favoritedByUser[0]) {
+        // If user doesn't exist, return no results
+        return { articles: [], articlesCount: 0 };
+      }
+
+      baseQuery.where(
+        and(
+          sql`exists (
+            select 1 from ${favoriteArticles}
+            where ${favoriteArticles.articleId} = ${articles.id}
+            and ${favoriteArticles.userId} = ${favoritedByUser[0].id}
+          )`,
+        ),
+      );
+    }
+
+    const limitedResults = await baseQuery
+      .groupBy(articles.id, users.id)
+      .orderBy(desc(articles.createdAt))
+      .limit(limit)
+      .offset(offset);
 
     const resultsCount = await this.db
       .select({ count: count() })
