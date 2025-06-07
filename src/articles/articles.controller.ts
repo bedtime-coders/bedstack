@@ -2,6 +2,7 @@ import { setupArticles } from '@articles/articles.module';
 import { CommentResponseDto, CreateCommentDto } from '@comments/dto';
 import { Elysia, t } from 'elysia';
 import {
+  ArticleFeedQueryDto,
   ArticleResponseDto,
   ArticlesResponseDto,
   CreateArticleDto,
@@ -75,10 +76,12 @@ export const articlesController = new Elysia().use(setupArticles).group(
         },
         {
           beforeHandle: app.store.authService.requireLogin,
-          query: ListArticlesQueryDto,
+          query: ArticleFeedQueryDto,
           response: ArticlesResponseDto,
           detail: {
             summary: 'Feed Articles',
+            description:
+              'Can also take `limit` and `offeset` query parameters like List Articles\n\nAuthentication required, will return multiple articles created by followed users, ordered by most recent first.',
             security: [
               {
                 tokenAuth: [],
