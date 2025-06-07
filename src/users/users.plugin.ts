@@ -25,7 +25,7 @@ export const usersPlugin = new Elysia()
             body: InsertUserSchema,
             response: ReturnedUserSchema,
             detail: {
-              summary: 'Registeration',
+              summary: 'Registration',
             },
           },
         )
