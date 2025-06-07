@@ -58,6 +58,11 @@ export function getErrorStatusFromCode(code: string | number): number {
 }
 
 export const errorHandler = new Elysia().onError(({ code, error, set }) => {
+  if (error instanceof AuthenticationError) {
+    set.status = 401;
+    return { errors: { body: [error.message] } };
+  }
+
   if (error instanceof AuthorizationError) {
     set.status = 403;
     return { errors: { body: [error.message] } };
@@ -76,7 +81,7 @@ export const errorHandler = new Elysia().onError(({ code, error, set }) => {
   set.status = 500;
   return {
     errors: {
-      internal: 'message' in error ? error.message : 'Internal server error',
+      body: ['message' in error ? error.message : 'Internal server error'],
     },
   };
 });
