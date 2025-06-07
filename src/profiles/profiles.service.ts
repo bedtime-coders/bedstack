@@ -2,6 +2,7 @@ import type { ProfilesRepository } from '@profiles/profiles.repository';
 import type { ParsedProfileSchema, Profile } from '@profiles/profiles.schema';
 import { NotFoundError } from 'elysia';
 
+// TODO: We used to have a UsersRepository here, but it was removed. Why?
 export class ProfilesService {
   constructor(private readonly repository: ProfilesRepository) {}
 
@@ -63,6 +64,7 @@ export class ProfilesService {
     return this.findByUsername(currentUserId, username);
   }
 
+  // TODO: This should be a mapper, not a service method
   async generateProfileResponse(
     user: Profile,
     currentUserId: number | null,
