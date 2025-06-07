@@ -25,7 +25,7 @@ export const usersPlugin = new Elysia()
             body: InsertUserSchema,
             response: ReturnedUserSchema,
             detail: {
-              summary: 'Register',
+              summary: 'Registeration',
             },
           },
         )
@@ -37,7 +37,7 @@ export const usersPlugin = new Elysia()
             body: UserLoginSchema,
             response: ReturnedUserSchema,
             detail: {
-              summary: 'Login',
+              summary: 'Authentication',
             },
           },
         ),
@@ -54,7 +54,7 @@ export const usersPlugin = new Elysia()
           beforeHandle: app.store.authService.requireLogin,
           response: ReturnedUserSchema,
           detail: {
-            summary: 'Current User',
+            summary: 'Get Current User',
             security: [
               {
                 tokenAuth: [],

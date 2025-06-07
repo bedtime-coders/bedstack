@@ -22,7 +22,7 @@ export const profilesPlugin = new Elysia().use(setupProfiles).group(
           beforeHandle: app.store.authService.requireLogin,
           response: ReturnedProfileSchema,
           detail: {
-            summary: 'Profile',
+            summary: 'Get Profile',
             security: [
               {
                 tokenAuth: [],
@@ -42,7 +42,7 @@ export const profilesPlugin = new Elysia().use(setupProfiles).group(
           beforeHandle: app.store.authService.requireLogin,
           response: ReturnedProfileSchema,
           detail: {
-            summary: 'Follow Profile',
+            summary: 'Follow user',
             security: [
               {
                 tokenAuth: [],
@@ -63,7 +63,7 @@ export const profilesPlugin = new Elysia().use(setupProfiles).group(
           beforeHandle: app.store.authService.requireLogin,
           response: ReturnedProfileSchema,
           detail: {
-            summary: 'Unfollow Profile',
+            summary: 'Unfollow user',
             security: [
               {
                 tokenAuth: [],

@@ -104,7 +104,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
           query: ListArticlesQueryDto,
           response: ArticlesResponseDto,
           detail: {
-            summary: 'Article Feed',
+            summary: 'Feed Articles',
             security: [
               {
                 tokenAuth: [],
@@ -190,7 +190,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
           body: CreateCommentDto,
           response: CommentResponseDto,
           detail: {
-            summary: 'Add Comment to Article',
+            summary: 'Add Comments to an Article',
           },
         },
       )
@@ -212,7 +212,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
             comments: t.Array(CommentResponseDto),
           }),
           detail: {
-            summary: 'Get Comments from Article',
+            summary: 'Get Comments from an Article',
           },
         },
       )
