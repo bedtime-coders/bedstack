@@ -1,6 +1,6 @@
 import { ArticleResponseDto } from '@articles/dto';
 import { type Static, Type } from '@sinclair/typebox';
-import { UserResponseDto } from '@users/dto';
+import { CommentAuthorDto } from './comment-author.dto';
 
 export const CommentResponseDto = Type.Object({
   comment: Type.Object({
@@ -9,6 +9,6 @@ export const CommentResponseDto = Type.Object({
     createdAt: Type.String(),
     updatedAt: Type.String(),
     article: ArticleResponseDto,
-    author: UserResponseDto,
+    author: CommentAuthorDto,
   }),
 });

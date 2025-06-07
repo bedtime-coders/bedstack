@@ -1,8 +1,18 @@
+import type { IArticle } from '@/articles/interfaces/article.interface';
+import type { ProfileFeed } from '@/articles/interfaces/profile-feed.interface';
+import { toDomain } from '@/articles/mappers/articles.mapper';
 import { AuthorizationError, BadRequestError } from '@errors';
 import type { ProfilesService } from '@profiles/profiles.service';
 import { NotFoundError } from 'elysia';
 import type { CommentsRepository } from './comments.repository';
-import type { CommentToCreate, ReturnedComment } from './comments.schema';
+import type { CommentResponse } from './interfaces/comment-response.interface';
+
+// TODO: Move & Re-evaluate this type. It's really just a band-aid.
+type CommentToCreate = {
+  body: string;
+  articleId: number;
+  authorId: number;
+};
 
 export class CommentsService {
   constructor(
@@ -14,7 +24,7 @@ export class CommentsService {
     articleSlug: string,
     commentBody: { body: string },
     userId: number,
-  ): Promise<ReturnedComment> {
+  ): Promise<CommentResponse> {
     const article = await this.commentsRepository.findBySlug(articleSlug);
 
     if (!article) {
@@ -39,6 +49,7 @@ export class CommentsService {
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
       author: authorProfile.profile,
+      article: toDomain(article, { currentUserId: userId }),
     };
   }
 
@@ -51,7 +62,7 @@ export class CommentsService {
   async getComments(
     articleSlug: string,
     currentUserId?: number,
-  ): Promise<ReturnedComment[]> {
+  ): Promise<CommentResponse[]> {
     const article = await this.commentsRepository.findBySlug(articleSlug);
 
     if (!article) {
@@ -75,6 +86,7 @@ export class CommentsService {
           ? comment.author.followers.some((f) => f.followerId === currentUserId)
           : false,
       },
+      article: toDomain(article, { currentUserId: currentUserId ?? null }),
     }));
   }
 

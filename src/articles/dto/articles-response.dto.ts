@@ -1,4 +1,4 @@
-import { Type } from '@sinclair/typebox';
+import { type Static, Type } from '@sinclair/typebox';
 import { ArticleResponseDto } from './article-response.dto';
 
 export const ArticlesResponseDto = Type.Object({
@@ -7,3 +7,4 @@ export const ArticlesResponseDto = Type.Object({
   ),
   articlesCount: Type.Number(),
 });
+export type ArticlesResponseDto = Static<typeof ArticlesResponseDto>;

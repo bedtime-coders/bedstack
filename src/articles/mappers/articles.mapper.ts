@@ -1,7 +1,9 @@
 import { slugify } from '@/utils/slugify';
+import type { CommentResponse } from '@comments/interfaces/comment-response.interface';
+import type { ParsedProfileSchema } from '@profiles/profiles.schema';
 import type {
-  ArticleFeedResponseDto,
   ArticleResponseDto,
+  ArticlesResponseDto,
   CreateArticleDto,
 } from '../dto';
 import type {
@@ -65,14 +67,14 @@ export function toResponse(article: IArticle): ArticleResponseDto {
   };
 }
 
-export function toCreateArticleInput(
-  dto: CreateArticleDto['article'],
-): CreateArticleInput {
+export function toCreateArticleInput({
+  article,
+}: CreateArticleDto): CreateArticleInput {
   return {
-    title: dto.title,
-    description: dto.description,
-    body: dto.body,
-    tagList: dto.tagList ?? [],
+    title: article.title,
+    description: article.description,
+    body: article.body,
+    tagList: article.tagList ?? [],
   };
 }
 
@@ -101,10 +103,14 @@ export function toFeedDomain(article: ArticleFeedRow): IArticleFeed {
   };
 }
 
-export function toFeedResponse(
-  article: IArticleFeed,
-): ArticleFeedResponseDto['article'] {
-  return {
+export function toFeedResponse({
+  articles,
+  articlesCount,
+}: {
+  articles: IArticleFeed[];
+  articlesCount?: number;
+}): ArticlesResponseDto {
+  const articlesResponse = articles.map((article) => ({
     slug: article.slug,
     title: article.title,
     description: article.description,
@@ -114,5 +120,27 @@ export function toFeedResponse(
     favorited: article.favorited,
     favoritesCount: article.favoritesCount,
     author: article.author,
+  }));
+  return {
+    articles: articlesResponse,
+    articlesCount: articlesCount ?? articlesResponse.length,
+  };
+}
+
+export function toCommentResponse(comment: CommentResponse) {
+  return {
+    comment: {
+      id: comment.id,
+      comment: comment.body,
+      createdAt: comment.createdAt.toISOString(),
+      updatedAt: comment.updatedAt.toISOString(),
+      author: {
+        username: comment.author.username,
+        bio: comment.author.bio,
+        image: comment.author.image,
+        following: comment.author.following,
+      },
+      article: toResponse(comment.article),
+    },
   };
 }

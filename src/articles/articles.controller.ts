@@ -10,6 +10,7 @@ import {
   UpdateArticleDto,
 } from './dto';
 import {
+  toCommentResponse,
   toCreateArticleInput,
   toFeedResponse,
   toResponse,
@@ -34,15 +35,12 @@ export const articlesController = new Elysia().use(setupArticles).group(
 
           const { offset = 0, limit = 20, tag, author, favorited } = query;
 
-          const { articles, articlesCount } = await store.articlesService.find(
-            { tag, author, favorited },
-            { pagination: { offset, limit }, currentUserId },
+          return toFeedResponse(
+            await store.articlesService.find(
+              { tag, author, favorited },
+              { pagination: { offset, limit }, currentUserId },
+            ),
           );
-
-          return {
-            articles: articles.map((article) => toFeedResponse(article)),
-            articlesCount,
-          };
         },
         {
           query: ListArticlesQueryDto,
@@ -73,10 +71,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
               currentUserId,
             },
           );
-          return {
-            articles: articles.map((article) => toFeedResponse(article)),
-            articlesCount,
-          };
+          return toFeedResponse({ articles, articlesCount });
         },
         {
           beforeHandle: app.store.authService.requireLogin,
@@ -119,7 +114,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
             request.headers,
           );
           const article = await store.articlesService.createArticle(
-            toCreateArticleInput(body.article),
+            toCreateArticleInput(body),
             currentUserId,
           );
           return toResponse(article);
@@ -190,7 +185,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
             body.comment,
             await store.authService.getUserIdFromHeader(request.headers),
           );
-          return { comment };
+          return toCommentResponse(comment);
         },
         {
           beforeHandle: app.store.authService.requireLogin,
@@ -207,12 +202,11 @@ export const articlesController = new Elysia().use(setupArticles).group(
           const userId = await store.authService.getOptionalUserIdFromHeader(
             request.headers,
           );
-          return {
-            comments: await store.commentsService.getComments(
-              params.slug,
-              userId === null ? undefined : userId,
-            ),
-          };
+          const comments = await store.commentsService.getComments(
+            params.slug,
+            userId === null ? undefined : userId,
+          );
+          return { comments: comments.map(toCommentResponse) };
         },
         {
           response: t.Object({
