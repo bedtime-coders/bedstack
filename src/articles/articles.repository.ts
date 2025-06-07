@@ -10,25 +10,26 @@ import type {
   UpdateArticleRow,
 } from './interfaces';
 
+type FindFilters = {
+  tag?: string;
+  author?: string;
+  favorited?: string;
+};
+
+type FindOptions = {
+  offset: number;
+  limit: number;
+  currentUserId?: number;
+  followedAuthorIds?: number[];
+};
+
 export class ArticlesRepository {
   constructor(private readonly db: Database) {}
 
   async find(
-    filters: {
-      tag?: string;
-      author?: string;
-      favorited?: string;
-    },
-    options: {
-      offset: number;
-      limit: number;
-      currentUserId?: number;
-      followedAuthorIds?: number[];
-    },
+    { author, tag, favorited }: FindFilters,
+    { offset, limit, currentUserId, followedAuthorIds }: FindOptions,
   ): Promise<{ articles: ArticleFeedRow[]; articlesCount: number }> {
-    const { author, tag, favorited } = filters;
-    const { offset, limit, currentUserId, followedAuthorIds } = options;
-
     const authorFilters = [];
     if (author) {
       authorFilters.push(eq(users.username, author));
