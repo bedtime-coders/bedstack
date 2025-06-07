@@ -90,6 +90,9 @@ export class ArticlesService {
   ): Promise<IArticle> {
     const newArticle = toNewArticleRow(article, currentUserId);
 
+    // TODO: This can cause a race condition if two users create an article with the same title at the same time
+    // Solve this in db layer using a transaction
+
     // Check if any article exists with this title
     const existingArticle = await this.repository.findBySlug(newArticle.slug);
     if (existingArticle) {
@@ -134,6 +137,9 @@ export class ArticlesService {
       throw new AuthorizationError('Only the author can update the article');
     }
 
+    // TODO: This can cause a race condition if two users update an article with the same title at the same time
+    // Solve this in db layer using a transaction
+
     // If title is being updated, check if the new slug would conflict
     if (article.title) {
       const newSlug = slugify(article.title);
@@ -153,6 +159,10 @@ export class ArticlesService {
       },
       currentUserId,
     );
+
+    if (!updatedArticle) {
+      throw new BadRequestError('Article was not updated');
+    }
 
     let { tagList } = article;
     if (tagList) {
