@@ -6,7 +6,7 @@ export const UpdateArticleDto = Type.Object({
     title: Type.Optional(Type.String({ minLength: 1 })),
     description: Type.Optional(Type.String({ minLength: 1 })),
     body: Type.Optional(Type.String({ minLength: 1 })),
-    tagList: Type.Optional(Type.Array(Type.String())),
+    tagList: Type.Optional(Type.Array(Type.String({ minLength: 1 }))),
   }),
 });
 export type UpdateArticleDto = Static<typeof UpdateArticleDto>;
