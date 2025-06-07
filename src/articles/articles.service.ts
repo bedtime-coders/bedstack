@@ -126,14 +126,21 @@ export class ArticlesService {
       currentUserId,
     );
 
-    if (article.tagList) {
-      await this.tagsService.upsertArticleTags(
+    let { tagList } = article;
+    if (tagList) {
+      const upsertArticleTagsResult = await this.tagsService.upsertArticleTags(
         updatedArticle.id,
-        article.tagList,
+        tagList,
       );
+      if (upsertArticleTagsResult) {
+        tagList = upsertArticleTagsResult.map((t) => t.tagName);
+      }
     }
 
-    return toDomain(updatedArticle, { currentUserId });
+    return toDomain(updatedArticle, {
+      currentUserId,
+      tagList,
+    });
   }
 
   async deleteArticle(slug: string, currentUserId: number): Promise<void> {
