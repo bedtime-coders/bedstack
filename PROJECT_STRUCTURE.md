@@ -43,9 +43,9 @@ feature/
 
 ### `/db/`
 
-* Drizzle config and init
-* Exports the db instance
-* Does **not** export db tables, these are found as schemas inside feature folders
+- Drizzle config and init
+- Exports the db instance
+- Does **not** export db tables, these are found as schemas inside feature folders
 
 ### `/shared/`
 
@@ -62,23 +62,23 @@ shared/
 
 ### DTO Naming
 
-* `CreateThingDto` – used for `POST` requests
-* `UpdateThingDto` – used for `PATCH`/`PUT` requests
-* `ThingResponseDto` or `ThingsResponseDto` – response structure (singular or plural, depending on the request)
-* Each DTO is defined via TypeBox and typed via `Static<typeof schema>`
-* DTO files live in `dto/` and share name with their schema
+- `CreateThingDto` – used for `POST` requests
+- `UpdateThingDto` – used for `PATCH`/`PUT` requests
+- `ThingResponseDto` or `ThingsResponseDto` – response structure (singular or plural, depending on the request)
+- Each DTO is defined via TypeBox and typed via `Static<typeof schema>`
+- DTO files live in `dto/` and share name with their schema
 
 ### Interface Naming
 
-* `IThing` – the core domain interface used in services
-* `ThingRow` – the shape returned by Drizzle ORM (via InferSelectModel)
-* Stored in `interfaces/` and always one interface per file
+- `IThing` – the core domain interface used in services
+- `ThingRow` – the shape returned by Drizzle ORM (via InferSelectModel)
+- Stored in `interfaces/` and always one interface per file
 
 ### Schema Naming
 
-* `feature.schema.ts` – contains Drizzle `pgTable()` definitions
-* May also define `relations()` in the same file unless very large
-* If split, name the second file `feature-relations.schema.ts`
+- `feature.schema.ts` – contains Drizzle `pgTable()` definitions
+- May also define `relations()` in the same file unless very large
+- If split, name the second file `feature-relations.schema.ts`
 
 ## See also
 
@@ -86,4 +86,3 @@ shared/
 - **Contributing** - see [Developer's Guide](CONTRIBUTING.md)
 - **API Documentation** - see [RealWorld Backend Specifications](https://realworld-docs.netlify.app/specifications/backend/introduction/)
 - **Drizzle ORM Documentation** - see [Drizzle ORM](https://orm.drizzle.team/)
-
