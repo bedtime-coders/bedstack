@@ -47,7 +47,11 @@ export const articlesController = new Elysia().use(setupArticles).group(
         {
           query: ListArticlesQueryDto,
           response: ArticlesResponseDto,
-          detail: { summary: 'List Articles' },
+          detail: {
+            summary: 'List Articles',
+            description:
+              'Returns most recent articles globally by default, provide `tag`, `author` or `favorited` query parameter to filter results\n\nAuthentication optional, will return multiple articles, ordered by most recent first',
+          },
         },
       )
       .get(
