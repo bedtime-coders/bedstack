@@ -1,5 +1,3 @@
-import { ConflictError } from '@/errors';
-import type { IProfile } from '@profiles/interfaces';
 import type { ProfilesRepository } from '@profiles/profiles.repository';
 import type { ParsedProfileSchema, Profile } from '@profiles/profiles.schema';
 import type { UsersRepository } from '@users/users.repository';
