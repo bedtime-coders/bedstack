@@ -145,7 +145,7 @@ export function toCommentResponse(comment: CommentResponse) {
   return {
     comment: {
       id: comment.id,
-      comment: comment.body,
+      body: comment.body,
       createdAt: comment.createdAt.toISOString(),
       updatedAt: comment.updatedAt.toISOString(),
       author: {
@@ -154,7 +154,6 @@ export function toCommentResponse(comment: CommentResponse) {
         image: comment.author.image,
         following: comment.author.following,
       },
-      article: toResponse(comment.article),
     },
   };
 }

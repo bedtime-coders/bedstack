@@ -1,6 +1,3 @@
-import type { IArticle } from '@/articles/interfaces/article.interface';
-import type { ProfileFeed } from '@/articles/interfaces/profile-feed.interface';
-import { toDomain } from '@/articles/mappers/articles.mapper';
 import { AuthorizationError, BadRequestError } from '@errors';
 import type { ProfilesService } from '@profiles/profiles.service';
 import { NotFoundError } from 'elysia';
@@ -49,7 +46,6 @@ export class CommentsService {
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
       author: authorProfile.profile,
-      article: toDomain(article, { currentUserId: userId }),
     };
   }
 
@@ -86,9 +82,6 @@ export class CommentsService {
           ? comment.author.followers.some((f) => f.followerId === currentUserId)
           : false,
       },
-      article: toDomain(article, {
-        currentUserId: currentUserId ?? undefined,
-      }),
     }));
   }
 
