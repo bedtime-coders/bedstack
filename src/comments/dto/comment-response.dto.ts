@@ -1,4 +1,4 @@
-import { Type } from '@sinclair/typebox';
+import { type Static, Type } from '@sinclair/typebox';
 import { CommentAuthorDto } from './comment-author.dto';
 
 export const CommentResponseDto = Type.Object({
@@ -10,3 +10,5 @@ export const CommentResponseDto = Type.Object({
     author: CommentAuthorDto,
   }),
 });
+
+export type CommentResponseDto = Static<typeof CommentResponseDto>;

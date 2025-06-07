@@ -1,5 +1,6 @@
 import { slugify } from '@/utils/slugify';
-import type { CommentResponse } from '@comments/interfaces/comment-response.interface';
+import type { CommentResponseDto } from '@comments/dto';
+import type { IComment } from '@comments/interfaces';
 import type {
   ArticleResponseDto,
   ArticlesResponseDto,
@@ -141,7 +142,8 @@ export function toFeedResponse({
   };
 }
 
-export function toCommentResponse(comment: CommentResponse) {
+// TODO: Move this to the comments module
+export function toCommentResponse(comment: IComment): CommentResponseDto {
   return {
     comment: {
       id: comment.id,
