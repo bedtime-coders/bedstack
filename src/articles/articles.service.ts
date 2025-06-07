@@ -93,7 +93,9 @@ export class ArticlesService {
     // Check if any article exists with this title
     const existingArticle = await this.repository.findBySlug(newArticle.slug);
     if (existingArticle) {
-      throw new ConflictError('An article with this title already exists');
+      throw new ConflictError(
+        'An article with this slug already exists. Please use a unique title',
+      );
     }
 
     const createdArticle = await this.repository.createArticle(newArticle);
@@ -130,6 +132,17 @@ export class ArticlesService {
     }
     if (existingArticle.author.id !== currentUserId) {
       throw new AuthorizationError('Only the author can update the article');
+    }
+
+    // If title is being updated, check if the new slug would conflict
+    if (article.title) {
+      const newSlug = slugify(article.title);
+      const articleWithNewSlug = await this.repository.findBySlug(newSlug);
+      if (articleWithNewSlug && articleWithNewSlug.id !== existingArticle.id) {
+        throw new ConflictError(
+          'An article with this slug already exists. Please use a unique title',
+        );
+      }
     }
 
     const updatedArticle = await this.repository.updateArticle(
