@@ -10,7 +10,7 @@ We separate the system into 3 main layers:
 2. **Service** – Handles the business logic
 3. **Repository** – Interacts with the database
 
-Each domain feature (e.g. `articles`, `profiles`, `tags`) is isolated into a top-level module folder, containing the above layers, and also:
+Each domain feature (e.g. `articles`, `profiles`, `tags`) is isolated into its own module, containing these layers plus:
 
 - **Mapper** - Transforms data between layers
 - **Schema** - Defines database tables and relations
@@ -94,41 +94,12 @@ graph TD
 
 - Transforms Row types from the database to domain entities or DTOs
 - Performs camelCase vs. snake_case mapping if needed
-- Convers Date to ISO strings for output, etc.
+- Converts Date to ISO strings for output, etc.
 
 #### Schema (Database Definitions)
 
 - Defines schemas using an ORM (e.g. `pgTable()` with Drizzle ORM and PostgreSQL)
 - Optionally defines table relations (e.g. `relations()` with Drizzle ORM)
-
-## Type Conventions
-
-| Type                                                   | Layer      | Purpose                                        |
-| ------------------------------------------------------ | ---------- | ---------------------------------------------- |
-| `CreateThingDto`, `UpdateThingDto`, `ThingResponseDto` | Controller | Used to talk with the client                   |
-| `IThing`                                               | All        | Common contract shared between layers          |
-| `Thing`                                                | Repository | Defines how the data is stored in the database |
-
-## General Design Principles
-
-### 1. Flat, feature-sliced folder layout
-
-- Each feature (e.g. `articles/`, `comments/`) contains all its layers in one folder
-- No deep nesting, no shared `controllers/`, `services/` folders
-
-### 2. One thing per file
-
-- DTOs are defined in `dto/` folder, one file per DTO
-- Domain entities are interfaces in `interfaces/`, one per file
-- Row types are colocated in `interfaces/` and inferred from Drizzle schema
-
-### 3. Relation-aware schema layer
-
-Table relations are colocated with their schema definition unless they grow large.
-
-### 4. Public API is shaped at the controller level
-
-DTOs match the RealWorld spec (e.g., `{ article: ... }`) but this wrapping is handled in the controller, not baked into types.
 
 ## Type Design Principles
 

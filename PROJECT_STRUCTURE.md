@@ -4,11 +4,9 @@ This document describes the file structure and organization of the codebase. The
 
 We favor **separation of concerns** over minimalism, and follow a **one file per thing** rule.
 
-This layout is built to scale while staying clear, testable, and aligned with RealWorld API expectations.
-
 ## Top-Level Overview
 
-```
+```plaintext
 src/
 ├── app.ts                   # Initializes and mounts the app
 ├── routes/                  # Aggregates and mounts feature routers
@@ -24,7 +22,7 @@ src/
 
 Each feature (e.g. `articles/`, `comments/`) uses this layout:
 
-```
+```plaintext
 feature/
 ├── feature.controller.ts       # REST handler logic
 ├── feature.service.ts          # Business logic
@@ -53,26 +51,26 @@ feature/
 
 Global utilities, middleware, and shared concerns.
 
-The following is a suggestion of what files might be found here:
-
-```
+```plaintext
 shared/
 ├── auth-middleware.ts     # Extracts auth context
 ├── http-errors.ts         # Shared error classes
 ├── slugify.ts             # Utility for slug generation
 ```
 
-## DTO Naming
+## Naming Conventions
+
+### DTO Naming
 
 * `CreateThingDto` – used for `POST` requests
 * `UpdateThingDto` – used for `PATCH`/`PUT` requests
-* `ThingDto` – response structure
+* `ThingResponseDto` or `ThingsResponseDto` – response structure (singular or plural, depending on the request)
 * Each DTO is defined via TypeBox and typed via `Static<typeof schema>`
 * DTO files live in `dto/` and share name with their schema
 
 ### Interface Naming
 
-* `Thing` (or `ThingEntity`) – the core domain interface used in services
+* `IThing` – the core domain interface used in services
 * `ThingRow` – the shape returned by Drizzle ORM (via InferSelectModel)
 * Stored in `interfaces/` and always one interface per file
 
