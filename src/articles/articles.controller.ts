@@ -49,32 +49,6 @@ export const articlesController = new Elysia().use(setupArticles).group(
           detail: { summary: 'List Articles' },
         },
       )
-      .post(
-        '/',
-        async ({ body, request, store }) => {
-          const currentUserId = await store.authService.getUserIdFromHeader(
-            request.headers,
-          );
-          const article = await store.articlesService.createArticle(
-            toCreateArticleInput(body.article),
-            currentUserId,
-          );
-          return toResponse(article);
-        },
-        {
-          beforeHandle: app.store.authService.requireLogin,
-          body: CreateArticleDto,
-          response: ArticleResponseDto,
-          detail: {
-            summary: 'Create Article',
-            security: [
-              {
-                tokenAuth: [],
-              },
-            ],
-          },
-        },
-      )
       .get(
         '/feed',
         async ({ query, store, request }) => {
@@ -128,6 +102,32 @@ export const articlesController = new Elysia().use(setupArticles).group(
           response: ArticleResponseDto,
           detail: {
             summary: 'Get Article',
+          },
+        },
+      )
+      .post(
+        '/',
+        async ({ body, request, store }) => {
+          const currentUserId = await store.authService.getUserIdFromHeader(
+            request.headers,
+          );
+          const article = await store.articlesService.createArticle(
+            toCreateArticleInput(body.article),
+            currentUserId,
+          );
+          return toResponse(article);
+        },
+        {
+          beforeHandle: app.store.authService.requireLogin,
+          body: CreateArticleDto,
+          response: ArticleResponseDto,
+          detail: {
+            summary: 'Create Article',
+            security: [
+              {
+                tokenAuth: [],
+              },
+            ],
           },
         },
       )
