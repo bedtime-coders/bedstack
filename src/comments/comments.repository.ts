@@ -1,6 +1,6 @@
-import { articles } from '@/articles/articles.schema';
-import type { ArticleRow } from '@/articles/interfaces/article-row.interface';
 import type { Database } from '@/database.providers';
+import { articles } from '@articles/articles.schema';
+import type { ArticleRow } from '@articles/interfaces/article-row.interface';
 import { comments } from '@comments/schema/comments.schema';
 import { and, desc, eq } from 'drizzle-orm';
 
