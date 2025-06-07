@@ -1,12 +1,19 @@
-import { articles, comments } from '@/articles/schema/favorite-articles.schema';
+import { articles } from '@/articles/articles.schema';
 import type { Database } from '@/database.providers';
+import { comments } from '@comments/schema/comments.schema';
 import { and, desc, eq } from 'drizzle-orm';
-import type { CommentToCreate } from './comments.schema';
+
+// TODO: Move & Re-evaluate this type. It's really just a band-aid.
+type CreateCommentDto = {
+  body: string;
+  articleId: number;
+  authorId: number;
+};
 
 export class CommentsRepository {
   constructor(private readonly db: Database) {}
 
-  async create(commentData: CommentToCreate) {
+  async create(commentData: CreateCommentDto) {
     const [comment] = await this.db
       .insert(comments)
       .values(commentData)

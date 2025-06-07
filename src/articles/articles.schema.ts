@@ -1,4 +1,3 @@
-// Unified schema for articles feature
 import { users } from '@/users/users.model';
 import { articleTags } from '@tags/tags.model';
 import { relations } from 'drizzle-orm';
