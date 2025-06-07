@@ -37,33 +37,36 @@ export class ProfilesService {
     }
 
     // Check if already following
-    const existingFollow = await this.repository.findFollowByUsers(
+    const isFollowing = await this.repository.findFollowByUsers(
       userToFollow.id,
       currentUserId,
     );
-    if (existingFollow) {
-      throw new ConflictError('You are already following this user');
+    if (!isFollowing) {
+      await this.repository.followUser(currentUserId, userToFollow.id);
     }
 
-    await this.repository.followUser(currentUserId, userToFollow.id);
     return this.findByUsername(currentUserId, username);
   }
 
-  async unfollowUser(currentUserId: number, targetUsername: string) {
-    const userToUnfollow = await this.repository.findByUsername(targetUsername);
+  async unfollowUser(
+    username: string,
+    currentUserId: number,
+  ): Promise<ParsedProfileSchema> {
+    const userToUnfollow = await this.repository.findByUsername(username);
     if (!userToUnfollow) {
       throw new NotFoundError('Profile not found');
     }
 
-    await this.repository.unfollowUser(currentUserId, userToUnfollow.id);
-
-    const unfollowedProfile =
-      await this.repository.findByUsername(targetUsername);
-    if (!unfollowedProfile) {
-      throw new NotFoundError('Profile not found');
+    // Check if following before attempting to unfollow
+    const isFollowing = await this.repository.findFollowByUsers(
+      userToUnfollow.id,
+      currentUserId,
+    );
+    if (isFollowing) {
+      await this.repository.unfollowUser(currentUserId, userToUnfollow.id);
     }
 
-    return await this.generateProfileResponse(unfollowedProfile, currentUserId);
+    return this.findByUsername(currentUserId, username);
   }
 
   async generateProfileResponse(
