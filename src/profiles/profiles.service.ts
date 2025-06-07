@@ -52,7 +52,7 @@ export class ProfilesService {
   ): Promise<ParsedProfileSchema> {
     const userToUnfollow = await this.repository.findByUsername(username);
     if (!userToUnfollow) {
-      throw new NotFoundError('Profile not found');
+      throw new NotFoundError('User not found');
     }
 
     // Check if following before attempting to unfollow
