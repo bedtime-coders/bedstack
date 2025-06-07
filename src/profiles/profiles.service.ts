@@ -1,13 +1,9 @@
 import type { ProfilesRepository } from '@profiles/profiles.repository';
 import type { ParsedProfileSchema, Profile } from '@profiles/profiles.schema';
-import type { UsersRepository } from '@users/users.repository';
 import { NotFoundError } from 'elysia';
 
 export class ProfilesService {
-  constructor(
-    private readonly repository: ProfilesRepository,
-    private readonly usersRepository: UsersRepository,
-  ) {}
+  constructor(private readonly repository: ProfilesRepository) {}
 
   async findByUsername(currentUserId: number, targetUsername: string) {
     const user = await this.repository.findByUsername(targetUsername);
