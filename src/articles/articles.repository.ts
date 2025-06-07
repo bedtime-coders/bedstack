@@ -178,7 +178,7 @@ export class ArticlesRepository {
     const newArticle = results[0];
     const result = await this.findById(newArticle.id);
     if (!result) {
-      throw new Error(`Article with id ${newArticle.id} not found`);
+      throw new Error('Article was not created successfully');
     }
     return result;
   }
@@ -200,7 +200,7 @@ export class ArticlesRepository {
     const updatedArticle = results[0];
     const result = await this.findById(updatedArticle.id);
     if (!result) {
-      throw new Error(`Article with id ${updatedArticle.id} not found`);
+      throw new Error('Article was not updated successfully');
     }
     return result;
   }
