@@ -1,4 +1,4 @@
-import { AuthorizationError, BadRequestError } from '@/errors';
+import { AuthorizationError, BadRequestError, ConflictError } from '@/errors';
 import type { ProfilesService } from '@/profiles/profiles.service';
 import { slugify } from '@/utils/slugify';
 import type { ArticlesRepository } from '@articles/articles.repository';
@@ -16,6 +16,30 @@ import {
   toNewArticleRow,
 } from './mappers/articles.mapper';
 
+type FindFilters = {
+  tag?: string;
+  author?: string;
+  favorited?: string;
+};
+
+type PersonalizationOptions = {
+  /**
+   * Whether to include articles from followed authors. If not specified, all articles will be returned
+   */
+  followedAuthors?: boolean;
+};
+
+type PaginationOptions = {
+  offset?: number;
+  limit?: number;
+};
+
+type FindOptions = {
+  pagination?: PaginationOptions;
+  currentUserId?: number;
+  personalization?: PersonalizationOptions;
+};
+
 export class ArticlesService {
   constructor(
     private readonly repository: ArticlesRepository,
@@ -24,24 +48,8 @@ export class ArticlesService {
   ) {}
 
   async find(
-    filters: {
-      tag?: string;
-      author?: string;
-      favorited?: string;
-    },
-    options: {
-      pagination?: {
-        offset?: number;
-        limit?: number;
-      };
-      currentUserId?: number;
-      personalization?: {
-        /**
-         * Whether to include articles from followed authors. If not specified, all articles will be returned
-         */
-        followedAuthors?: boolean;
-      };
-    } = {},
+    filters: FindFilters,
+    options: FindOptions = {},
   ): Promise<{ articles: IArticleFeed[]; articlesCount: number }> {
     const { pagination, currentUserId, personalization } = options;
     const { offset = 0, limit = 20 } = pagination ?? {};
@@ -81,6 +89,13 @@ export class ArticlesService {
     currentUserId: number,
   ): Promise<IArticle> {
     const newArticle = toNewArticleRow(article, currentUserId);
+
+    // Check if any article exists with this title
+    const existingArticle = await this.repository.findBySlug(newArticle.slug);
+    if (existingArticle) {
+      throw new ConflictError('An article with this title already exists');
+    }
+
     const createdArticle = await this.repository.createArticle(newArticle);
 
     if (!createdArticle) {
