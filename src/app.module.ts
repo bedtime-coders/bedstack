@@ -26,8 +26,6 @@ export const setupApp = () => {
       BAD_REQUEST: BadRequestError,
     })
     .onError(({ error, code, set }) => {
-      console.log('error code', code);
-      console.log('error status', getErrorStatusFromCode(code));
       set.status = getErrorStatusFromCode(code);
       const errorType = 'type' in error ? error.type : 'internal';
       return {
