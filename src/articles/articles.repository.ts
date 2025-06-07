@@ -39,116 +39,63 @@ export class ArticlesRepository {
       authorFilters.push(inArray(users.id, followedAuthorIds));
     }
 
-    const authorsWithFollowersCTE = this.db.$with('authorsWithFollowers').as(
-      this.db
-        .select({
-          authorId: users.id,
-          authorUsername: users.username,
-          authorBio: users.bio,
-          authorImage: users.image,
-          authorFollowing:
-            sql<boolean>`coalesce(${currentUserId} = any(array_agg(user_follows.follower_id)), false)`.as(
-              'authorFollowing',
-            ),
-        })
-        .from(users)
-        .leftJoin(userFollows, eq(users.id, userFollows.followedId))
-        .where(and(...authorFilters))
-        .groupBy(users.id),
-    );
-
-    const articleFilters = [];
-    if (favorited) {
-      articleFilters.push(eq(users.username, favorited));
-    }
-
-    const articlesWithLikesCTE = this.db.$with('articlesWithLikes').as(
-      this.db
-        .select({
-          articleId: articles.id,
-          favorited:
-            sql<boolean>`coalesce(${currentUserId} = any(array_agg(favorite_articles.user_id)), false)`.as(
-              'favorited',
-            ),
-          favoriteCount: sql<number>`count(*)::integer`.as('favoriteCount'),
-        })
-        .from(articles)
-        .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id))
-        .leftJoin(users, eq(users.id, favoriteArticles.userId))
-        .where(and(...articleFilters))
-        .groupBy(articles.id),
-    );
-
-    const articlesWithTagsCTE = this.db.$with('articlesWithTags').as(
-      this.db
-        .select({
-          articleId: articles.id,
-          tags: sql<string[]>`
-            array_agg(article_tags.tag_name order by article_tags.tag_name ASC)
-            filter (where article_tags.tag_name is not null)
-          `.as('tags'),
-        })
-        .from(articles)
-        .innerJoin(users, eq(users.id, articles.authorId))
-        .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
-        .where(and(...authorFilters, ...articleFilters))
-        .groupBy(articles.id)
-        // Having can't be used with aliases, the calculation must be repeated
-        .having(
-          tag ? sql`${tag} = any(array_agg(article_tags.tag_name))` : sql`true`,
-        ),
-    );
-
-    const resultsQuery = this.db
-      .with(authorsWithFollowersCTE, articlesWithLikesCTE, articlesWithTagsCTE)
+    const baseQuery = this.db
       .select({
         slug: articles.slug,
         title: articles.title,
         description: articles.description,
-        // Case-when is not natively suppoerted yet
-        // https://github.com/drizzle-team/drizzle-orm/issues/1065
         tagList: sql<string[]>`
-          case 
-            when ${articlesWithTagsCTE.tags} is not null then ${articlesWithTagsCTE.tags}
-            else '{}'::text[]
-          end
-          `.as('tagList'),
+          coalesce(
+            array_agg(article_tags.tag_name order by article_tags.tag_name ASC)
+            filter (where article_tags.tag_name is not null),
+            '{}'::text[]
+          )
+        `.as('tagList'),
         createdAt: articles.createdAt,
         updatedAt: articles.updatedAt,
-        favorited: articlesWithLikesCTE.favorited,
-        favoritesCount: articlesWithLikesCTE.favoriteCount,
+        favorited: sql<boolean>`
+          coalesce(
+            exists (
+              select 1 from ${favoriteArticles}
+              where ${favoriteArticles.articleId} = ${articles.id}
+              and ${favoriteArticles.userId} = ${currentUserId ?? sql`null`}
+            ),
+            false
+          )
+        `.as('favorited'),
+        favoritesCount:
+          sql<number>`count(distinct favorite_articles.user_id)::integer`.as(
+            'favoriteCount',
+          ),
         author: {
-          username: authorsWithFollowersCTE.authorUsername,
-          bio: authorsWithFollowersCTE.authorBio,
-          image: authorsWithFollowersCTE.authorImage,
-          following: authorsWithFollowersCTE.authorFollowing,
+          username: users.username,
+          bio: users.bio,
+          image: users.image,
+          following: sql<boolean>`
+            coalesce(
+              exists (
+                select 1 from ${userFollows}
+                where ${userFollows.followedId} = ${users.id}
+                and ${userFollows.followerId} = ${currentUserId ?? sql`null`}
+              ),
+              false
+            )
+          `.as('following'),
         },
       })
       .from(articles)
-      .innerJoin(
-        articlesWithLikesCTE,
-        eq(articlesWithLikesCTE.articleId, articles.id),
-      )
-      .innerJoin(
-        authorsWithFollowersCTE,
-        eq(authorsWithFollowersCTE.authorId, articles.authorId),
-      )
-      .innerJoin(
-        articlesWithTagsCTE,
-        eq(articlesWithTagsCTE.articleId, articles.id),
-      )
-      .orderBy(desc(articles.createdAt))
-      .as('results');
+      .innerJoin(users, eq(users.id, articles.authorId))
+      .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
+      .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id))
+      .where(and(...authorFilters))
+      .groupBy(articles.id, users.id)
+      .orderBy(desc(articles.createdAt));
 
-    const limitedResults = await this.db
-      .select()
-      .from(resultsQuery)
-      .limit(limit)
-      .offset(offset);
+    const limitedResults = await baseQuery.limit(limit).offset(offset);
 
     const resultsCount = await this.db
       .select({ count: count() })
-      .from(resultsQuery);
+      .from(baseQuery.as('base'));
 
     return {
       articles: limitedResults,
