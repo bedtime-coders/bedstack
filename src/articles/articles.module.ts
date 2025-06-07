@@ -1,5 +1,5 @@
-import { CommentsRepository } from '@/comments/comments.repository';
-import { CommentsService } from '@/comments/comments.service';
+import { CommentsRepository } from '@comments/comments.repository';
+import { CommentsService } from '@comments/comments.service';
 import { db } from '@/database.providers';
 import { ArticlesRepository } from '@articles/articles.repository';
 import { ArticlesService } from '@articles/articles.service';

@@ -1,5 +1,3 @@
-import type { ArticleRow } from './article-row.interface';
-
 export type ArticleFeedRow = {
   slug: string;
   title: string;
