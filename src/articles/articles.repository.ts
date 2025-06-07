@@ -26,42 +26,6 @@ type FindOptions = {
 export class ArticlesRepository {
   constructor(private readonly db: Database) {}
 
-  private async findExistingSlug(slug: string): Promise<string | null> {
-    const result = await this.db
-      .select({ slug: articles.slug })
-      .from(articles)
-      .where(eq(articles.slug, slug))
-      .limit(1);
-    return result[0]?.slug ?? null;
-  }
-
-  async generateUniqueSlug(
-    baseSlug: string,
-    authorId: number,
-  ): Promise<string> {
-    // Get the author's username
-    const author = await this.db
-      .select({ username: users.username })
-      .from(users)
-      .where(eq(users.id, authorId))
-      .limit(1);
-
-    if (!author[0]) {
-      throw new Error('Author not found');
-    }
-
-    const username = author[0].username;
-    const slug = `${baseSlug}-by-${username}`;
-
-    // If this exact slug exists, append a timestamp to make it unique
-    if (await this.findExistingSlug(slug)) {
-      const timestamp = Date.now();
-      return `${slug}-${timestamp}`;
-    }
-
-    return slug;
-  }
-
   async find(
     { author, tag, favorited }: FindFilters,
     { offset, limit, currentUserId, followedAuthorIds }: FindOptions,
@@ -172,22 +136,28 @@ export class ArticlesRepository {
     return result ?? null;
   }
 
-  async createArticle(article: NewArticleRow): Promise<ArticleRow> {
+  /**
+   * @param article - The article to create
+   * @returns The created article or null if the article was not created successfully
+   */
+  async createArticle(article: NewArticleRow): Promise<ArticleRow | null> {
     const results = await this.db.insert(articles).values(article).returning();
 
     const newArticle = results[0];
-    const result = await this.findById(newArticle.id);
-    if (!result) {
-      throw new Error('Article was not created successfully');
-    }
-    return result;
+    return await this.findById(newArticle.id);
   }
 
+  /**
+   * @param slug - The slug of the article to update
+   * @param article - The article to update
+   * @param currentUserId - The ID of the user updating the article
+   * @returns The updated article or null if the article was not updated successfully
+   */
   async updateArticle(
     slug: string,
     article: UpdateArticleRow,
     currentUserId: number,
-  ): Promise<ArticleRow> {
+  ): Promise<ArticleRow | null> {
     const results = await this.db
       .update(articles)
       .set({
@@ -198,11 +168,7 @@ export class ArticlesRepository {
       .returning();
 
     const updatedArticle = results[0];
-    const result = await this.findById(updatedArticle.id);
-    if (!result) {
-      throw new Error('Article was not updated successfully');
-    }
-    return result;
+    return await this.findById(updatedArticle.id);
   }
 
   async deleteArticle(slug: string, currentUserId: number): Promise<void> {
