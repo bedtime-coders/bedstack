@@ -35,8 +35,8 @@ export const profilesPlugin = new Elysia().use(setupProfiles).group(
         '/follow',
         async ({ params, store, request }) =>
           store.profilesService.followUser(
-            await store.authService.getUserIdFromHeader(request.headers),
             params.username,
+            await store.authService.getUserIdFromHeader(request.headers),
           ),
         {
           beforeHandle: app.store.authService.requireLogin,
@@ -56,8 +56,8 @@ export const profilesPlugin = new Elysia().use(setupProfiles).group(
         '/follow',
         async ({ params, store, request }) =>
           store.profilesService.unfollowUser(
-            await store.authService.getUserIdFromHeader(request.headers),
             params.username,
+            await store.authService.getUserIdFromHeader(request.headers),
           ),
         {
           beforeHandle: app.store.authService.requireLogin,

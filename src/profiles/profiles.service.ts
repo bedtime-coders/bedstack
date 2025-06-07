@@ -1,3 +1,5 @@
+import { ConflictError } from '@/errors';
+import type { IProfile } from '@profiles/interfaces';
 import type { ProfilesRepository } from '@profiles/profiles.repository';
 import type { ParsedProfileSchema, Profile } from '@profiles/profiles.schema';
 import type { UsersRepository } from '@users/users.repository';
@@ -25,22 +27,26 @@ export class ProfilesService {
     return await this.generateProfileResponse(user, currentUserId);
   }
 
-  async followUser(currentUserId: number, targetUsername: string) {
-    const userToFollow =
-      await this.usersRepository.findByUsername(targetUsername);
+  async followUser(
+    username: string,
+    currentUserId: number,
+  ): Promise<ParsedProfileSchema> {
+    const userToFollow = await this.repository.findByUsername(username);
     if (!userToFollow) {
-      throw new NotFoundError('Profile not found');
+      throw new NotFoundError('User not found');
+    }
+
+    // Check if already following
+    const existingFollow = await this.repository.findFollowByUsers(
+      userToFollow.id,
+      currentUserId,
+    );
+    if (existingFollow) {
+      throw new ConflictError('You are already following this user');
     }
 
     await this.repository.followUser(currentUserId, userToFollow.id);
-
-    const followedProfile =
-      await this.repository.findByUsername(targetUsername);
-    if (!followedProfile) {
-      throw new NotFoundError('Profile not found');
-    }
-
-    return await this.generateProfileResponse(followedProfile, currentUserId);
+    return this.findByUsername(currentUserId, username);
   }
 
   async unfollowUser(currentUserId: number, targetUsername: string) {

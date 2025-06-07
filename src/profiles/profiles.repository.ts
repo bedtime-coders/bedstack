@@ -56,4 +56,21 @@ export class ProfilesRepository {
       .returning();
     return result[0];
   }
+
+  async findFollowByUsers(
+    followedId: number,
+    followerId: number,
+  ): Promise<boolean> {
+    const result = await this.db
+      .select({ id: userFollows.followedId })
+      .from(userFollows)
+      .where(
+        and(
+          eq(userFollows.followedId, followedId),
+          eq(userFollows.followerId, followerId),
+        ),
+      )
+      .limit(1);
+    return result.length > 0;
+  }
 }
