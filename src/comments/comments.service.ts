@@ -27,14 +27,18 @@ export class CommentsService {
     );
 
     const comment = await this.commentsRepository.create(commentData);
-    const authorProfile = await this.profilesService.findByUserId(
+    const authorProfile = await this.profilesService.findProfileByUserId(
       userId,
       comment.authorId,
     );
 
     return toDomain(
       comment,
-      authorProfile.profile,
+      {
+        username: authorProfile.username,
+        bio: authorProfile.bio ?? '',
+        image: authorProfile.image ?? '',
+      },
       false, // author is always the current user, so following is false
     );
   }
