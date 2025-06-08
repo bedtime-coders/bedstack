@@ -3,7 +3,7 @@ import { toResponse } from '@profiles/mappers';
 import { setupProfiles } from '@profiles/profiles.module';
 import { Elysia } from 'elysia';
 
-export const profilesPlugin = new Elysia().use(setupProfiles).group(
+export const profilesController = new Elysia().use(setupProfiles).group(
   '/profiles/:username',
   {
     detail: {
