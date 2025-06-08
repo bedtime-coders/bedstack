@@ -1,22 +1,22 @@
 import type { CreateUserDto, UpdateUserDto } from '../dto';
 import type { NewUserRow, UpdateUserRow } from '../interfaces';
 
-export function toNewRow(dto: CreateUserDto): NewUserRow {
+export function toNewRow({ user }: CreateUserDto): NewUserRow {
   return {
-    email: dto.email,
-    username: dto.username,
-    password: dto.password,
-    bio: '',
-    image: '',
+    email: user.email,
+    username: user.username,
+    password: user.password,
+    bio: user.bio ?? '',
+    image: user.image ?? '',
   };
 }
 
-export function toUpdateRow(dto: UpdateUserDto): UpdateUserRow {
+export function toUpdateRow({ user }: UpdateUserDto): UpdateUserRow {
   return {
-    ...(dto.email && { email: dto.email }),
-    ...(dto.username && { username: dto.username }),
-    ...(dto.password && { password: dto.password }),
-    ...(dto.bio && { bio: dto.bio }),
-    ...(dto.image && { image: dto.image }),
+    ...(user.email && { email: user.email }),
+    ...(user.username && { username: user.username }),
+    ...(user.password && { password: user.password }),
+    ...(user.bio && { bio: user.bio }),
+    ...(user.image && { image: user.image }),
   };
 }
