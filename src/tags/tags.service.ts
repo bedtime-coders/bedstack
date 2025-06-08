@@ -10,7 +10,7 @@ export class TagsService {
   constructor(private readonly repository: TagsRepository) {}
 
   async getTags() {
-    const tagRows = await this.repository.getTags();
+    const tagRows = await this.repository.findTags();
     const tags = tagRows.map(toDomain);
     return toTagsResponse(tags);
   }
@@ -27,7 +27,7 @@ export class TagsService {
     await this.upsertTags(tagNames);
 
     // Delete old tags for the article
-    const articleTags = await this.repository.getArticleTags(articleId);
+    const articleTags = await this.repository.findArticleTags(articleId);
     const tagsToDelete = articleTags
       .filter((tag) => !tagNames.includes(tag.tagName))
       .map((tag) => tag.tagName);

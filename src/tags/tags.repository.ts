@@ -10,7 +10,7 @@ import { articleTags, tags } from './tags.schema';
 export class TagsRepository {
   constructor(private readonly db: Database) {}
 
-  async getTags(): Promise<TagRow[]> {
+  async findTags(): Promise<TagRow[]> {
     return await this.db.query.tags.findMany();
   }
 
@@ -25,7 +25,7 @@ export class TagsRepository {
       .returning();
   }
 
-  async getArticleTags(articleId: number): Promise<ArticleTagRow[]> {
+  async findArticleTags(articleId: number): Promise<ArticleTagRow[]> {
     return await this.db.query.articleTags.findMany({
       where: eq(articleTags.articleId, articleId),
     });
