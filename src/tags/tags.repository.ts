@@ -1,7 +1,10 @@
 import type { Database } from '@/database.providers';
 import { and, eq, inArray } from 'drizzle-orm';
-import type { ArticleTagToInsert } from './dto/article-tag.dto';
-import type { TagRow } from './interfaces/tag-row.interface';
+import type {
+  ArticleTagRow,
+  NewArticleTagRow,
+  TagRow,
+} from './interfaces/tag-row.interface';
 import { articleTags, tags } from './tags.schema';
 
 export class TagsRepository {
@@ -22,13 +25,13 @@ export class TagsRepository {
       .returning();
   }
 
-  async getArticleTags(articleId: number) {
+  async getArticleTags(articleId: number): Promise<ArticleTagRow[]> {
     return await this.db.query.articleTags.findMany({
       where: eq(articleTags.articleId, articleId),
     });
   }
 
-  async upsertArticleTags(data: ArticleTagToInsert[]) {
+  async upsertArticleTags(data: NewArticleTagRow[]): Promise<ArticleTagRow[]> {
     return await this.db
       .insert(articleTags)
       .values(data)
@@ -45,7 +48,7 @@ export class TagsRepository {
   }: {
     articleId: number;
     tagNames?: string[];
-  }) {
+  }): Promise<ArticleTagRow[]> {
     const filters = [];
     // articleId is required to ensure we only delete tags for a specific article
     filters.push(eq(articleTags.articleId, articleId));

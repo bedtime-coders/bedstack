@@ -1,11 +1,10 @@
-import { createInsertSchema, createSelectSchema } from 'drizzle-typebox';
-import { articleTags } from '../tags.schema';
+import { Type } from '@sinclair/typebox';
 
-export const insertArticleTagSchema = createInsertSchema(articleTags);
-export type ArticleTagToInsert = Pick<
-  typeof insertArticleTagSchema,
-  'articleId' | 'tagName'
->;
+export const ArticleTagResponseDto = Type.Object({
+  articleId: Type.Number(),
+  tagName: Type.String(),
+  createdAt: Type.String({ format: 'date-time' }),
+  updatedAt: Type.String({ format: 'date-time' }),
+});
 
-export const selectArticleTagSchema = createSelectSchema(articleTags);
-export type ArticleTag = typeof selectArticleTagSchema;
+export type ArticleTagResponseDto = typeof ArticleTagResponseDto;

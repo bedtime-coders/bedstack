@@ -1,5 +1,5 @@
 import { Elysia } from 'elysia';
-import { ListTagsResponseSchema } from './dto/tag-response.dto';
+import { TagsResponseDto } from './dto';
 import { setupTags } from './tags.module';
 
 export const tagsController = new Elysia().use(setupTags).group(
@@ -11,7 +11,7 @@ export const tagsController = new Elysia().use(setupTags).group(
   },
   (app) =>
     app.get('/', async ({ store }) => store.tagsService.getTags(), {
-      response: ListTagsResponseSchema,
+      response: TagsResponseDto,
       detail: {
         summary: 'Get Tags',
         description: 'Get all tags',
@@ -20,7 +20,7 @@ export const tagsController = new Elysia().use(setupTags).group(
             description: 'List of tags',
             content: {
               'application/json': {
-                schema: ListTagsResponseSchema,
+                schema: TagsResponseDto,
               },
             },
           },
