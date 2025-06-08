@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import type { users } from '../users.model';
+import type { users } from '../users.schema';
 
 /**
  * Database row type for a user

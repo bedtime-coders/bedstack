@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import type { userFollows } from '../users.model';
+import type { userFollows } from '../users.schema';
 
 /**
  * Database row type for a user follow relationship

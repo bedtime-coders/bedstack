@@ -1,6 +1,6 @@
 import type { Database } from '@/database.providers';
+import { users } from '@/users/users.schema';
 import type { NewUserRow, UpdateUserRow, UserRow } from '@users/interfaces';
-import { users } from '@users/users.model';
 import { eq } from 'drizzle-orm';
 
 export class UsersRepository {
