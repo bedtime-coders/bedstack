@@ -1,3 +1,4 @@
+import type { ArticlesService } from '@articles/articles.service';
 import { AuthorizationError, BadRequestError } from '@errors';
 import type { ProfilesService } from '@profiles/profiles.service';
 import { NotFoundError } from 'elysia';
@@ -8,6 +9,7 @@ import { toDomain, toNewCommentRow } from './mappers';
 export class CommentsService {
   constructor(
     private readonly commentsRepository: CommentsRepository,
+    private readonly articlesService: ArticlesService,
     private readonly profilesService: ProfilesService,
   ) {}
 
@@ -16,11 +18,7 @@ export class CommentsService {
     commentBody: { body: string },
     userId: number,
   ): Promise<IComment> {
-    const article = await this.commentsRepository.findBySlug(articleSlug);
-
-    if (!article) {
-      throw new NotFoundError(`Article with slug ${articleSlug} not found`);
-    }
+    const article = await this.articlesService.findBySlug(articleSlug, null);
 
     const commentData: NewCommentRow = toNewCommentRow(
       commentBody,
@@ -51,11 +49,10 @@ export class CommentsService {
     articleSlug: string,
     currentUserId?: number,
   ): Promise<IComment[]> {
-    const article = await this.commentsRepository.findBySlug(articleSlug);
-
-    if (!article) {
-      throw new NotFoundError(`Article with slug ${articleSlug} not found`);
-    }
+    const article = await this.articlesService.findBySlug(
+      articleSlug,
+      currentUserId ?? null,
+    );
 
     const comments = await this.commentsRepository.findManyByArticleId(
       article.id,
@@ -81,11 +78,7 @@ export class CommentsService {
     commentId: number,
     userId: number,
   ): Promise<void> {
-    const article = await this.commentsRepository.findBySlug(articleSlug);
-
-    if (!article) {
-      throw new BadRequestError(`Article with slug ${articleSlug} not found`);
-    }
+    const article = await this.articlesService.findBySlug(articleSlug, null);
 
     const comment = await this.commentsRepository.findById(commentId);
 
