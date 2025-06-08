@@ -13,10 +13,10 @@ export function toNewRow({ user }: CreateUserDto): NewUserRow {
 
 export function toUpdateRow({ user }: UpdateUserDto): UpdateUserRow {
   return {
-    ...(user.email && { email: user.email }),
-    ...(user.username && { username: user.username }),
-    ...(user.password && { password: user.password }),
-    ...(user.bio && { bio: user.bio }),
-    ...(user.image && { image: user.image }),
+    ...(user.email !== undefined && { email: user.email }),
+    ...(user.username !== undefined && { username: user.username }),
+    ...(user.password !== undefined && { password: user.password }),
+    ...(user.bio !== undefined && { bio: user.bio || '' }),
+    ...(user.image !== undefined && { image: user.image || '' }),
   };
 }
