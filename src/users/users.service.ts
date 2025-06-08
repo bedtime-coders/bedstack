@@ -1,6 +1,7 @@
 import type { AuthService } from '@auth/auth.service';
 import { AuthenticationError, BadRequestError } from '@errors';
 import type {
+  IUser,
   IUserWithToken,
   NewUserRow,
   UpdateUserRow,
@@ -66,6 +67,6 @@ export class UsersService {
   private async generateUserResponse(user: UserRow) {
     const token = await this.authService.generateToken(user);
     const domainUser = toDomainWithToken(user, token);
-    return { user: toResponse(domainUser) };
+    return toResponse(domainUser);
   }
 }
