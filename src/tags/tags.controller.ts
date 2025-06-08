@@ -14,17 +14,7 @@ export const tagsController = new Elysia().use(setupTags).group(
       response: TagsResponseDto,
       detail: {
         summary: 'Get Tags',
-        description: 'Get all tags',
-        responses: {
-          200: {
-            description: 'List of tags',
-            content: {
-              'application/json': {
-                schema: TagsResponseDto,
-              },
-            },
-          },
-        },
+        description: 'No authentication required, returns a List of Tags',
       },
     }),
 );
