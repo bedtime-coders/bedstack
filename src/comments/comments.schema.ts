@@ -1,5 +1,6 @@
 import { articles } from '@articles/articles.schema';
 import { users } from '@users/users.model';
+import { relations } from 'drizzle-orm';
 import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const comments = pgTable('comments', {
@@ -14,3 +15,16 @@ export const comments = pgTable('comments', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
+
+export const commentRelations = relations(comments, ({ one }) => ({
+  article: one(articles, {
+    fields: [comments.articleId],
+    references: [articles.id],
+    relationName: 'articleComments',
+  }),
+  author: one(users, {
+    fields: [comments.authorId],
+    references: [users.id],
+    relationName: 'commentAuthor',
+  }),
+}));
