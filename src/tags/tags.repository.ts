@@ -1,23 +1,19 @@
 import type { Database } from '@/database.providers';
+import { articleTags, tags } from '@tags/tags.model';
+import type { ArticleTagToInsert, TagToInsert } from '@tags/tags.schema';
 import { and, eq, inArray } from 'drizzle-orm';
-import type {
-  ArticleTagRow,
-  NewArticleTagRow,
-  TagRow,
-} from './interfaces/tag-row.interface';
-import { articleTags, tags } from './tags.schema';
 
 export class TagsRepository {
   constructor(private readonly db: Database) {}
 
-  async findTags(): Promise<TagRow[]> {
+  async getTags() {
     return await this.db.query.tags.findMany();
   }
 
-  async upsertTags(names: string[]): Promise<TagRow[]> {
+  async upsertTags(data: TagToInsert[]) {
     return await this.db
       .insert(tags)
-      .values(names.map((name) => ({ name })))
+      .values(data)
       .onConflictDoUpdate({
         target: tags.name,
         set: { updatedAt: new Date() },
@@ -25,13 +21,13 @@ export class TagsRepository {
       .returning();
   }
 
-  async findArticleTags(articleId: number): Promise<ArticleTagRow[]> {
+  async getArticleTags(articleId: number) {
     return await this.db.query.articleTags.findMany({
       where: eq(articleTags.articleId, articleId),
     });
   }
 
-  async upsertArticleTags(data: NewArticleTagRow[]): Promise<ArticleTagRow[]> {
+  async upsertArticleTags(data: ArticleTagToInsert[]) {
     return await this.db
       .insert(articleTags)
       .values(data)
@@ -48,9 +44,9 @@ export class TagsRepository {
   }: {
     articleId: number;
     tagNames?: string[];
-  }): Promise<ArticleTagRow[]> {
+  }) {
     const filters = [];
-    // articleId is required to ensure we only delete tags for a specific article
+    // articleId is is required to ensure we only delete tags for a specific article
     filters.push(eq(articleTags.articleId, articleId));
 
     // If tagNames are provided, delete only those tags

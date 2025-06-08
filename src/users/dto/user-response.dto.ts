@@ -6,6 +6,7 @@ export const UserResponseDto = Type.Object({
   email: Type.String(),
   bio: Type.String(),
   image: Type.String(),
+  token: Type.String(),
   createdAt: Type.String(),
   updatedAt: Type.String(),
 });
