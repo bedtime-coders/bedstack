@@ -34,11 +34,6 @@ export const ReturnedUserSchema = Type.Object({
   ]),
 });
 
-export type UserToCreate = Static<typeof InsertUserSchema>['user'];
-export type UserToUpdate = Static<typeof UpdateUserSchema>['user'];
-export type UserInDb = typeof users.$inferSelect;
-export type User = Omit<UserInDb, 'password'>;
-
 export const UserLoginSchema = Type.Object({
   user: Type.Object({
     email: Type.String(),

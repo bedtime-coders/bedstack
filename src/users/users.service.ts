@@ -1,8 +1,14 @@
 import type { AuthService } from '@auth/auth.service';
 import { AuthenticationError, BadRequestError } from '@errors';
+import type {
+  IUserWithToken,
+  NewUserRow,
+  UpdateUserRow,
+  UserRow,
+} from '@users/interfaces';
 import type { UsersRepository } from '@users/users.repository';
-import type { UserInDb, UserToCreate, UserToUpdate } from '@users/users.schema';
 import { NotFoundError } from 'elysia';
+import { toDomainWithToken, toResponse } from './mappers';
 
 export class UsersService {
   constructor(
@@ -18,7 +24,7 @@ export class UsersService {
     return await this.generateUserResponse(user);
   }
 
-  async createUser(user: UserToCreate) {
+  async createUser(user: NewUserRow) {
     user.password = await Bun.password.hash(user.password);
     const newUser = await this.repository.createUser(user);
     if (!newUser) {
@@ -27,7 +33,7 @@ export class UsersService {
     return await this.generateUserResponse(newUser);
   }
 
-  async updateUser(id: number, user: UserToUpdate) {
+  async updateUser(id: number, user: UpdateUserRow) {
     // Emails are unique, if the user is trying to change their email,
     // we need to check if the new email is already taken
     const currentUser = await this.repository.findById(id);
@@ -57,15 +63,9 @@ export class UsersService {
     return await this.generateUserResponse(user);
   }
 
-  async generateUserResponse(user: UserInDb) {
-    return {
-      user: {
-        email: user.email,
-        bio: user.bio,
-        image: user.image,
-        username: user.username,
-        token: await this.authService.generateToken(user),
-      },
-    };
+  private async generateUserResponse(user: UserRow) {
+    const token = await this.authService.generateToken(user);
+    const domainUser = toDomainWithToken(user, token);
+    return { user: toResponse(domainUser) };
   }
 }

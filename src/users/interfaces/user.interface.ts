@@ -1,5 +1,5 @@
 /**
- * Domain interface for a user
+ * Base domain interface for a user
  */
 export type IUser = {
   id: number;
@@ -9,5 +9,11 @@ export type IUser = {
   image: string;
   createdAt: Date;
   updatedAt: Date;
-  token?: string;
+};
+
+/**
+ * Domain interface for a user with authentication token
+ */
+export type IUserWithToken = IUser & {
+  token: string;
 };

@@ -1,7 +1,7 @@
 import type { UserResponseDto } from '../dto';
-import type { IUser } from '../interfaces';
+import type { IUserWithToken } from '../interfaces';
 
-export function toResponse(user: IUser): UserResponseDto {
+export function toResponse(user: IUserWithToken): UserResponseDto {
   return {
     id: user.id,
     email: user.email,
