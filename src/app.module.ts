@@ -5,7 +5,7 @@ import {
   AuthorizationError,
   BadRequestError,
   getErrorStatusFromCode,
-} from '@errors';
+} from '@/shared/errors/errors';
 import { usersController } from '@users/users.controller';
 import { Elysia } from 'elysia';
 import { description, title, version } from '../package.json';

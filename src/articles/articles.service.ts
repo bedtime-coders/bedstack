@@ -1,5 +1,9 @@
 import type { ArticlesRepository } from '@articles/articles.repository';
-import { AuthorizationError, BadRequestError, ConflictError } from '@errors';
+import {
+  AuthorizationError,
+  BadRequestError,
+  ConflictError,
+} from '@/shared/errors/errors';
 import type { ProfilesService } from '@profiles/profiles.service';
 import { slugify } from '@shared/utils';
 import type { TagsService } from '@tags/tags.service';
