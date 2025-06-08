@@ -3,7 +3,7 @@ import type { ProfilesService } from '@profiles/profiles.service';
 import { NotFoundError } from 'elysia';
 import type { CommentsRepository } from './comments.repository';
 import type { IComment, NewCommentRow } from './interfaces';
-import { toNewCommentRow } from './mappers';
+import { toDomain, toNewCommentRow } from './mappers';
 
 export class CommentsService {
   constructor(
@@ -34,13 +34,11 @@ export class CommentsService {
       comment.authorId,
     );
 
-    return {
-      id: comment.id,
-      body: comment.body,
-      createdAt: comment.createdAt,
-      updatedAt: comment.updatedAt,
-      author: authorProfile.profile,
-    };
+    return toDomain(
+      comment,
+      authorProfile.profile,
+      false, // author is always the current user, so following is false
+    );
   }
 
   /**
@@ -63,20 +61,19 @@ export class CommentsService {
       article.id,
     );
 
-    return comments.map((comment) => ({
-      id: comment.id,
-      body: comment.body,
-      createdAt: comment.createdAt,
-      updatedAt: comment.updatedAt,
-      author: {
-        username: comment.author.username,
-        bio: comment.author.bio,
-        image: comment.author.image,
-        following: currentUserId
+    return comments.map((comment) =>
+      toDomain(
+        comment,
+        {
+          username: comment.author.username,
+          bio: comment.author.bio,
+          image: comment.author.image,
+        },
+        currentUserId
           ? comment.author.followers.some((f) => f.followerId === currentUserId)
           : false,
-      },
-    }));
+      ),
+    );
   }
 
   async deleteComment(
