@@ -1,6 +1,6 @@
 import type { Database } from '@/database.providers';
-import { articleTags, tags } from '@tags/tags.model';
-import type { ArticleTagToInsert, TagToInsert } from '@tags/tags.schema';
+import type { NewArticleTagRow, NewTagRow } from '@tags/interfaces';
+import { articleTags, tags } from '@tags/tags.schema';
 import { and, eq, inArray } from 'drizzle-orm';
 
 export class TagsRepository {
@@ -10,7 +10,7 @@ export class TagsRepository {
     return await this.db.query.tags.findMany();
   }
 
-  async upsertTags(data: TagToInsert[]) {
+  async upsertTags(data: NewTagRow[]) {
     return await this.db
       .insert(tags)
       .values(data)
@@ -27,7 +27,7 @@ export class TagsRepository {
     });
   }
 
-  async upsertArticleTags(data: ArticleTagToInsert[]) {
+  async upsertArticleTags(data: NewArticleTagRow[]) {
     return await this.db
       .insert(articleTags)
       .values(data)
