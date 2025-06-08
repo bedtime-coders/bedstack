@@ -66,7 +66,7 @@ export const commentsController = new Elysia().use(setupComments).group(
         async ({ params, store, request }) => {
           await store.commentsService.deleteComment(
             params.slug,
-            Number.parseInt(params.id, 10),
+            params.id,
             await store.authService.getUserIdFromHeader(request.headers),
           );
         },
@@ -74,7 +74,7 @@ export const commentsController = new Elysia().use(setupComments).group(
           beforeHandle: app.store.authService.requireLogin,
           params: t.Object({
             slug: t.String(),
-            id: t.String(),
+            id: t.Numeric(),
           }),
           detail: {
             summary: 'Delete Comment',
