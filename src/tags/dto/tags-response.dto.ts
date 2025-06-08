@@ -1,7 +1,7 @@
-import { Type } from '@sinclair/typebox';
+import { type Static, Type } from '@sinclair/typebox';
 
 export const TagsResponseDto = Type.Object({
   tags: Type.Array(Type.String()),
 });
 
-export type TagsResponse = typeof TagsResponseDto;
+export type TagsResponseDto = Static<typeof TagsResponseDto>;

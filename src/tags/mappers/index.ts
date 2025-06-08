@@ -1,3 +1,2 @@
-export * from './to-tag-response.mapper';
-export * from './to-tags-response.mapper';
+export * from './to-response.mapper';
 export * from './to-domain.mapper';
