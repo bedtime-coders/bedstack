@@ -1,15 +1,9 @@
 import type { AuthService } from '@auth/auth.service';
 import { AuthenticationError, BadRequestError } from '@errors';
-import type {
-  IUser,
-  IUserWithToken,
-  NewUserRow,
-  UpdateUserRow,
-  UserRow,
-} from '@users/interfaces';
+import type { NewUserRow, UpdateUserRow, UserRow } from '@users/interfaces';
 import type { UsersRepository } from '@users/users.repository';
 import { NotFoundError } from 'elysia';
-import { toDomainWithToken, toResponse } from './mappers';
+import { toDomain, toResponse } from './mappers';
 
 export class UsersService {
   constructor(
@@ -22,7 +16,9 @@ export class UsersService {
     if (!user) {
       throw new NotFoundError('User not found');
     }
-    return await this.generateUserResponse(user);
+    const token = await this.authService.generateToken(user);
+    const domainUser = toDomain(user, token);
+    return toResponse(domainUser);
   }
 
   async createUser(user: NewUserRow) {
@@ -31,7 +27,9 @@ export class UsersService {
     if (!newUser) {
       throw new BadRequestError('Email or username is already taken');
     }
-    return await this.generateUserResponse(newUser);
+    const token = await this.authService.generateToken(newUser);
+    const domainUser = toDomain(newUser, token);
+    return toResponse(domainUser);
   }
 
   async updateUser(id: number, user: UpdateUserRow) {
@@ -50,7 +48,9 @@ export class UsersService {
 
     if (user.password) user.password = await Bun.password.hash(user.password);
     const updatedUser = await this.repository.updateUser(currentUser.id, user);
-    return await this.generateUserResponse(updatedUser);
+    const token = await this.authService.generateToken(updatedUser);
+    const domainUser = toDomain(updatedUser, token);
+    return toResponse(domainUser);
   }
 
   async loginUser(email: string, password: string) {
@@ -61,12 +61,8 @@ export class UsersService {
     if (!(await Bun.password.verify(password, user.password))) {
       throw new AuthenticationError('Invalid password');
     }
-    return await this.generateUserResponse(user);
-  }
-
-  private async generateUserResponse(user: UserRow) {
     const token = await this.authService.generateToken(user);
-    const domainUser = toDomainWithToken(user, token);
+    const domainUser = toDomain(user, token);
     return toResponse(domainUser);
   }
 }
