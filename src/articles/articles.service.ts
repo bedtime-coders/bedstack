@@ -1,8 +1,8 @@
 import type { ArticlesRepository } from '@articles/articles.repository';
 import { AuthorizationError, BadRequestError, ConflictError } from '@errors';
 import type { ProfilesService } from '@profiles/profiles.service';
+import { slugify } from '@shared/utils';
 import type { TagsService } from '@tags/tags.service';
-import { slugify } from '@utils/slugify';
 import { NotFoundError } from 'elysia';
 import type {
   CreateArticleInput,

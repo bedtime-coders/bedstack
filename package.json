@@ -26,6 +26,8 @@
     "db:drop": "bun db/drop.ts"
   },
   "dependencies": {
+    "@elysiajs/bearer": "^1.3.0",
+    "@elysiajs/jwt": "^1.3.1",
     "@elysiajs/swagger": "^1.2.2",
     "drizzle-orm": "^0.44.1",
     "drizzle-typebox": "^0.3.0",
