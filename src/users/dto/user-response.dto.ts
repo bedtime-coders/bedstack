@@ -1,4 +1,4 @@
-import { Type } from '@sinclair/typebox';
+import { type Static, Type } from '@sinclair/typebox';
 
 export const UserResponseDto = Type.Object({
   id: Type.Number(),
@@ -10,3 +10,5 @@ export const UserResponseDto = Type.Object({
   createdAt: Type.String(),
   updatedAt: Type.String(),
 });
+
+export type UserResponseDto = Static<typeof UserResponseDto>;
