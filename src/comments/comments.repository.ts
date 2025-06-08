@@ -3,18 +3,12 @@ import { articles } from '@articles/articles.schema';
 import type { ArticleRow } from '@articles/interfaces/article-row.interface';
 import { and, desc, eq } from 'drizzle-orm';
 import { comments } from './comments.schema';
-
-// TODO: Move & Re-evaluate this type. It's really just a band-aid.
-type CreateCommentDto = {
-  body: string;
-  articleId: number;
-  authorId: number;
-};
+import type { NewCommentRow } from './interfaces';
 
 export class CommentsRepository {
   constructor(private readonly db: Database) {}
 
-  async create(commentData: CreateCommentDto) {
+  async create(commentData: NewCommentRow) {
     const [comment] = await this.db
       .insert(comments)
       .values(commentData)

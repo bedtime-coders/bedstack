@@ -2,14 +2,8 @@ import { AuthorizationError, BadRequestError } from '@errors';
 import type { ProfilesService } from '@profiles/profiles.service';
 import { NotFoundError } from 'elysia';
 import type { CommentsRepository } from './comments.repository';
-import type { IComment } from './interfaces';
-
-// TODO: Move & Re-evaluate this type. It's really just a band-aid.
-type CommentToCreate = {
-  body: string;
-  articleId: number;
-  authorId: number;
-};
+import type { IComment, NewCommentRow } from './interfaces';
+import { toNewCommentRow } from './mappers/comments.mapper';
 
 export class CommentsService {
   constructor(
@@ -28,11 +22,11 @@ export class CommentsService {
       throw new NotFoundError(`Article with slug ${articleSlug} not found`);
     }
 
-    const commentData: CommentToCreate = {
-      ...commentBody,
-      authorId: userId,
-      articleId: article.id,
-    };
+    const commentData: NewCommentRow = toNewCommentRow(
+      commentBody,
+      article.id,
+      userId,
+    );
 
     const comment = await this.commentsRepository.create(commentData);
     const authorProfile = await this.profilesService.findByUserId(
