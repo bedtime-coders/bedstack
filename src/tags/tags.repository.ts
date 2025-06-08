@@ -1,8 +1,8 @@
 import type { Database } from '@/database.providers';
-import { articleTags, tags } from './tags.schema';
-import { type TagRow } from './interfaces/tag-row.interface';
-import { type ArticleTagToInsert } from './dto/article-tag.dto';
 import { and, eq, inArray } from 'drizzle-orm';
+import type { ArticleTagToInsert } from './dto/article-tag.dto';
+import type { TagRow } from './interfaces/tag-row.interface';
+import { articleTags, tags } from './tags.schema';
 
 export class TagsRepository {
   constructor(private readonly db: Database) {}
