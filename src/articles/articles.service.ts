@@ -10,11 +10,7 @@ import type {
   IArticleFeed,
   UpdateArticleInput,
 } from './interfaces';
-import {
-  toDomain,
-  toFeedDomain,
-  toNewArticleRow,
-} from './mappers/articles.mapper';
+import { toDomain, toFeedDomain, toNewArticleRow } from './mappers';
 
 type FindFilters = {
   tag?: string;

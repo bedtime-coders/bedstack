@@ -8,11 +8,7 @@ import {
   ListArticlesQueryDto,
   UpdateArticleDto,
 } from './dto';
-import {
-  toCreateArticleInput,
-  toFeedResponse,
-  toResponse,
-} from './mappers/articles.mapper';
+import { toCreateArticleInput, toFeedResponse, toResponse } from './mappers';
 
 export const articlesController = new Elysia().use(setupArticles).group(
   '/articles',
