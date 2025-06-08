@@ -17,7 +17,7 @@ export function toDomain(
     tagList: tagList ?? article.tags.map((t) => t.tagName),
     createdAt: article.createdAt,
     updatedAt: article.updatedAt,
-    favorited: !!article.favoritedBy.find(
+    favorited: article.favoritedBy.some(
       (user) => user.userId === currentUserId,
     ),
     favoritesCount: article.favoritedBy.length,
@@ -26,7 +26,7 @@ export function toDomain(
       username: article.author.username,
       bio: article.author.bio,
       image: article.author.image,
-      following: !!article.author.followers.find(
+      following: article.author.followers.some(
         (follower) => follower.followerId === currentUserId,
       ),
     },
