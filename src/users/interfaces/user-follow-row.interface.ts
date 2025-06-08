@@ -7,8 +7,3 @@ export type UserFollowRow = {
   createdAt: Date;
   updatedAt: Date;
 };
-
-/**
- * Type for creating a new user follow relationship in the database
- */
-export type NewUserFollowRow = Omit<UserFollowRow, 'createdAt' | 'updatedAt'>;
