@@ -41,7 +41,6 @@
       "@comments/*": ["./src/comments/*"],
       "@tags/*": ["./src/tags/*"],
       "@shared/*": ["./src/shared/*"],
-      "@errors": ["src/shared/errors/errors.ts"],
       "@constants": ["./src/constants.ts"],
       "@config": ["./src/config.ts"]
     },
