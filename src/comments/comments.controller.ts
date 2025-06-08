@@ -28,6 +28,7 @@ export const commentsController = new Elysia().use(setupComments).group(
           response: CommentResponseDto,
           detail: {
             summary: 'Add Comments to an Article',
+            description: 'Authentication required, returns the created Comment',
             security: [
               {
                 tokenAuth: [],
@@ -54,6 +55,7 @@ export const commentsController = new Elysia().use(setupComments).group(
           }),
           detail: {
             summary: 'Get Comments from an Article',
+            description: 'Authentication optional, returns multiple comments',
           },
         },
       )
@@ -74,6 +76,7 @@ export const commentsController = new Elysia().use(setupComments).group(
           }),
           detail: {
             summary: 'Delete Comment',
+            description: 'Authentication required',
             security: [
               {
                 tokenAuth: [],
