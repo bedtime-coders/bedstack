@@ -26,8 +26,7 @@ export const profilesController = new Elysia().use(setupProfiles).group(
           response: profileResponseSchema,
           detail: {
             summary: 'Get Profile',
-            description:
-              'Get a profile of a user of the system. Auth is required.',
+            description: 'Authentication required, returns a Profile',
             security: [
               {
                 tokenAuth: [],
@@ -50,7 +49,8 @@ export const profilesController = new Elysia().use(setupProfiles).group(
           response: profileResponseSchema,
           detail: {
             summary: 'Follow user',
-            description: 'Follow a user by username. Auth is required.',
+            description:
+              'Authentication required, returns a Profile\n\nNo additional parameters required',
             security: [
               {
                 tokenAuth: [],
@@ -73,7 +73,8 @@ export const profilesController = new Elysia().use(setupProfiles).group(
           response: profileResponseSchema,
           detail: {
             summary: 'Unfollow user',
-            description: 'Unfollow a user by username. Auth is required.',
+            description:
+              'Authentication required, returns a Profile\n\nNo additional parameters required',
             security: [
               {
                 tokenAuth: [],
