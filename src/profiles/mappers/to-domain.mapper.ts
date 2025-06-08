@@ -4,14 +4,22 @@ import type { IProfile } from '../interfaces/profile.interface';
 /**
  * Map a profile row to a domain profile
  * @param profile - The profile row to map
- * @param following - Whether the current user is following this profile
- * @returns The mapped profile
+ * @param currentUserId - The ID of the current user, if any
+ * @returns The domain profile
  */
-export function toDomain(profile: ProfileRow, following: boolean): IProfile {
+export function toDomain(
+  profile: ProfileRow,
+  currentUserId: number | null,
+): IProfile {
   return {
     username: profile.username,
     bio: profile.bio,
     image: profile.image,
-    following,
+    following:
+      currentUserId === null
+        ? false
+        : profile.followers.some(
+            (follower) => follower.followerId === currentUserId,
+          ),
   };
 }
