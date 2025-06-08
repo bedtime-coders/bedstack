@@ -1,4 +1,4 @@
-import { slugify } from '@/utils/slugify';
+import { slugify } from '@utils/slugify';
 import type { CreateArticleInput, NewArticleRow } from '../interfaces';
 
 export function toNewArticleRow(
