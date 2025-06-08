@@ -1,7 +1,11 @@
 import { Elysia, t } from 'elysia';
 import { setupComments } from './comments.module';
-import { CommentResponseDto, CreateCommentDto } from './dto';
-import { toCommentResponse } from './mappers/comments.mapper';
+import {
+  CommentResponseDto,
+  CommentsResponseDto,
+  CreateCommentDto,
+} from './dto';
+import { toCommentResponse, toCommentsResponse } from './mappers';
 
 export const commentsController = new Elysia().use(setupComments).group(
   '/articles/:slug/comments',
@@ -47,12 +51,10 @@ export const commentsController = new Elysia().use(setupComments).group(
             params.slug,
             userId === null ? undefined : userId,
           );
-          return { comments: comments.map(toCommentResponse) };
+          return toCommentsResponse(comments);
         },
         {
-          response: t.Object({
-            comments: t.Array(CommentResponseDto),
-          }),
+          response: CommentsResponseDto,
           detail: {
             summary: 'Get Comments from an Article',
             description: 'Authentication optional, returns multiple comments',

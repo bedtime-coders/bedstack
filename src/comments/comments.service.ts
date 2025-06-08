@@ -3,7 +3,7 @@ import type { ProfilesService } from '@profiles/profiles.service';
 import { NotFoundError } from 'elysia';
 import type { CommentsRepository } from './comments.repository';
 import type { IComment, NewCommentRow } from './interfaces';
-import { toNewCommentRow } from './mappers/comments.mapper';
+import { toNewCommentRow } from './mappers';
 
 export class CommentsService {
   constructor(
