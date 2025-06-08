@@ -1,5 +1,5 @@
 import type { Database } from '@/database.providers';
-import type { NewUserRow, UpdateUserRow, UserRow } from '@users/interfaces';
+import type { NewUserRow, UpdateUserRow } from '@users/interfaces';
 import { users } from '@users/users.schema';
 import { eq } from 'drizzle-orm';
 
