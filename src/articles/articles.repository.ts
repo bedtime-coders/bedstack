@@ -88,21 +88,31 @@ export class ArticlesRepository {
       .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
       .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id));
 
+    // Create a separate count query that only includes filtering conditions
+    const countQuery = this.db
+      .select({ id: articles.id })
+      .from(articles)
+      .innerJoin(users, eq(users.id, articles.authorId))
+      .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
+      .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id));
+
     // Apply tag filter if specified
     if (tag) {
-      baseQuery.where(
-        and(
-          ...authorFilters,
-          sql`exists (
-            select 1 from ${articleTags}
-            where ${articleTags.articleId} = ${articles.id}
-            and ${articleTags.tagName} = ${tag}
-          )`,
-        ),
+      const tagFilter = and(
+        ...authorFilters,
+        sql`exists (
+          select 1 from ${articleTags}
+          where ${articleTags.articleId} = ${articles.id}
+          and ${articleTags.tagName} = ${tag}
+        )`,
       );
+      baseQuery.where(tagFilter);
+      countQuery.where(tagFilter);
     } else {
       // Only apply author filters if no tag filter
-      baseQuery.where(and(...authorFilters));
+      const authorFilter = and(...authorFilters);
+      baseQuery.where(authorFilter);
+      countQuery.where(authorFilter);
     }
 
     // Apply favorited filter if specified
@@ -118,15 +128,15 @@ export class ArticlesRepository {
         return { articles: [], articlesCount: 0 };
       }
 
-      baseQuery.where(
-        and(
-          sql`exists (
-            select 1 from ${favoriteArticles}
-            where ${favoriteArticles.articleId} = ${articles.id}
-            and ${favoriteArticles.userId} = ${favoritedByUser[0].id}
-          )`,
-        ),
+      const favoritedFilter = and(
+        sql`exists (
+          select 1 from ${favoriteArticles}
+          where ${favoriteArticles.articleId} = ${articles.id}
+          and ${favoriteArticles.userId} = ${favoritedByUser[0].id}
+        )`,
       );
+      baseQuery.where(favoritedFilter);
+      countQuery.where(favoritedFilter);
     }
 
     const limitedResults = await baseQuery
@@ -137,7 +147,7 @@ export class ArticlesRepository {
 
     const resultsCount = await this.db
       .select({ count: count() })
-      .from(baseQuery.as('base'));
+      .from(countQuery.as('count_query'));
 
     return {
       articles: limitedResults,
