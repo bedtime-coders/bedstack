@@ -1,8 +1,8 @@
+import type { UserRow } from '@/users/interfaces';
 import { env } from '@config';
 import { AuthenticationError } from '@errors';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
-import type { UserInDb } from '@users/users.schema';
 import * as jose from 'jose';
 
 export class AuthService {
@@ -28,7 +28,7 @@ export class AuthService {
     });
   }
 
-  generateToken = async (user: UserInDb) => {
+  generateToken = async (user: UserRow) => {
     const encoder = new TextEncoder();
     const secret = encoder.encode(this.JWT_SECRET);
 
