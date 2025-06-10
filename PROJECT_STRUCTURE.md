@@ -8,26 +8,25 @@ We follow a **one file per thing** rule to maintain clear organization.
 
 ```plaintext
 src/
-├── app.ts                   # Initializes and mounts the app
-├── routes/                  # Aggregates and mounts feature routers
+├── app.module.ts            # Main module that composes all features
+├── ...resources/             # All resource modules directly under `src/`
 ├── db/                      # Drizzle ORM config and database init
-├── shared/                  # Common utilities and helpers
-├── articles/                # Full article feature module
-├── comments/                # Full comment feature module
-├── tags/                    # Tag-related logic and schema
-├── users/                   # User logic (repo, profile dto)
+├── shared/                  # Common constants, interfaces, and utilities
 ```
 
-## Feature Folder Layout
+> [!NOTE]
+> The `app.module.ts` file is named in the spirit of NestJS, where the app module is the device in charge of putting together all the pieces of the application. See [NestJS Modules](https://docs.nestjs.com/modules) for more details.
 
-Each feature (e.g. `articles/`, `comments/`) uses this layout:
+## Resource Module Layout
+
+Each resource module (e.g. `articles/`, `comments/`) uses this layout:
 
 ```plaintext
-feature/
-├── feature.controller.ts       # REST handler logic
-├── feature.service.ts          # Business logic
-├── feature.repository.ts       # DB access logic
-├── feature.mapper.ts           # Converts DB to DTO
+resource/
+├── resources.controller.ts       # REST handler logic
+├── resources.service.ts          # Business logic
+├── resources.repository.ts       # DB access logic
+├── resources.mapper.ts           # Converts DB to DTO
 ├── schema/
 │   └── feature.schema.ts       # Drizzle schema + optional relations
 ├── dto/
@@ -38,6 +37,9 @@ feature/
 │   ├── feature.interface.ts    # Domain model
 │   └── feature-row.interface.ts# Drizzle-inferred DB shape
 ```
+
+> [!NOTE]
+> Note the filename is written in plural form (`resources.controller.ts`, e.g. `articles.controller.ts`) in the spirit of NestJS.
 
 ## Folder-Level Purpose
 

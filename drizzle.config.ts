@@ -1,6 +1,6 @@
 import { defineConfig } from 'drizzle-kit';
 
-export const dbCredentials = {
+const dbCredentials = {
   host: process.env.POSTGRES_HOST || '0.0.0.0',
   port: Number.parseInt(process.env.POSTGRES_PORT || '5432'),
   user: process.env.POSTGRES_USER || 'postgres',

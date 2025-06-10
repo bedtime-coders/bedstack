@@ -13,9 +13,6 @@ import { commentsController } from './comments/comments.controller';
 import { profilesController } from './profiles/profiles.controller';
 import { tagsController } from './tags/tags.controller';
 
-// the file name is in the spirit of NestJS, where app module is the device in charge of putting together all the pieces of the app
-// see: https://docs.nestjs.com/modules
-
 /**
  * Add all plugins to the app
  */
