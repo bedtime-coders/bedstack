@@ -1,5 +1,4 @@
 import type { AuthService } from '@/auth/auth.service';
-import { AuthenticationError, BadRequestError } from '@/common/errors';
 import type { NewUserRow, UpdateUserRow, UserRow } from '@/users/interfaces';
 import type { UsersRepository } from '@/users/users.repository';
 import { NotFoundError } from 'elysia';
@@ -25,7 +24,7 @@ export class UsersService {
     user.password = await Bun.password.hash(user.password);
     const newUser = await this.repository.createUser(user);
     if (!newUser) {
-      throw new BadRequestError('Email or username is already taken');
+      throw new NotFoundError('Email or username is already taken');
     }
     const token = await this.authService.generateToken(newUser);
     const domainUser = toDomain(newUser, token);
@@ -42,7 +41,7 @@ export class UsersService {
     if (user.email && user.email !== currentUser.email) {
       const userWithEmail = await this.repository.findByEmail(user.email);
       if (userWithEmail) {
-        throw new BadRequestError('Email is already taken');
+        throw new NotFoundError('Email is already taken');
       }
     }
 
@@ -59,7 +58,7 @@ export class UsersService {
       throw new NotFoundError('User not found');
     }
     if (!(await Bun.password.verify(password, user.password))) {
-      throw new AuthenticationError('Invalid password');
+      throw new NotFoundError('Invalid password');
     }
     const token = await this.authService.generateToken(user);
     const domainUser = toDomain(user, token);

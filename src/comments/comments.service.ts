@@ -1,9 +1,9 @@
 import type { ArticlesService } from '@/articles/articles.service';
-import { AuthorizationError, BadRequestError } from '@/common/errors';
 import type { ProfilesService } from '@/profiles/profiles.service';
 import type { CommentsRepository } from './comments.repository';
 import type { IComment, NewCommentRow } from './interfaces';
 import { toDomain, toNewCommentRow } from './mappers';
+import { NotFoundError } from 'elysia';
 
 export class CommentsService {
   constructor(
@@ -86,19 +86,17 @@ export class CommentsService {
     const comment = await this.commentsRepository.findById(commentId);
 
     if (!comment) {
-      throw new BadRequestError(`Comment with id ${commentId} not found`);
+      throw new NotFoundError(`Comment with id ${commentId} not found`);
     }
 
     if (comment.articleId !== article.id) {
-      throw new BadRequestError(
+      throw new NotFoundError(
         `Comment with id ${commentId} does not belong to article ${articleSlug}`,
       );
     }
 
     if (comment.authorId !== userId) {
-      throw new AuthorizationError(
-        'You can only delete comments that you authored',
-      );
+      throw new NotFoundError('You can only delete comments that you authored');
     }
 
     await this.commentsRepository.delete(commentId, userId);

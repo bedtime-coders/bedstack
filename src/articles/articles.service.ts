@@ -1,9 +1,4 @@
 import type { ArticlesRepository } from '@/articles/articles.repository';
-import {
-  AuthorizationError,
-  BadRequestError,
-  ConflictError,
-} from '@/common/errors';
 import { slugify } from '@/common/utils';
 import type { ProfilesService } from '@/profiles/profiles.service';
 import type { TagsService } from '@/tags/tags.service';
@@ -96,7 +91,7 @@ export class ArticlesService {
     // Check if any article exists with this title
     const existingArticle = await this.repository.findBySlug(newArticle.slug);
     if (existingArticle) {
-      throw new ConflictError(
+      throw new NotFoundError(
         'An article with this slug already exists. Please use a unique title',
       );
     }
@@ -104,7 +99,7 @@ export class ArticlesService {
     const createdArticle = await this.repository.createArticle(newArticle);
 
     if (!createdArticle) {
-      throw new BadRequestError('Article was not created');
+      throw new NotFoundError('Article was not created');
     }
 
     let { tagList } = article;
@@ -134,7 +129,7 @@ export class ArticlesService {
       throw new NotFoundError('Article not found');
     }
     if (existingArticle.author.id !== currentUserId) {
-      throw new AuthorizationError('Only the author can update the article');
+      throw new NotFoundError('Only the author can update the article');
     }
 
     // TODO: This can cause a race condition if two users update an article with the same title at the same time
@@ -145,7 +140,7 @@ export class ArticlesService {
       const newSlug = slugify(article.title);
       const articleWithNewSlug = await this.repository.findBySlug(newSlug);
       if (articleWithNewSlug && articleWithNewSlug.id !== existingArticle.id) {
-        throw new ConflictError(
+        throw new NotFoundError(
           'An article with this slug already exists. Please use a unique title',
         );
       }
@@ -161,7 +156,7 @@ export class ArticlesService {
     );
 
     if (!updatedArticle) {
-      throw new BadRequestError('Article was not updated');
+      throw new NotFoundError('Article was not updated');
     }
 
     let { tagList } = article;
@@ -187,7 +182,7 @@ export class ArticlesService {
       throw new NotFoundError('Article not found');
     }
     if (article.author.id !== currentUserId) {
-      throw new AuthorizationError('Only the author can delete the article');
+      throw new NotFoundError('Only the author can delete the article');
     }
 
     await this.repository.deleteArticle(slug, currentUserId);

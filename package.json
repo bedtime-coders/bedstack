@@ -32,6 +32,7 @@
     "drizzle-orm": "^0.44.1",
     "drizzle-typebox": "^0.3.0",
     "elysia": "^1.2.25",
+    "http-status-codes": "^2.3.0",
     "jose": "^6.0.9",
     "postgres": "^3.4.5"
   },
