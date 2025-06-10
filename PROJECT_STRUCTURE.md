@@ -30,9 +30,11 @@ tsconfig.json             # TypeScript config
 > [!NOTE]
 > The `app.module.ts` file is named in the spirit of NestJS, where the app module is the device in charge of putting together all the pieces of the application. See [NestJS Modules](https://docs.nestjs.com/modules) for more details.
 
-## Resource Module Layout
+## Folders Inside `src/`
 
-Each resource module (e.g. `articles/`, `comments/`) uses this layout:
+### Resource Modules (`articles/`, `comments/`, etc.)
+
+Each resource module uses this layout:
 
 ```plaintext
 resource/
@@ -41,22 +43,22 @@ resource/
 ├── resources.repository.ts       # DB access logic
 ├── resources.mapper.ts           # Converts DB to DTO
 ├── schema/
-│   └── feature.schema.ts       # Drizzle schema + optional relations
+│   └── resource.schema.ts       # Drizzle schema + optional relations
 ├── dto/
-│   ├── create-feature.dto.ts   # Input shape (TypeBox)
-│   ├── update-feature.dto.ts   # Input shape (if needed)
-│   └── feature.dto.ts          # Output DTO for response
+│   ├── create-resource.dto.ts   # Input shape (TypeBox)
+│   ├── update-resource.dto.ts   # Input shape (if needed)
+│   └── resource.dto.ts          # Output DTO for response
 ├── interfaces/
-│   ├── feature.interface.ts    # Domain model
-│   └── feature-row.interface.ts# Drizzle-inferred DB shape
+│   ├── resource.interface.ts    # Domain model
+│   └── resource-row.interface.ts# Drizzle-inferred DB shape
 ```
 
 > [!NOTE]
 > Note the filename is written in plural form (`resources.controller.ts`, e.g. `articles.controller.ts`) in the spirit of NestJS.
 
-## Folder-Level Purpose
+### Other Folders Inside `src/`
 
-### `/db/`
+#### `/db/`
 
 - Drizzle config and init
 - Does **not** export the db instance, that is found in `database.providers.ts`
@@ -95,7 +97,7 @@ shared/
 - May also define `relations()` in the same file unless very large
 - If split, name the second file `feature-relations.schema.ts`
 
-## See also
+## See Also
 
 - More on **Architecture** - see [Architecture](ARCHITECTURE.md)
 - **Contributing** - see [Developer's Guide](CONTRIBUTING.md)
