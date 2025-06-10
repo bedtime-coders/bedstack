@@ -8,10 +8,23 @@ We follow a **one file per thing** rule to maintain clear organization.
 
 ```plaintext
 src/
-├── app.module.ts            # Main module that composes all features
-├── ...resources/             # All resource modules directly under `src/`
-├── db/                      # Drizzle ORM config and database init
-├── shared/                  # Common constants, interfaces, and utilities
+├── app.module.ts         # Main module that composes all features
+├── config.ts             # Environment variables and config
+├── database.providers.ts # Database providers
+├── main.ts               # Entry point
+├── ...resources/         # All resource modules directly under `src/`
+├── shared/               # Common constants, interfaces, and utilities
+scripts/                  # Scripts managed by `package.json`
+drizzle/                  # Drizzle migrations and scripts
+drizzle.config.ts         # Drizzle config
+biome.json                # Biome config
+package.json              # Package metadata
+bun.lockb                 # Bun lockfile
+tsconfig.json             # TypeScript config
+...markdown files         # Documentation
+...git files              # `.git/`, `.gitignore`, etc.
+...docker files           # `docker-compose.yml`, `Dockerfile`, etc.
+...env files              # `.env`, `.env.example`, etc.
 ```
 
 > [!NOTE]
@@ -46,7 +59,7 @@ resource/
 ### `/db/`
 
 - Drizzle config and init
-- Exports the db instance
+- Does **not** export the db instance, that is found in `database.providers.ts`
 - Does **not** export db tables, these are found as schemas inside feature folders
 
 ### `/shared/`
