@@ -10,6 +10,8 @@ import type {
   UpdateArticleInput,
 } from './interfaces';
 import { toDomain, toFeedDomain, toNewArticleRow } from './mappers';
+import { RealWorldError } from '@/common/errors';
+import { StatusCodes } from 'http-status-codes';
 
 type FindFilters = {
   tag?: string;
@@ -74,7 +76,7 @@ export class ArticlesService {
   ): Promise<IArticle> {
     const article = await this.repository.findBySlug(slug);
     if (!article) {
-      throw new NotFoundError('Article not found');
+      throw new NotFoundError('article');
     }
     return toDomain(article, { currentUserId: currentUserId ?? undefined });
   }
@@ -91,15 +93,17 @@ export class ArticlesService {
     // Check if any article exists with this title
     const existingArticle = await this.repository.findBySlug(newArticle.slug);
     if (existingArticle) {
-      throw new NotFoundError(
-        'An article with this slug already exists. Please use a unique title',
-      );
+      throw new RealWorldError(StatusCodes.BAD_REQUEST, {
+        article: ['slug already exists'],
+      });
     }
 
     const createdArticle = await this.repository.createArticle(newArticle);
 
     if (!createdArticle) {
-      throw new NotFoundError('Article was not created');
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        article: ['was not created'],
+      });
     }
 
     let { tagList } = article;
@@ -126,10 +130,12 @@ export class ArticlesService {
   ): Promise<IArticle> {
     const existingArticle = await this.repository.findBySlug(slug);
     if (!existingArticle) {
-      throw new NotFoundError('Article not found');
+      throw new NotFoundError('article');
     }
     if (existingArticle.author.id !== currentUserId) {
-      throw new NotFoundError('Only the author can update the article');
+      throw new RealWorldError(StatusCodes.FORBIDDEN, {
+        article: ['not owned by user'],
+      });
     }
 
     // TODO: This can cause a race condition if two users update an article with the same title at the same time
@@ -140,9 +146,9 @@ export class ArticlesService {
       const newSlug = slugify(article.title);
       const articleWithNewSlug = await this.repository.findBySlug(newSlug);
       if (articleWithNewSlug && articleWithNewSlug.id !== existingArticle.id) {
-        throw new NotFoundError(
-          'An article with this slug already exists. Please use a unique title',
-        );
+        throw new RealWorldError(StatusCodes.BAD_REQUEST, {
+          article: ['slug already exists'],
+        });
       }
     }
 
@@ -156,7 +162,9 @@ export class ArticlesService {
     );
 
     if (!updatedArticle) {
-      throw new NotFoundError('Article was not updated');
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        article: ['was not updated'],
+      });
     }
 
     let { tagList } = article;
@@ -179,10 +187,12 @@ export class ArticlesService {
   async deleteArticle(slug: string, currentUserId: number): Promise<void> {
     const article = await this.repository.findBySlug(slug);
     if (!article) {
-      throw new NotFoundError('Article not found');
+      throw new NotFoundError('article');
     }
     if (article.author.id !== currentUserId) {
-      throw new NotFoundError('Only the author can delete the article');
+      throw new RealWorldError(StatusCodes.FORBIDDEN, {
+        article: ['not owned by user'],
+      });
     }
 
     await this.repository.deleteArticle(slug, currentUserId);
@@ -191,7 +201,7 @@ export class ArticlesService {
   async favoriteArticle(slug: string, currentUserId: number) {
     const article = await this.repository.favoriteArticle(slug, currentUserId);
     if (!article) {
-      throw new NotFoundError('Article not found');
+      throw new NotFoundError('article');
     }
     return toDomain(article, { currentUserId });
   }
@@ -202,7 +212,7 @@ export class ArticlesService {
       currentUserId,
     );
     if (!article) {
-      throw new NotFoundError('Article not found');
+      throw new NotFoundError('article');
     }
     return toDomain(article, { currentUserId });
   }
