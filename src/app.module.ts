@@ -1,11 +1,13 @@
 import { articlesController } from '@/articles/articles.controller';
+import { commentsController } from '@/comments/comments.controller';
+import { DEFAULT_ERROR_MESSAGE } from '@/common/constants';
+import { profilesController } from '@/profiles/profiles.controller';
+import { tagsController } from '@/tags/tags.controller';
 import { usersController } from '@/users/users.controller';
 import { swagger } from '@elysiajs/swagger';
 import { Elysia } from 'elysia';
 import { description, title, version } from '../package.json';
-import { commentsController } from './comments/comments.controller';
-import { profilesController } from './profiles/profiles.controller';
-import { tagsController } from './tags/tags.controller';
+import { isElysiaError } from './common/utils';
 
 type ErrorCode =
   | 'PARSE'
@@ -20,24 +22,13 @@ type ErrorCode =
  */
 export const setupApp = () => {
   return new Elysia()
-    .onError(({ code, error, set }) => {
-      // Map error codes to status codes
-      const statusMap: Record<ErrorCode, number> = {
-        PARSE: 400,
-        VALIDATION: 422,
-        NOT_FOUND: 404,
-        INVALID_COOKIE_SIGNATURE: 401,
-        INTERNAL_SERVER_ERROR: 500,
-        UNKNOWN: 500,
-      };
-
-      // Set status code based on error code
-      set.status = statusMap[code as ErrorCode] ?? 500;
-
-      // Return error response in the expected format
+    .onError(({ error }) => {
+      const reason = isElysiaError(error)
+        ? error.response
+        : DEFAULT_ERROR_MESSAGE;
       return {
         errors: {
-          body: [error instanceof Error ? error.message : 'An error occurred'],
+          body: [reason],
         },
       };
     })

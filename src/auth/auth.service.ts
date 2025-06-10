@@ -1,11 +1,11 @@
+import { isHttpError } from '@/common/utils';
 import type { UserRow } from '@/users/interfaces';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
+import { Elysia, error } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
 import * as jose from 'jose';
 import { env } from '../../env.config';
-import { error, Elysia } from 'elysia';
-import { StatusCodes } from 'http-status-codes';
-import { isHttpError } from '@/common/utils';
 
 export class AuthService {
   private readonly ALG = env.JWT_ALGORITHM;
