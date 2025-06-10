@@ -1,9 +1,9 @@
 import { AuthenticationError } from '@/shared/errors';
-import { env } from '@config';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
 import type { UserRow } from '@users/interfaces';
 import * as jose from 'jose';
+import { env } from '../../env.config';
 
 export class AuthService {
   private readonly ALG = env.JWT_ALGORITHM;

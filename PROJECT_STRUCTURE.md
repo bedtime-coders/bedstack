@@ -9,22 +9,22 @@ We follow a **one file per thing** rule to maintain clear organization.
 ```plaintext
 src/
 ├── app.module.ts         # Main module that composes all features
-├── config.ts             # Environment variables and config
 ├── database.providers.ts # Database providers
 ├── main.ts               # Entry point
 ├── ...resources/         # All resource modules directly under `src/`
 ├── shared/               # Common constants, interfaces, and utilities
 scripts/                  # Scripts managed by `package.json`
 drizzle/                  # Drizzle migrations and scripts
-drizzle.config.ts         # Drizzle config
-biome.json                # Biome config
+drizzle.config.ts         # Drizzle configuration
+biome.json                # Biome configuration
 package.json              # Package metadata
 bun.lockb                 # Bun lockfile
-tsconfig.json             # TypeScript config
+tsconfig.json             # TypeScript configuration
 ...markdown files         # Documentation
 ...git files              # `.git/`, `.gitignore`, etc.
 ...docker files           # `docker-compose.yml`, `Dockerfile`, etc.
-...env files              # `.env`, `.env.example`, etc.
+.env*                     # `.env`, `.env.example`, etc.
+env.config.ts             # Environment variables configuration
 ```
 
 > [!NOTE]
