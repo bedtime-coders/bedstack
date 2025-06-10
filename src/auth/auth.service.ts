@@ -1,4 +1,5 @@
-import { isHttpError } from '@/common/utils';
+import { isHttpError } from '@/common/errors';
+import { RealWorldError } from '@/common/errors';
 import type { UserRow } from '@/users/interfaces';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
@@ -67,15 +68,17 @@ export class AuthService {
   getUserFromHeaders = async (headers: Headers) => {
     const rawHeader = headers.get('Authorization');
     if (!rawHeader)
-      throw error(StatusCodes.UNAUTHORIZED, 'Missing authorization header');
+      // throw error(StatusCodes.UNAUTHORIZED, 'Missing authorization header');
+      throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
+        Authorization: ['is missing'],
+      });
 
     const tokenParts = rawHeader?.split(' ');
     const tokenType = tokenParts?.[0];
     if (tokenType !== 'Token')
-      throw error(
-        StatusCodes.UNAUTHORIZED,
-        "Invalid token type. Expected header format: 'Token jwt'",
-      );
+      throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
+        token: ['is invalid. Expected header format: "Token jwt"'],
+      });
 
     const token = tokenParts?.[1];
     const userToken = await this.verifyToken(token);

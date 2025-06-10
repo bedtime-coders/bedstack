@@ -1,2 +1,2 @@
 export * from './pagination.constants';
-export * from './error.constants';
+export * from './errors.constants';

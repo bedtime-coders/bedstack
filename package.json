@@ -34,7 +34,8 @@
     "elysia": "^1.2.25",
     "http-status-codes": "^2.3.0",
     "jose": "^6.0.9",
-    "postgres": "^3.4.5"
+    "postgres": "^3.4.5",
+    "radashi": "^12.5.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
