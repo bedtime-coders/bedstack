@@ -20,10 +20,11 @@ import { description, title, version } from '../package.json';
  */
 export const setupApp = () => {
   return new Elysia()
-    .onError(({ error, code }) => {
+    .onError(({ error, code, set }) => {
       console.log(error);
       // Manually thrown errors
       if (error instanceof RealWorldError) {
+        set.status = error.statusCode;
         return pick(error, ['errors']);
       }
       // Elysia validation errors (TypeBox based)
