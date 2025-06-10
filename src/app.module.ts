@@ -21,7 +21,6 @@ import { description, title, version } from '../package.json';
 export const setupApp = () => {
   return new Elysia()
     .onError(({ error, code, set }) => {
-      console.log(error);
       // Manually thrown errors
       if (error instanceof RealWorldError) {
         set.status = error.statusCode;
