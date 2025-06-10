@@ -59,22 +59,40 @@ resource/
 
 ### Other Folders Inside `src/`
 
-#### `/db/`
+#### `database/`
 
-- Drizzle config and init
-- Does **not** export the db instance, that is found in `database.providers.ts`
+- Exports the db instance through `database.providers.ts`
 - Does **not** export db tables, these are found as schemas inside feature folders
+- Does **not** export Drizzle config and migrations, these are found in `drizzle.config.ts` and `drizzle/` (from the root of the project) respectively
 
-### `/common/`
+#### `common/`
 
 Global utilities, middleware, and common concerns.
 
 ```plaintext
 common/
-├── auth-middleware.ts     # Extracts auth context
-├── http-errors.ts         # common error classes
-├── slugify.ts             # Utility for slug generation
+├── constants/                 # All global constants, grouped by domain
+│   ├── auth.constants.ts
+│   ├── validation.constants.ts
+│   └── realworld.constants.ts
+├── errors/                   # Global error types and helpers
+│   ├── realworld.error.ts    # RealWorld API-compliant base error class
+│   └── error.factory.ts      # Helpers for throwing structured errors
+├── interfaces/               # Global interfaces (not feature-specific)
+│   └── pagination.interface.ts
+├── utils/                    # Pure utility functions used app-wide
+│   ├── slugify.ts
+│   └── date.utils.ts
 ```
+
+> [!NOTE]
+> The `common/` folder is a catch-all for things that are not specific to a single feature. It's organized by purpose, not by type/domain. That's why it can have both `errors/` (domain) and `utils/` (type) folders.
+
+> [!WARNING]
+> Avoid dumping everything into `common/` by default. If a util, constant, or interface is only used in one feature - keep it inside that feature's folder. Promote it to `common/` only when it's reused.
+
+> [!TIP]
+> Only one `constants/` folder exists across the project - do not spread constants into individual features unless strictly private to that feature.
 
 ## Naming Conventions
 
