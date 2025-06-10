@@ -1,9 +1,9 @@
 import { exit } from 'node:process';
-import { db } from '@/database.providers';
-import { articles, favoriteArticles } from '@articles/articles.schema';
-import { comments } from '@comments/comments.schema';
-import { articleTags, tags } from '@tags/tags.schema';
-import { userFollows, users } from '@users/users.schema';
+import { articles, favoriteArticles } from '@/articles/articles.schema';
+import { comments } from '@/comments/comments.schema';
+import { db } from '@/database/database.providers';
+import { articleTags, tags } from '@/tags/tags.schema';
+import { userFollows, users } from '@/users/users.schema';
 import { getTableName, sql } from 'drizzle-orm';
 import dbConfig from '../drizzle.config';
 

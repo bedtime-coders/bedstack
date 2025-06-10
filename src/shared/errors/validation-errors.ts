@@ -1,4 +1,4 @@
-import { BadRequestError } from '@/shared/errors';
+import { BadRequestError } from './errors';
 
 /**
  * Error thrown when a required field is missing

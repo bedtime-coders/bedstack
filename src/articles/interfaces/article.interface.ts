@@ -1,4 +1,4 @@
-import type { Profile } from '@profiles/profiles.schema';
+import type { Profile } from '@/profiles/profiles.schema';
 
 export type IArticle = {
   id: number;

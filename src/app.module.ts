@@ -1,12 +1,12 @@
+import { articlesController } from '@/articles/articles.controller';
 import {
   AuthenticationError,
   AuthorizationError,
   BadRequestError,
   getErrorStatusFromCode,
 } from '@/shared/errors';
-import { articlesController } from '@articles/articles.controller';
+import { usersController } from '@/users/users.controller';
 import { swagger } from '@elysiajs/swagger';
-import { usersController } from '@users/users.controller';
 import { Elysia } from 'elysia';
 import { description, title, version } from '../package.json';
 import { commentsController } from './comments/comments.controller';

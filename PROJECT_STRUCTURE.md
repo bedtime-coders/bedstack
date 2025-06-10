@@ -12,7 +12,8 @@ src/
 ├── database.providers.ts # Database providers
 ├── main.ts               # Entry point
 ├── ...resources/         # All resource modules directly under `src/`
-├── shared/               # Common constants, interfaces, and utilities
+├── shared/               # Common constants, interfaces, and utilities\
+├── core/                 # Core providers (e.g. database)
 scripts/                  # Scripts managed by `package.json`
 drizzle/                  # Drizzle migrations and scripts
 drizzle.config.ts         # Drizzle configuration

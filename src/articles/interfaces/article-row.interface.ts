@@ -1,5 +1,5 @@
-import type { Profile } from '@profiles/profiles.schema';
-import type { ArticleTagRow } from '@tags/interfaces';
+import type { Profile } from '@/profiles/profiles.schema';
+import type { ArticleTagRow } from '@/tags/interfaces';
 import type { InferSelectModel } from 'drizzle-orm';
 import type { articles, favoriteArticles } from '../articles.schema';
 

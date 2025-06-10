@@ -4,7 +4,7 @@ import {
   MAX_LIMIT,
   MIN_LIMIT,
   MIN_OFFSET,
-} from '@shared/constants';
+} from '@/shared/constants';
 import { type Static, Type } from '@sinclair/typebox';
 
 /**

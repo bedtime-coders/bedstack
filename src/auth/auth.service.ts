@@ -1,7 +1,7 @@
 import { AuthenticationError } from '@/shared/errors';
+import type { UserRow } from '@/users/interfaces';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
-import type { UserRow } from '@users/interfaces';
 import * as jose from 'jose';
 import { env } from '../../env.config';
 
