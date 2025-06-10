@@ -1,11 +1,11 @@
 import type { ArticlesService } from '@/articles/articles.service';
+import { RealWorldError } from '@/common/errors';
 import type { ProfilesService } from '@/profiles/profiles.service';
 import { NotFoundError } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
 import type { CommentsRepository } from './comments.repository';
 import type { IComment, NewCommentRow } from './interfaces';
 import { toDomain, toNewCommentRow } from './mappers';
-import { StatusCodes } from 'http-status-codes';
-import { RealWorldError } from '@/common/errors';
 
 export class CommentsService {
   constructor(

@@ -1,10 +1,10 @@
 import type { AuthService } from '@/auth/auth.service';
+import { RealWorldError } from '@/common/errors';
 import type { NewUserRow, UpdateUserRow, UserRow } from '@/users/interfaces';
 import type { UsersRepository } from '@/users/users.repository';
-import { toDomain, toResponse } from './mappers';
-import { StatusCodes } from 'http-status-codes';
-import { RealWorldError } from '@/common/errors';
 import { NotFoundError } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
+import { toDomain, toResponse } from './mappers';
 
 export class UsersService {
   constructor(
