@@ -13,7 +13,7 @@ export class ProfilesService {
   ): Promise<IProfile> {
     const profile = await this.repository.findProfileByUsername(targetUsername);
     if (!profile) {
-      throw new NotFoundError('Profile not found');
+      throw new NotFoundError('profile');
     }
     return toDomain(profile, currentUserId);
   }
@@ -24,7 +24,7 @@ export class ProfilesService {
   ): Promise<IProfile> {
     const profile = await this.repository.findProfileByUserId(targetUserId);
     if (!profile) {
-      throw new NotFoundError('Profile not found');
+      throw new NotFoundError('profile');
     }
     return toDomain(profile, currentUserId);
   }
@@ -33,7 +33,7 @@ export class ProfilesService {
     const profileToFollow =
       await this.repository.findProfileByUsername(username);
     if (!profileToFollow) {
-      throw new NotFoundError('Profile not found');
+      throw new NotFoundError('profile');
     }
 
     // Check if already following
@@ -55,7 +55,7 @@ export class ProfilesService {
     const profileToUnfollow =
       await this.repository.findProfileByUsername(username);
     if (!profileToUnfollow) {
-      throw new NotFoundError('Profile not found');
+      throw new NotFoundError('profile');
     }
 
     // Check if following before attempting to unfollow

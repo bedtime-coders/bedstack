@@ -1,4 +1,4 @@
-import type { ValidationError } from 'elysia';
+import type { NotFoundError, ValidationError } from 'elysia';
 
 export function isHttpError(err: unknown): err is { code: number } {
   return typeof err === 'object' && err !== null && 'code' in err;
@@ -64,4 +64,12 @@ export function formatValidationError(error: ValidationError) {
   }
 
   return { errors: result };
+}
+
+export function formatNotFoundError(error: NotFoundError) {
+  return {
+    errors: {
+      [error.message.toLowerCase()]: 'not found',
+    },
+  };
 }

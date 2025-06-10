@@ -3,6 +3,7 @@ import { commentsController } from '@/comments/comments.controller';
 import { DEFAULT_ERROR_MESSAGE } from '@/common/constants';
 import {
   RealWorldError,
+  formatNotFoundError,
   formatValidationError,
   isElysiaError,
 } from '@/common/errors';
@@ -10,17 +11,9 @@ import { profilesController } from '@/profiles/profiles.controller';
 import { tagsController } from '@/tags/tags.controller';
 import { usersController } from '@/users/users.controller';
 import { swagger } from '@elysiajs/swagger';
-import { Elysia, ValidationError } from 'elysia';
+import { Elysia, NotFoundError, ValidationError } from 'elysia';
 import { pick } from 'radashi';
 import { description, title, version } from '../package.json';
-
-type ErrorCode =
-  | 'PARSE'
-  | 'VALIDATION'
-  | 'NOT_FOUND'
-  | 'INVALID_COOKIE_SIGNATURE'
-  | 'INTERNAL_SERVER_ERROR'
-  | 'UNKNOWN';
 
 /**
  * Add all plugins to the app
@@ -28,6 +21,7 @@ type ErrorCode =
 export const setupApp = () => {
   return new Elysia()
     .onError(({ error, code }) => {
+      console.log(error);
       // Manually thrown errors
       if (error instanceof RealWorldError) {
         return pick(error, ['errors']);
@@ -37,11 +31,15 @@ export const setupApp = () => {
         return formatValidationError(error);
       }
 
+      // Elysia not found errors
+      if (error instanceof NotFoundError) {
+        return formatNotFoundError(error);
+      }
+
+      // Generic error message
       const reason = isElysiaError(error)
         ? error.response
         : DEFAULT_ERROR_MESSAGE;
-
-      console.log(error);
       return {
         errors: {
           [code]: [reason],
