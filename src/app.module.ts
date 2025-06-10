@@ -4,7 +4,7 @@ import {
   AuthorizationError,
   BadRequestError,
   getErrorStatusFromCode,
-} from '@/shared/errors';
+} from '@/common/errors';
 import { usersController } from '@/users/users.controller';
 import { swagger } from '@elysiajs/swagger';
 import { Elysia } from 'elysia';

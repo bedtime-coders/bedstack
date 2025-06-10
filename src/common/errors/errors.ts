@@ -1,4 +1,4 @@
-import { DEFAULT, MapWithDefault } from '@/shared/utils';
+import { DEFAULT, MapWithDefault } from '@/common/utils';
 import { Elysia } from 'elysia';
 
 export class AuthenticationError extends Error {

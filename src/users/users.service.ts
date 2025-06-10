@@ -1,5 +1,5 @@
 import type { AuthService } from '@/auth/auth.service';
-import { AuthenticationError, BadRequestError } from '@/shared/errors';
+import { AuthenticationError, BadRequestError } from '@/common/errors';
 import type { NewUserRow, UpdateUserRow, UserRow } from '@/users/interfaces';
 import type { UsersRepository } from '@/users/users.repository';
 import { NotFoundError } from 'elysia';

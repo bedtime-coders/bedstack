@@ -12,7 +12,7 @@ src/
 ├── database.providers.ts # Database providers
 ├── main.ts               # Entry point
 ├── ...resources/         # All resource modules directly under `src/`
-├── shared/               # Common constants, interfaces, and utilities\
+├── common/               # Common constants, interfaces, and utilities\
 ├── core/                 # Core providers (e.g. database)
 scripts/                  # Scripts managed by `package.json`
 drizzle/                  # Drizzle migrations and scripts
@@ -65,14 +65,14 @@ resource/
 - Does **not** export the db instance, that is found in `database.providers.ts`
 - Does **not** export db tables, these are found as schemas inside feature folders
 
-### `/shared/`
+### `/common/`
 
-Global utilities, middleware, and shared concerns.
+Global utilities, middleware, and common concerns.
 
 ```plaintext
-shared/
+common/
 ├── auth-middleware.ts     # Extracts auth context
-├── http-errors.ts         # Shared error classes
+├── http-errors.ts         # common error classes
 ├── slugify.ts             # Utility for slug generation
 ```
 

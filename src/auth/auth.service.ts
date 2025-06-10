@@ -1,4 +1,4 @@
-import { AuthenticationError } from '@/shared/errors';
+import { AuthenticationError } from '@/common/errors';
 import type { UserRow } from '@/users/interfaces';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
