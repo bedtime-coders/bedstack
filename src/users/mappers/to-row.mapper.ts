@@ -1,22 +1,26 @@
-import type { CreateUserDto, UpdateUserDto } from '../dto';
-import type { NewUserRow, UpdateUserRow } from '../interfaces';
+import type {
+  CreateUserInput,
+  NewUserRow,
+  UpdateUserInput,
+  UpdateUserRow,
+} from '../interfaces';
 
-export function toNewRow({ user }: CreateUserDto): NewUserRow {
+export function toNewUserRow(input: CreateUserInput): NewUserRow {
   return {
-    email: user.email,
-    username: user.username,
-    password: user.password,
-    bio: user.bio ?? '',
-    image: user.image ?? '',
+    email: input.email,
+    username: input.username,
+    password: input.password,
+    bio: input.bio ?? '',
+    image: input.image ?? '',
   };
 }
 
-export function toUpdateRow({ user }: UpdateUserDto): UpdateUserRow {
+export function toUpdateUserRow(input: UpdateUserInput): UpdateUserRow {
   return {
-    ...(user.email !== undefined && { email: user.email }),
-    ...(user.username !== undefined && { username: user.username }),
-    ...(user.password !== undefined && { password: user.password }),
-    ...(user.bio !== undefined && { bio: user.bio || '' }),
-    ...(user.image !== undefined && { image: user.image || '' }),
+    ...(input.email !== undefined && { email: input.email }),
+    ...(input.username !== undefined && { username: input.username }),
+    ...(input.password !== undefined && { password: input.password }),
+    ...(input.bio !== undefined && { bio: input.bio ?? '' }),
+    ...(input.image !== undefined && { image: input.image ?? '' }),
   };
 }
