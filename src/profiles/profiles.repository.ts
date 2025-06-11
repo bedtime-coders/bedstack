@@ -3,7 +3,6 @@ import type { UserFollowRow } from '@/users/interfaces';
 import { userFollows, users } from '@/users/users.schema';
 import { and, eq } from 'drizzle-orm';
 import type { ProfileRow } from './interfaces';
-import type { UserFollowRow } from '@/users/interfaces';
 
 export class ProfilesRepository {
   constructor(private readonly db: Database) {}
