@@ -12,9 +12,9 @@ const dbCredentials = {
 export const dbCredentialsString = `postgres://${dbCredentials.user}:${dbCredentials.password}@${dbCredentials.host}:${dbCredentials.port}/${dbCredentials.database}`;
 
 export default defineConfig({
-  out: './db/migrations',
+  out: './drizzle/migrations',
   // in our codebase, 'schema' refers to TypeBox objects (abstraction of a JSON schema), while 'model' refers to database entities/tables, which is what drizzle refers to as 'schema'
-  schema: '**/*.model.ts',
+  schema: '**/*.schema.ts',
   breakpoints: false,
   dialect: 'postgresql',
   dbCredentials: dbCredentials,
