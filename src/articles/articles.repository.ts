@@ -32,11 +32,11 @@ export class ArticlesRepository {
   ): Promise<{ articles: ArticleFeedRow[]; articlesCount: number }> {
     const authorFilters: SQL[] = [];
 
-    if (followedAuthorIds?.length) {
+    if (followedAuthorIds !== undefined) {
       authorFilters.push(inArray(users.id, followedAuthorIds));
     }
 
-    if (author) {
+    if (author !== undefined) {
       authorFilters.push(eq(users.username, author));
     }
 
@@ -97,8 +97,7 @@ export class ArticlesRepository {
       .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
       .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id));
 
-    // Apply tag filter if specified (only for list endpoint)
-    if (tag && !followedAuthorIds?.length) {
+    if (tag !== undefined) {
       const tagFilter = and(
         ...authorFilters,
         sql`exists (
@@ -116,8 +115,7 @@ export class ArticlesRepository {
       countQuery.where(authorFilter);
     }
 
-    // Apply favorited filter if specified (only for list endpoint)
-    if (favorited && !followedAuthorIds?.length) {
+    if (favorited !== undefined) {
       const favoritedByUser = await this.db
         .select({ id: users.id })
         .from(users)
