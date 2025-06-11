@@ -1,7 +1,7 @@
 import type { Database } from '@/database/database.providers';
 import { articleTags } from '@/tags/tags.schema';
 import { userFollows, users } from '@/users/users.schema';
-import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
+import { type SQL, and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import { articles, favoriteArticles } from './articles.schema';
 import type {
   ArticleFeedRow,
@@ -14,29 +14,30 @@ type FindFilters = {
   tag?: string;
   author?: string;
   favorited?: string;
+  followedAuthorIds?: number[];
 };
 
 type FindOptions = {
   offset: number;
   limit: number;
   currentUserId?: number;
-  followedAuthorIds?: number[];
 };
 
 export class ArticlesRepository {
   constructor(private readonly db: Database) {}
 
   async find(
-    { author, tag, favorited }: FindFilters,
-    { offset, limit, currentUserId, followedAuthorIds }: FindOptions,
+    { author, tag, favorited, followedAuthorIds }: FindFilters,
+    { offset, limit, currentUserId }: FindOptions,
   ): Promise<{ articles: ArticleFeedRow[]; articlesCount: number }> {
-    const authorFilters = [];
-    if (author) {
-      authorFilters.push(eq(users.username, author));
-    }
+    const authorFilters: SQL[] = [];
 
     if (followedAuthorIds?.length) {
       authorFilters.push(inArray(users.id, followedAuthorIds));
+    }
+
+    if (author) {
+      authorFilters.push(eq(users.username, author));
     }
 
     const baseQuery = this.db
@@ -96,8 +97,8 @@ export class ArticlesRepository {
       .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
       .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id));
 
-    // Apply tag filter if specified
-    if (tag) {
+    // Apply tag filter if specified (only for list endpoint)
+    if (tag && !followedAuthorIds?.length) {
       const tagFilter = and(
         ...authorFilters,
         sql`exists (
@@ -115,8 +116,8 @@ export class ArticlesRepository {
       countQuery.where(authorFilter);
     }
 
-    // Apply favorited filter if specified
-    if (favorited) {
+    // Apply favorited filter if specified (only for list endpoint)
+    if (favorited && !followedAuthorIds?.length) {
       const favoritedByUser = await this.db
         .select({ id: users.id })
         .from(users)

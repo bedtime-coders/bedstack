@@ -57,12 +57,14 @@ export class ArticlesService {
         ? await this.profilesService.findFollowedUserIds(currentUserId)
         : undefined;
 
-    const { articles, articlesCount } = await this.repository.find(filters, {
-      offset,
-      limit,
-      currentUserId,
-      followedAuthorIds,
-    });
+    const { articles, articlesCount } = await this.repository.find(
+      { ...filters, followedAuthorIds },
+      {
+        offset,
+        limit,
+        currentUserId,
+      },
+    );
 
     return {
       articles: articles.map((article) => toFeedDomain(article)),
