@@ -93,7 +93,7 @@ export class CommentsService {
 
     if (comment.articleId !== article.id) {
       throw new RealWorldError(StatusCodes.NOT_FOUND, {
-        comment: ['does not belong to article'],
+        comment: ['not found in article'],
       });
     }
 
