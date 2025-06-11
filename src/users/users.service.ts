@@ -22,13 +22,35 @@ export class UsersService {
     return toResponse(domainUser);
   }
 
+  private async isEmailTaken(email: string) {
+    const userWithEmail = await this.repository.findByEmail(email);
+    return userWithEmail !== null;
+  }
+
+  private async isUsernameTaken(username: string) {
+    const userWithUsername = await this.repository.findByUsername(username);
+    return userWithUsername !== null;
+  }
+
   async createUser(input: CreateUserInput) {
+    if (await this.isEmailTaken(input.email)) {
+      throw new RealWorldError(StatusCodes.UNPROCESSABLE_ENTITY, {
+        'user.email': ['already taken'],
+      });
+    }
+
+    if (await this.isUsernameTaken(input.username)) {
+      throw new RealWorldError(StatusCodes.UNPROCESSABLE_ENTITY, {
+        'user.username': ['already taken'],
+      });
+    }
+
     const newUser = toNewUserRow(input);
     newUser.password = await Bun.password.hash(newUser.password);
     const createdUser = await this.repository.createUser(newUser);
     if (!createdUser) {
-      throw new RealWorldError(StatusCodes.UNPROCESSABLE_ENTITY, {
-        'user.email or user.username': ['already taken'],
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        user: ['was not created'],
       });
     }
     const token = await this.authService.generateToken(createdUser);
@@ -48,6 +70,18 @@ export class UsersService {
       if (userWithEmail) {
         throw new RealWorldError(StatusCodes.UNPROCESSABLE_ENTITY, {
           'user.email': ['already taken'],
+        });
+      }
+    }
+
+    // Check if username is taken
+    if (input.username && input.username !== currentUser.username) {
+      const userWithUsername = await this.repository.findByUsername(
+        input.username,
+      );
+      if (userWithUsername) {
+        throw new RealWorldError(StatusCodes.UNPROCESSABLE_ENTITY, {
+          'user.username': ['already taken'],
         });
       }
     }
