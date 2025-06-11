@@ -65,6 +65,8 @@ export const setupApp = () => {
         swaggerOptions: {
           persistAuthorization: true,
         },
+        // We must use 1.28.34 because 1.29.1 and up cause this issue: https://github.com/scalar/scalar/issues/5825
+        scalarVersion: '1.28.34',
       }),
     )
     .group('/api', (app) =>
