@@ -15,7 +15,7 @@ import { type Static, Type } from '@sinclair/typebox';
  */
 export const ArticleFeedQueryDto = Type.Object({
   limit: Type.Optional(
-    Type.Number({
+    Type.Integer({
       minimum: MIN_LIMIT,
       maximum: MAX_LIMIT,
       default: DEFAULT_LIMIT,
@@ -23,7 +23,7 @@ export const ArticleFeedQueryDto = Type.Object({
     }),
   ),
   offset: Type.Optional(
-    Type.Number({
+    Type.Integer({
       minimum: MIN_OFFSET,
       default: DEFAULT_OFFSET,
       description: `Number of items to skip (at least ${MIN_OFFSET}, defaults to ${DEFAULT_OFFSET})`,
