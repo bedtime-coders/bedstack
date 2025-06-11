@@ -72,7 +72,7 @@ export class UsersService {
     }
     if (!(await Bun.password.verify(password, user.password))) {
       throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
-        user: ['invalid password'],
+        'user.password': ['invalid'],
       });
     }
     const token = await this.authService.generateToken(user);
