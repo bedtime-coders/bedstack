@@ -6,6 +6,7 @@ export class RealWorldError extends Error {
     public statusCode: number,
     public errors: Record<string, string[]>,
   ) {
-    super(errors.toString());
+    super(JSON.stringify(errors));
+    this.name = 'RealWorldError';
   }
 }
