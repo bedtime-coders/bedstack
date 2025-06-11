@@ -3,7 +3,7 @@
  */
 export class RealWorldError extends Error {
   constructor(
-    public statusCode: number,
+    public status: number,
     public errors: Record<string, string[]>,
   ) {
     super(JSON.stringify(errors));

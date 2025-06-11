@@ -1,4 +1,3 @@
-import { isHttpError } from '@/common/errors';
 import { RealWorldError } from '@/common/errors';
 import type { UserRow } from '@/users/interfaces';
 import { Type } from '@sinclair/typebox';
@@ -104,7 +103,10 @@ export class AuthService {
       return user.id;
     } catch (error) {
       // if it's an auth error, return undefined
-      if (isHttpError(error) && error.code === StatusCodes.UNAUTHORIZED)
+      if (
+        error instanceof RealWorldError &&
+        error.status === StatusCodes.UNAUTHORIZED
+      )
         return undefined;
       throw error;
     }

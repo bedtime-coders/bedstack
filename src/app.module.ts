@@ -23,7 +23,7 @@ export const setupApp = () => {
     .onError(({ error, code, set }) => {
       // Manually thrown errors
       if (error instanceof RealWorldError) {
-        set.status = error.statusCode;
+        set.status = error.status;
         return pick(error, ['errors']);
       }
       // Elysia validation errors (TypeBox based)

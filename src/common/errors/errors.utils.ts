@@ -1,14 +1,5 @@
 import type { NotFoundError, ValidationError } from 'elysia';
 
-export function isHttpError(err: unknown): err is { code: number } {
-  return (
-    typeof err === 'object' &&
-    err !== null &&
-    'code' in err &&
-    typeof err.code === 'number'
-  );
-}
-
 // Defined temporarily until Elysia exports the type
 type ElysiaCustomStatusResponse = {
   code: number;
