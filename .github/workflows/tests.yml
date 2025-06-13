@@ -83,7 +83,7 @@ jobs:
       - name: Setup test database
         run: |
           # Run migrations and seed
-          bun run db:push --accept-data-loss
+          bun run db:migrate
           bun run db:seed
       - name: Start server in background
         run: bun run dev &
