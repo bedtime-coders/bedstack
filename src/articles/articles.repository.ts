@@ -222,49 +222,48 @@ export class ArticlesRepository {
     return await this.findById(updatedArticle.id);
   }
 
-  async deleteArticle(slug: string, currentUserId: number): Promise<void> {
-    await this.db
+  async deleteArticle(slug: string, currentUserId: number): Promise<boolean> {
+    const deletedArticles = await this.db
       .delete(articles)
-      .where(
-        and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)),
-      );
+      .where(and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)))
+      .returning({ id: articles.id });
+    return deletedArticles.length > 0;
   }
 
-  async favoriteArticle(slug: string, currentUserId: number) {
+  async favoriteArticle(slug: string, currentUserId: number): Promise<boolean> {
     // TODO: Use a transaction to optimize from 1-3 ops to 1 op
     const article = await this.findBySlug(slug);
     if (!article) {
-      return null;
+      return false;
     }
 
     // Insert the favorite and get the updated article state
-    await this.db
+    const result = await this.db
       .insert(favoriteArticles)
       .values({ articleId: article.id, userId: currentUserId })
-      .onConflictDoNothing();
+      .onConflictDoNothing()
+      .returning({ articleId: favoriteArticles.articleId });
 
-    // Return the updated article state
-    return this.findBySlug(slug);
+    return result.length > 0;
   }
 
-  async unfavoriteArticle(slug: string, currentUserId: number) {
-    // TODO: Use a transaction to optimize from 1-3 ops to 1 op
+  async unfavoriteArticle(
+    slug: string,
+    currentUserId: number,
+  ): Promise<boolean> {
     const article = await this.findBySlug(slug);
-    if (!article) {
-      return null;
-    }
+    if (!article) return false;
 
-    // Delete the favorite and get the updated article state
-    await this.db
+    const result = await this.db
       .delete(favoriteArticles)
       .where(
         and(
           eq(favoriteArticles.articleId, article.id),
           eq(favoriteArticles.userId, currentUserId),
         ),
-      );
+      )
+      .returning({ articleId: favoriteArticles.articleId });
 
-    // Return the updated article state
-    return this.findBySlug(slug);
+    return result.length > 0;
   }
 }

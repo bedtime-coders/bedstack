@@ -197,7 +197,12 @@ export class ArticlesService {
       });
     }
 
-    await this.repository.deleteArticle(slug, currentUserId);
+    const deleted = await this.repository.deleteArticle(slug, currentUserId);
+    if (!deleted) {
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        article: ['unexpectedly failed to delete'],
+      });
+    }
   }
 
   async favoriteArticle(slug: string, currentUserId: number) {
@@ -209,13 +214,24 @@ export class ArticlesService {
   }
 
   async unfavoriteArticle(slug: string, currentUserId: number) {
-    const article = await this.repository.unfavoriteArticle(
-      slug,
-      currentUserId,
-    );
+    const article = await this.repository.findBySlug(slug);
     if (!article) {
       throw new NotFoundError('article');
     }
-    return toDomain(article, { currentUserId });
+    const deleted = await this.repository.unfavoriteArticle(
+      slug,
+      currentUserId,
+    );
+    if (!deleted) {
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        article: ['unexpectedly failed to unfavorite'],
+      });
+    }
+    // return the updated article
+    const updatedArticle = await this.repository.findBySlug(slug);
+    if (!updatedArticle) {
+      throw new NotFoundError('article');
+    }
+    return toDomain(updatedArticle, { currentUserId });
   }
 }

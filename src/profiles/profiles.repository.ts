@@ -54,7 +54,7 @@ export class ProfilesRepository {
   async unfollowUser(
     currentUserId: number,
     userToUnfollow: number,
-  ): Promise<UserFollowRow | undefined> {
+  ): Promise<boolean> {
     const result = await this.db
       .delete(userFollows)
       .where(
@@ -63,8 +63,8 @@ export class ProfilesRepository {
           eq(userFollows.followerId, currentUserId),
         ),
       )
-      .returning();
-    return result[0];
+      .returning({ id: userFollows.followedId });
+    return result.length > 0;
   }
 
   async findFollowByUsers(
