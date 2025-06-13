@@ -10,7 +10,7 @@ describe('ProfilesService', () => {
       super({} as Database);
     }
 
-    override async findByUsername() {
+    override async findByUsername(_targetUsername: string) {
       return null;
     }
   }
