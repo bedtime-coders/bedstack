@@ -57,6 +57,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
+      NODE_ENV: test
       POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
@@ -81,7 +82,8 @@ jobs:
         run: bun install
       - name: Setup test database
         run: |
-          bun run db:push
+          # Run migrations and seed
+          bun run db:push --accept-data-loss
           bun run db:seed
       - name: Start server in background
         run: bun run dev &
