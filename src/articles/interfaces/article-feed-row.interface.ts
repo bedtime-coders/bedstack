@@ -1,5 +1,3 @@
-import type { ProfileRow } from '@/profiles/interfaces';
-
 export type ArticleFeedRow = {
   slug: string;
   title: string;
