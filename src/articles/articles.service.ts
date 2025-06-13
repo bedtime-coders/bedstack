@@ -214,7 +214,10 @@ export class ArticlesService {
   }
 
   async unfavoriteArticle(slug: string, currentUserId: number) {
-    const article = await this.repository.findBySlug(slug);
+    const article = await this.repository.unfavoriteArticle(
+      slug,
+      currentUserId,
+    );
     if (!article) {
       throw new NotFoundError('article');
     }
