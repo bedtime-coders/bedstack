@@ -36,6 +36,83 @@ jobs:
         run: bun install
       - name: Build
         run: bun run build
-      # Uncomment this when tests are added
-      # - name: Run Tests
-      #   run: bun test
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        bun: ['1.1.43', 'latest']
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: bedstack_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      NODE_ENV: test
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bedstack_test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/bedstack_test
+      JWT_SECRET: test-secret
+      JWT_ALGORITHM: HS256
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.bun }}-bun-
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ matrix.bun }}
+      - name: Install dependencies
+        run: bun install
+      - name: Setup test database
+        run: |
+          # Run migrations and seed
+          bun run db:migrate
+          bun run db:seed
+      - name: Start server in background
+        run: bun run dev &
+      - name: Wait for server
+        run: |
+          timeout 30s bash -c 'until curl -s http://localhost:3000/api/health > /dev/null; do sleep 1; done'
+      - name: Run API Tests
+        run: bun run test:api
+      - name: Run Unit Tests
+        run: bun run test:unit
+
+  test-typesafety:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        bun: ['1.1.43', 'latest']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.bun }}-bun-
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ matrix.bun }}
+      - name: Install dependencies
+        run: bun install
+      - name: Run Type Safety Tests
+        run: bun run typecheck

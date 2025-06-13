@@ -10,7 +10,10 @@
     "dev": "bun run --watch src/main.ts",
     "build": "./scripts/build.sh",
     "preview": "./server",
-    "test": "APIURL=http://localhost:3000/api ./scripts/api-tests/run-api-tests.sh",
+    "test:api": "cross-env APIURL=http://localhost:3000/api ./scripts/api-tests/run-api-tests.sh",
+    "test:unit": "bun test",
+    "test": "bun test:api && bun test:unit",
+    "typecheck": "tsc --noEmit",
     "fix": "biome check --fix",
     "check": "biome check",
     "check:errors": "biome check --diagnostic-level=error",
@@ -38,9 +41,10 @@
     "@faker-js/faker": "^9.6.0",
     "@types/node": "^22.13.10",
     "bun-types": "latest",
+    "cross-env": "^7.0.3",
     "drizzle-kit": "^0.31.0",
     "pg": "^8.13.3",
-    "vitepress": "^1.6.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3",
+    "vitepress": "^1.6.3"
   }
 }
