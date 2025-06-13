@@ -65,12 +65,8 @@
           "name": "articles_author_id_users_id_fk",
           "tableFrom": "articles",
           "tableTo": "users",
-          "columnsFrom": [
-            "author_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["author_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -80,9 +76,7 @@
         "articles_slug_unique": {
           "name": "articles_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -126,12 +120,8 @@
           "name": "favorite_articles_article_id_articles_id_fk",
           "tableFrom": "favorite_articles",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -139,12 +129,8 @@
           "name": "favorite_articles_user_id_users_id_fk",
           "tableFrom": "favorite_articles",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -152,10 +138,7 @@
       "compositePrimaryKeys": {
         "favorite_articles_article_id_user_id_pk": {
           "name": "favorite_articles_article_id_user_id_pk",
-          "columns": [
-            "article_id",
-            "user_id"
-          ]
+          "columns": ["article_id", "user_id"]
         }
       },
       "uniqueConstraints": {},
@@ -212,12 +195,8 @@
           "name": "comments_article_id_articles_id_fk",
           "tableFrom": "comments",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -225,12 +204,8 @@
           "name": "comments_author_id_users_id_fk",
           "tableFrom": "comments",
           "tableTo": "users",
-          "columnsFrom": [
-            "author_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["author_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -278,12 +253,8 @@
           "name": "article_tags_article_id_articles_id_fk",
           "tableFrom": "article_tags",
           "tableTo": "articles",
-          "columnsFrom": [
-            "article_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["article_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -291,12 +262,8 @@
           "name": "article_tags_tag_name_tags_name_fk",
           "tableFrom": "article_tags",
           "tableTo": "tags",
-          "columnsFrom": [
-            "tag_name"
-          ],
-          "columnsTo": [
-            "name"
-          ],
+          "columnsFrom": ["tag_name"],
+          "columnsTo": ["name"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -304,10 +271,7 @@
       "compositePrimaryKeys": {
         "article_tags_article_id_tag_name_pk": {
           "name": "article_tags_article_id_tag_name_pk",
-          "columns": [
-            "article_id",
-            "tag_name"
-          ]
+          "columns": ["article_id", "tag_name"]
         }
       },
       "uniqueConstraints": {},
@@ -385,12 +349,8 @@
           "name": "user_follows_followed_id_users_id_fk",
           "tableFrom": "user_follows",
           "tableTo": "users",
-          "columnsFrom": [
-            "followed_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["followed_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -398,12 +358,8 @@
           "name": "user_follows_follower_id_users_id_fk",
           "tableFrom": "user_follows",
           "tableTo": "users",
-          "columnsFrom": [
-            "follower_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["follower_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -411,10 +367,7 @@
       "compositePrimaryKeys": {
         "user_follows_followed_id_follower_id_pk": {
           "name": "user_follows_followed_id_follower_id_pk",
-          "columns": [
-            "followed_id",
-            "follower_id"
-          ]
+          "columns": ["followed_id", "follower_id"]
         }
       },
       "uniqueConstraints": {},
@@ -486,16 +439,12 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "username"
-          ]
+          "columns": ["username"]
         }
       },
       "policies": {},
