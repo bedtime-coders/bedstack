@@ -1,8 +1,8 @@
 import { describe, expect, it, mock } from 'bun:test';
-import { ProfilesService } from './profiles.service';
-import { ProfilesRepository } from './profiles.repository';
-import { UsersRepository } from '@users/users.repository';
 import type { Database } from '@/database.providers';
+import { UsersRepository } from '@users/users.repository';
+import { ProfilesRepository } from './profiles.repository';
+import { ProfilesService } from './profiles.service';
 
 describe('ProfilesService', () => {
   class MockProfilesRepository extends ProfilesRepository {

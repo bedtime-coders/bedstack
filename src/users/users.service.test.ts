@@ -1,9 +1,9 @@
 import { describe, expect, it, mock } from 'bun:test';
-import { UsersService } from './users.service';
+import type { Database } from '@/database.providers';
+import type { AuthService } from '@auth/auth.service';
 import { UsersRepository } from './users.repository';
 import type { UserInDb } from './users.schema';
-import type { AuthService } from '@auth/auth.service';
-import type { Database } from '@/database.providers';
+import { UsersService } from './users.service';
 
 describe('UsersService', () => {
   const mockUser: UserInDb = {

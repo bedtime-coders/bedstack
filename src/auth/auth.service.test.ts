@@ -1,6 +1,6 @@
 import { describe, expect, it, mock } from 'bun:test';
-import { AuthService } from './auth.service';
 import { AuthenticationError } from '@errors';
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   const service = new AuthService();

@@ -1,7 +1,7 @@
 import { describe, expect, it, mock } from 'bun:test';
-import { TagsService } from './tags.service';
-import { TagsRepository } from './tags.repository';
 import type { Database } from '@/database.providers';
+import { TagsRepository } from './tags.repository';
+import { TagsService } from './tags.service';
 
 describe('TagsService', () => {
   class MockTagsRepository extends TagsRepository {
