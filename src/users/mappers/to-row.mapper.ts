@@ -10,8 +10,8 @@ export function toNewUserRow(input: CreateUserInput): NewUserRow {
     email: input.email,
     username: input.username,
     password: input.password,
-    bio: input.bio ?? '',
-    image: input.image ?? '',
+    bio: input.bio ?? null,
+    image: input.image ?? null,
   };
 }
 
@@ -20,7 +20,7 @@ export function toUpdateUserRow(input: UpdateUserInput): UpdateUserRow {
     ...(input.email !== undefined && { email: input.email }),
     ...(input.username !== undefined && { username: input.username }),
     ...(input.password !== undefined && { password: input.password }),
-    ...(input.bio !== undefined && { bio: input.bio ?? '' }),
-    ...(input.image !== undefined && { image: input.image ?? '' }),
+    ...(input.bio !== undefined && { bio: input.bio ?? null }),
+    ...(input.image !== undefined && { image: input.image ?? null }),
   };
 }
