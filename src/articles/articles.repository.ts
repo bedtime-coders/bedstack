@@ -247,8 +247,7 @@ export class ArticlesRepository {
     await this.db
       .insert(favoriteArticles)
       .values({ articleId: article.id, userId: currentUserId })
-      .onConflictDoNothing()
-      .returning({ articleId: favoriteArticles.articleId });
+      .onConflictDoNothing();
 
     return this.findBySlug(slug);
   }
@@ -264,8 +263,7 @@ export class ArticlesRepository {
           eq(favoriteArticles.articleId, article.id),
           eq(favoriteArticles.userId, currentUserId),
         ),
-      )
-      .returning({ articleId: favoriteArticles.articleId });
+      );
 
     return this.findBySlug(slug);
   }
