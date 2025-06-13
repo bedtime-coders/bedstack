@@ -13,6 +13,7 @@
     "test:api": "APIURL=http://localhost:3000/api ./scripts/api-tests/run-api-tests.sh",
     "test:unit": "bun test",
     "test": "bun test:api && bun test:unit",
+    "typecheck": "tsc --noEmit",
     "fix": "biome check --fix",
     "check": "biome check",
     "check:errors": "biome check --diagnostic-level=error",
