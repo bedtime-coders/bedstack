@@ -43,18 +43,18 @@ export class ProfilesRepository {
   async followUser(
     currentUserId: number,
     userToFollow: number,
-  ): Promise<UserFollowRow> {
-    const result = await this.db
+  ): Promise<UserFollowRow | null> {
+    const [result] = await this.db
       .insert(userFollows)
       .values({ followedId: userToFollow, followerId: currentUserId })
       .returning();
-    return result[0];
+    return result ?? null;
   }
 
   async unfollowUser(
     currentUserId: number,
     userToUnfollow: number,
-  ): Promise<UserFollowRow | undefined> {
+  ): Promise<UserFollowRow | null> {
     const result = await this.db
       .delete(userFollows)
       .where(
@@ -64,7 +64,7 @@ export class ProfilesRepository {
         ),
       )
       .returning();
-    return result[0];
+    return result[0] ?? null;
   }
 
   async findFollowByUsers(
