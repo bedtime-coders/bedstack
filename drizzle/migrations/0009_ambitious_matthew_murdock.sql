@@ -1,0 +1,4 @@
+ALTER TABLE "comments" ALTER COLUMN "created_at" SET DEFAULT now();
+ALTER TABLE "comments" ALTER COLUMN "updated_at" SET DEFAULT now();
+ALTER TABLE "users" ALTER COLUMN "bio" DROP NOT NULL;
+ALTER TABLE "users" ALTER COLUMN "image" DROP NOT NULL;

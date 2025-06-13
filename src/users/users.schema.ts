@@ -12,10 +12,10 @@ import {
 export const users = pgTable('users', {
   id: serial('id').primaryKey().notNull(),
   email: text('email').notNull().unique(),
-  bio: text('bio').default('').notNull(),
-  image: text('image')
-    .default('https://api.realworld.io/images/smiley-cyrus.jpg')
-    .notNull(),
+  bio: text('bio').default(''),
+  image: text('image').default(
+    'https://api.realworld.io/images/smiley-cyrus.jpg',
+  ),
   password: text('password').notNull(),
   username: text('username').notNull().unique(),
   createdAt: date('created_at').default(sql`CURRENT_DATE`).notNull(),
