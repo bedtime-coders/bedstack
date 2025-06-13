@@ -80,6 +80,10 @@ export class AuthService {
       });
 
     const token = tokenParts?.[1];
+    if (!token)
+      throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
+        token: ['is missing'],
+      });
     const userToken = await this.verifyToken(token);
     return userToken.payload.user;
   };
