@@ -21,14 +21,11 @@ export class ProfilesRepository {
   }
 
   async findProfileByUserId(targetUserId: number): Promise<ProfileRow | null> {
-    const result = await this.db.query.users.findMany({
+    const [result] = await this.db.query.users.findMany({
       where: eq(users.id, targetUserId),
       with: { followers: true },
     });
-    if (result.length === 0) {
-      return null;
-    }
-    return result[0];
+    return result ?? null;
   }
 
   async findFollowedUserIds(currentUserId: number): Promise<number[]> {
