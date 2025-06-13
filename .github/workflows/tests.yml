@@ -56,6 +56,15 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bedstack_test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/bedstack_test
+      JWT_SECRET: test-secret
+      JWT_ALGORITHM: HS256
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -71,23 +80,15 @@ jobs:
       - name: Install dependencies
         run: bun install
       - name: Setup test database
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/bedstack_test
         run: |
           bun run db:push
           bun run db:seed
       - name: Start server in background
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/bedstack_test
-          JWT_SECRET: test-secret
-          JWT_ALGORITHM: HS256
         run: bun run dev &
       - name: Wait for server
         run: |
           timeout 30s bash -c 'until curl -s http://localhost:3000/api/health > /dev/null; do sleep 1; done'
       - name: Run API Tests
-        env:
-          APIURL: http://localhost:3000/api
         run: bun run test:api
       - name: Run Unit Tests
         run: bun run test:unit
