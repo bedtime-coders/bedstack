@@ -60,6 +60,7 @@ export const setupApp = () => {
         .use(usersPlugin)
         .use(profilesPlugin)
         .use(articlesPlugin)
-        .use(tagsPlugin),
+        .use(tagsPlugin)
+        .get('/health', () => 'OK'),
     );
 };
