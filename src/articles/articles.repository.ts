@@ -230,40 +230,38 @@ export class ArticlesRepository {
     return deletedArticles.length > 0;
   }
 
-  async favoriteArticle(slug: string, currentUserId: number): Promise<boolean> {
+  async favoriteArticle(slug: string, currentUserId: number) {
     // TODO: Use a transaction to optimize from 1-3 ops to 1 op
     const article = await this.findBySlug(slug);
     if (!article) {
-      return false;
+      return null;
     }
 
     // Insert the favorite and get the updated article state
-    const result = await this.db
+    await this.db
       .insert(favoriteArticles)
       .values({ articleId: article.id, userId: currentUserId })
-      .onConflictDoNothing()
-      .returning({ articleId: favoriteArticles.articleId });
+      .onConflictDoNothing();
 
-    return result.length > 0;
+    return this.findBySlug(slug);
   }
 
-  async unfavoriteArticle(
-    slug: string,
-    currentUserId: number,
-  ): Promise<boolean> {
+  async unfavoriteArticle(slug: string, currentUserId: number) {
+    // TODO: Use a transaction to optimize from 1-3 ops to 1 op
     const article = await this.findBySlug(slug);
-    if (!article) return false;
+    if (!article) {
+      return null;
+    }
 
-    const result = await this.db
+    await this.db
       .delete(favoriteArticles)
       .where(
         and(
           eq(favoriteArticles.articleId, article.id),
           eq(favoriteArticles.userId, currentUserId),
         ),
-      )
-      .returning({ articleId: favoriteArticles.articleId });
+      );
 
-    return result.length > 0;
+    return this.findBySlug(slug);
   }
 }
