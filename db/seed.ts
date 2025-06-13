@@ -1,29 +1,44 @@
 import { exit } from 'node:process';
+import { parseArgs } from 'node:util';
+import {
+  articles,
+  comments,
+  favoriteArticles,
+} from '@/articles/articles.model';
 import { db } from '@/database.providers';
-import { faker } from '@faker-js/faker';
-import { users } from '@users/users.model';
+import { articleTags, tags } from '@/tags/tags.model';
+import { userFollows, users } from '@/users/users.model';
+import { reset, seed } from 'drizzle-seed';
 
-console.log('Truncating the user database');
-await db.delete(users);
-console.log('The database is empty: ', await db.select().from(users));
+const { values } = parseArgs({
+  args: Bun.argv,
+  options: {
+    reset: { type: 'boolean', default: false },
+  },
+  strict: true,
+  allowPositionals: true,
+});
 
-// TODO: consider using drizzle seed
-// https://orm.drizzle.team/docs/seed-overview
-for (let i = 0; i < 10; i++) {
-  const data = {
-    id: faker.number.int({ min: 1, max: 2147483647 }),
-    email: faker.internet.email(),
-    username: faker.internet.username(),
-    password: await Bun.password.hash(faker.internet.password()),
-    bio: faker.lorem.text(),
-    image: faker.image.url(),
-  };
-  console.log('Upserting user:', data);
-
-  await db.insert(users).values(data);
-  console.log('User upserted');
+if (values.reset) {
+  await reset(db, {
+    users,
+    articles,
+    tags,
+    comments,
+    userFollows,
+    favoriteArticles,
+    articleTags,
+  });
 }
-const userResult = await db.select().from(users);
-console.log('User result: ', userResult);
+
+await seed(db, {
+  users,
+  articles,
+  tags,
+  comments,
+  userFollows,
+  favoriteArticles,
+  articleTags,
+});
 
 exit(0);

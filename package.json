@@ -43,6 +43,7 @@
     "bun-types": "latest",
     "cross-env": "^7.0.3",
     "drizzle-kit": "^0.31.0",
+    "drizzle-seed": "^0.3.1",
     "pg": "^8.13.3",
     "typescript": "^5.8.3",
     "vitepress": "^1.6.3"
