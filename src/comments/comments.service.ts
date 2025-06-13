@@ -21,13 +21,14 @@ export class CommentsService {
   ): Promise<IComment> {
     const article = await this.articlesService.findBySlug(articleSlug, null);
 
-    const commentData: NewCommentRow = toNewCommentRow(
-      commentBody,
-      article.id,
-      userId,
-    );
+    const commentData = toNewCommentRow(commentBody, article.id, userId);
 
     const comment = await this.commentsRepository.create(commentData);
+    if (!comment) {
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        comment: ['unexpectedly failed to create'],
+      });
+    }
     const authorProfile = await this.profilesService.findProfileByUserId(
       userId,
       comment.authorId,

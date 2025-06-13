@@ -10,25 +10,19 @@ export class ProfilesRepository {
   async findProfileByUsername(
     targetUsername: string,
   ): Promise<ProfileRow | null> {
-    const result = await this.db.query.users.findMany({
+    const [result] = await this.db.query.users.findMany({
       where: eq(users.username, targetUsername),
       with: { followers: true },
     });
-    if (result.length === 0) {
-      return null;
-    }
-    return result[0];
+    return result ?? null;
   }
 
   async findProfileByUserId(targetUserId: number): Promise<ProfileRow | null> {
-    const result = await this.db.query.users.findMany({
+    const [result] = await this.db.query.users.findMany({
       where: eq(users.id, targetUserId),
       with: { followers: true },
     });
-    if (result.length === 0) {
-      return null;
-    }
-    return result[0];
+    return result ?? null;
   }
 
   async findFollowedUserIds(currentUserId: number): Promise<number[]> {
@@ -43,19 +37,20 @@ export class ProfilesRepository {
   async followUser(
     currentUserId: number,
     userToFollow: number,
-  ): Promise<UserFollowRow> {
-    const result = await this.db
+  ): Promise<UserFollowRow | null> {
+    const [result] = await this.db
       .insert(userFollows)
       .values({ followedId: userToFollow, followerId: currentUserId })
+      .onConflictDoNothing()
       .returning();
-    return result[0];
+    return result ?? null;
   }
 
   async unfollowUser(
     currentUserId: number,
     userToUnfollow: number,
-  ): Promise<UserFollowRow | undefined> {
-    const result = await this.db
+  ): Promise<UserFollowRow | null> {
+    const [result] = await this.db
       .delete(userFollows)
       .where(
         and(
@@ -64,7 +59,7 @@ export class ProfilesRepository {
         ),
       )
       .returning();
-    return result[0];
+    return result ?? null;
   }
 
   async findFollowByUsers(
