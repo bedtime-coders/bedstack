@@ -3,8 +3,8 @@ import type { IComment } from '../interfaces/comment.interface';
 
 type ToCommentsDomainAuthor = {
   username: string;
-  bio: string;
-  image: string;
+  bio: string | null;
+  image: string | null;
 };
 
 /**

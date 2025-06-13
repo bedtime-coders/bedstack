@@ -13,8 +13,8 @@ export const ArticleResponseDto = Type.Object({
     favoritesCount: Type.Number(),
     author: Type.Object({
       username: Type.String(),
-      bio: Type.String(),
-      image: Type.String(),
+      bio: Type.Union([Type.Null(), Type.String()]),
+      image: Type.Union([Type.Null(), Type.String()]),
       following: Type.Boolean(),
     }),
   }),

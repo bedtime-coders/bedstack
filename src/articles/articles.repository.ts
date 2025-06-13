@@ -150,7 +150,7 @@ export class ArticlesRepository {
 
     return {
       articles: limitedResults,
-      articlesCount: resultsCount[0].count,
+      articlesCount: resultsCount[0]?.count ?? 0,
     };
   }
 
@@ -195,6 +195,9 @@ export class ArticlesRepository {
     const results = await this.db.insert(articles).values(article).returning();
 
     const newArticle = results[0];
+    if (!newArticle) {
+      return null;
+    }
     return await this.findById(newArticle.id);
   }
 
@@ -219,6 +222,9 @@ export class ArticlesRepository {
       .returning();
 
     const updatedArticle = results[0];
+    if (!updatedArticle) {
+      return null;
+    }
     return await this.findById(updatedArticle.id);
   }
 

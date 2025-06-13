@@ -11,7 +11,7 @@ export class CommentsRepository {
       .insert(comments)
       .values(commentData)
       .returning();
-    return comment;
+    return comment ?? null;
   }
 
   /**
