@@ -10,14 +10,11 @@ export class ProfilesRepository {
   async findProfileByUsername(
     targetUsername: string,
   ): Promise<ProfileRow | null> {
-    const result = await this.db.query.users.findMany({
+    const [result] = await this.db.query.users.findMany({
       where: eq(users.username, targetUsername),
       with: { followers: true },
     });
-    if (result.length === 0) {
-      return null;
-    }
-    return result[0];
+    return result ?? null;
   }
 
   async findProfileByUserId(targetUserId: number): Promise<ProfileRow | null> {
