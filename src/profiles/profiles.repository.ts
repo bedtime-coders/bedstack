@@ -33,19 +33,19 @@ export class ProfilesRepository {
 
     return results.map((r) => r.followedId);
   }
-
+  
   async followUser(
     currentUserId: number,
     userToFollow: number,
-  ): Promise<UserFollowRow | null> {
-    const [result] = await this.db
+  ): Promise<boolean> {
+    const result = await this.db
       .insert(userFollows)
       .values({ followedId: userToFollow, followerId: currentUserId })
       .onConflictDoNothing()
-      .returning();
-    return result ?? null;
+      .returning({ id: userFollows.followedId });
+    return result.length > 0;
   }
-
+  
   async unfollowUser(
     currentUserId: number,
     userToUnfollow: number,
