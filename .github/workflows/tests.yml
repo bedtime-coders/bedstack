@@ -13,6 +13,7 @@ on:
       - main
     paths-ignore:
       - 'docs/**'
+  workflow_dispatch:
 
 jobs:
   test-build:
