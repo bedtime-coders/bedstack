@@ -33,7 +33,7 @@ export class ProfilesRepository {
 
     return results.map((r) => r.followedId);
   }
-  
+
   async followUser(
     currentUserId: number,
     userToFollow: number,
@@ -45,7 +45,7 @@ export class ProfilesRepository {
       .returning({ id: userFollows.followedId });
     return result.length > 0;
   }
-  
+
   async unfollowUser(
     currentUserId: number,
     userToUnfollow: number,
