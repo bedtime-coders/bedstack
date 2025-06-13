@@ -55,9 +55,11 @@ export class CommentsRepository {
     return result;
   }
 
-  async delete(commentId: number, authorId: number) {
-    return await this.db
+  async delete(commentId: number, authorId: number): Promise<boolean> {
+    const deletedComments = await this.db
       .delete(comments)
-      .where(and(eq(comments.id, commentId), eq(comments.authorId, authorId)));
+      .where(and(eq(comments.id, commentId), eq(comments.authorId, authorId)))
+      .returning({ id: comments.id });
+    return deletedComments.length > 0;
   }
 }

@@ -228,12 +228,12 @@ export class ArticlesRepository {
     return await this.findById(updatedArticle.id);
   }
 
-  async deleteArticle(slug: string, currentUserId: number): Promise<void> {
-    await this.db
+  async deleteArticle(slug: string, currentUserId: number): Promise<boolean> {
+    const deletedArticles = await this.db
       .delete(articles)
-      .where(
-        and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)),
-      );
+      .where(and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)))
+      .returning({ id: articles.id });
+    return deletedArticles.length > 0;
   }
 
   async favoriteArticle(slug: string, currentUserId: number) {
@@ -249,18 +249,14 @@ export class ArticlesRepository {
       .values({ articleId: article.id, userId: currentUserId })
       .onConflictDoNothing();
 
-    // Return the updated article state
     return this.findBySlug(slug);
   }
 
   async unfavoriteArticle(slug: string, currentUserId: number) {
     // TODO: Use a transaction to optimize from 1-3 ops to 1 op
     const article = await this.findBySlug(slug);
-    if (!article) {
-      return null;
-    }
+    if (!article) return null;
 
-    // Delete the favorite and get the updated article state
     await this.db
       .delete(favoriteArticles)
       .where(
@@ -270,7 +266,6 @@ export class ArticlesRepository {
         ),
       );
 
-    // Return the updated article state
     return this.findBySlug(slug);
   }
 }

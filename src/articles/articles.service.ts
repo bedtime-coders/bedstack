@@ -197,7 +197,12 @@ export class ArticlesService {
       });
     }
 
-    await this.repository.deleteArticle(slug, currentUserId);
+    const deleted = await this.repository.deleteArticle(slug, currentUserId);
+    if (!deleted) {
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        article: ['unexpectedly failed to delete'],
+      });
+    }
   }
 
   async favoriteArticle(slug: string, currentUserId: number) {
