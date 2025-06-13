@@ -95,7 +95,7 @@ export class ArticlesService {
     // Check if any article exists with this title
     const existingArticle = await this.repository.findBySlug(newArticle.slug);
     if (existingArticle) {
-      throw new RealWorldError(StatusCodes.BAD_REQUEST, {
+      throw new RealWorldError(StatusCodes.CONFLICT, {
         article: ['slug already exists'],
       });
     }
@@ -148,7 +148,7 @@ export class ArticlesService {
       const newSlug = slugify(article.title);
       const articleWithNewSlug = await this.repository.findBySlug(newSlug);
       if (articleWithNewSlug && articleWithNewSlug.id !== existingArticle.id) {
-        throw new RealWorldError(StatusCodes.BAD_REQUEST, {
+        throw new RealWorldError(StatusCodes.CONFLICT, {
           article: ['slug already exists'],
         });
       }
