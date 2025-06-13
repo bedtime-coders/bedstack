@@ -86,13 +86,13 @@ export class UsersService {
       }
     }
 
-    const updateUser = toUpdateUserRow(input);
-    if (updateUser.password) {
-      updateUser.password = await Bun.password.hash(updateUser.password);
+    const userUpdate = toUpdateUserRow(input);
+    if (userUpdate.password) {
+      userUpdate.password = await Bun.password.hash(userUpdate.password);
     }
     const updatedUser = await this.repository.updateUser(
       currentUser.id,
-      updateUser,
+      userUpdate,
     );
     const token = await this.authService.generateToken(updatedUser);
     const domainUser = toDomain(updatedUser, token);
