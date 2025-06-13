@@ -34,13 +34,13 @@ export class UsersService {
 
   async createUser(input: CreateUserInput) {
     if (await this.isEmailTaken(input.email)) {
-      throw new RealWorldError(StatusCodes.UNPROCESSABLE_ENTITY, {
+      throw new RealWorldError(StatusCodes.CONFLICT, {
         'user.email': ['already taken'],
       });
     }
 
     if (await this.isUsernameTaken(input.username)) {
-      throw new RealWorldError(StatusCodes.UNPROCESSABLE_ENTITY, {
+      throw new RealWorldError(StatusCodes.CONFLICT, {
         'user.username': ['already taken'],
       });
     }
@@ -68,7 +68,7 @@ export class UsersService {
     if (input.email && input.email !== currentUser.email) {
       const userWithEmail = await this.repository.findByEmail(input.email);
       if (userWithEmail) {
-        throw new RealWorldError(StatusCodes.UNPROCESSABLE_ENTITY, {
+        throw new RealWorldError(StatusCodes.CONFLICT, {
           'user.email': ['already taken'],
         });
       }
@@ -80,7 +80,7 @@ export class UsersService {
         input.username,
       );
       if (userWithUsername) {
-        throw new RealWorldError(StatusCodes.UNPROCESSABLE_ENTITY, {
+        throw new RealWorldError(StatusCodes.CONFLICT, {
           'user.username': ['already taken'],
         });
       }

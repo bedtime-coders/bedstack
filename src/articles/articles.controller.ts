@@ -103,7 +103,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
       )
       .post(
         '/',
-        async ({ body, request, store }) => {
+        async ({ body, request, store, status }) => {
           const currentUserId = await store.authService.getUserIdFromHeader(
             request.headers,
           );
@@ -111,12 +111,14 @@ export const articlesController = new Elysia().use(setupArticles).group(
             toCreateArticleInput(body),
             currentUserId,
           );
-          return toResponse(article);
+          return status(201, toResponse(article));
         },
         {
           beforeHandle: app.store.authService.requireLogin,
           body: CreateArticleDto,
-          response: ArticleResponseDto,
+          response: {
+            201: ArticleResponseDto,
+          },
           detail: {
             summary: 'Create Article',
             security: [
@@ -153,14 +155,20 @@ export const articlesController = new Elysia().use(setupArticles).group(
       )
       .delete(
         '/:slug',
-        async ({ params, store, request }) => {
+        async ({ params, store, request, set }) => {
           await store.articlesService.deleteArticle(
             params.slug,
             await store.authService.getUserIdFromHeader(request.headers),
           );
+          set.status = 204;
         },
         {
           beforeHandle: app.store.authService.requireLogin,
+          response: {
+            204: t.Void({
+              description: 'No content',
+            }),
+          },
           detail: {
             summary: 'Delete Article',
             security: [

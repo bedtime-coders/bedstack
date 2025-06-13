@@ -17,7 +17,7 @@ export default defineConfig({
   schema: '**/*.schema.ts',
   breakpoints: false,
   dialect: 'postgresql',
-  dbCredentials: dbCredentials,
+  dbCredentials,
   strict: true,
   // Redefine default migrations table and schema for the sake of clarity
   migrations: {

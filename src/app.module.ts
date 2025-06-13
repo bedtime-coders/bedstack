@@ -65,6 +65,7 @@ export const setupApp = () => {
         swaggerOptions: {
           persistAuthorization: true,
         },
+        scalarVersion: '1.31.10',
       }),
     )
     .group('/api', (app) =>
