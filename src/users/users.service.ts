@@ -94,6 +94,11 @@ export class UsersService {
       currentUser.id,
       userUpdate,
     );
+    if (!updatedUser) {
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        user: ['was not updated'],
+      });
+    }
     const token = await this.authService.generateToken(updatedUser);
     const domainUser = toDomain(updatedUser, token);
     return toResponse(domainUser);
