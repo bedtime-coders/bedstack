@@ -1,15 +1,15 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 
-export const LoginUserDto = Type.Object({
-  user: Type.Object({
-    email: Type.String({
+export const LoginUserDto = t.Object({
+  user: t.Object({
+    email: t.String({
       format: 'email',
       minLength: 3,
       maxLength: 255,
       description: 'must be a valid email address',
     }),
-    password: Type.String(),
+    password: t.String(),
   }),
 });
 
-export type LoginUserDto = Static<typeof LoginUserDto>;
+export type LoginUserDto = typeof LoginUserDto.static;

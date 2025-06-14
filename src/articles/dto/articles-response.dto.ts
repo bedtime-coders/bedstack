@@ -1,10 +1,8 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 import { ArticleResponseDto } from './article-response.dto';
 
-export const ArticlesResponseDto = Type.Object({
-  articles: Type.Array(
-    Type.Omit(ArticleResponseDto.properties.article, ['body']),
-  ),
-  articlesCount: Type.Number(),
+export const ArticlesResponseDto = t.Object({
+  articles: t.Array(t.Omit(ArticleResponseDto.properties.article, ['body'])),
+  articlesCount: t.Number(),
 });
-export type ArticlesResponseDto = Static<typeof ArticlesResponseDto>;
+export type ArticlesResponseDto = typeof ArticlesResponseDto.static;

@@ -1,12 +1,12 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 
-export const profileResponseSchema = Type.Object({
-  profile: Type.Object({
-    username: Type.String(),
-    bio: Type.Union([Type.String(), Type.Null()]),
-    image: Type.Union([Type.String(), Type.Null()]),
-    following: Type.Boolean(),
+export const profileResponseSchema = t.Object({
+  profile: t.Object({
+    username: t.String(),
+    bio: t.Union([t.String(), t.Null()]),
+    image: t.Union([t.String(), t.Null()]),
+    following: t.Boolean(),
   }),
 });
 
-export type ProfileResponseDto = Static<typeof profileResponseSchema>;
+export type ProfileResponseDto = typeof profileResponseSchema.static;
