@@ -1,4 +1,4 @@
-import { articlesPlugin } from '@articles/articles.plugin';
+import { articlesController } from '@articles/articles.controller';
 import { swagger } from '@elysiajs/swagger';
 import {
   AuthenticationError,
@@ -59,7 +59,7 @@ export const setupApp = () => {
       app
         .use(usersPlugin)
         .use(profilesPlugin)
-        .use(articlesPlugin)
+        .use(articlesController)
         .use(tagsPlugin),
     );
 };

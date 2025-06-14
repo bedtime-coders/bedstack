@@ -2,7 +2,14 @@ import { AuthorizationError, BadRequestError } from '@errors';
 import type { ProfilesService } from '@profiles/profiles.service';
 import { NotFoundError } from 'elysia';
 import type { CommentsRepository } from './comments.repository';
-import type { CommentToCreate, ReturnedComment } from './comments.schema';
+import type { IComment } from './interfaces';
+
+// TODO: Move & Re-evaluate this type. It's really just a band-aid.
+type CommentToCreate = {
+  body: string;
+  articleId: number;
+  authorId: number;
+};
 
 export class CommentsService {
   constructor(
@@ -14,7 +21,7 @@ export class CommentsService {
     articleSlug: string,
     commentBody: { body: string },
     userId: number,
-  ): Promise<ReturnedComment> {
+  ): Promise<IComment> {
     const article = await this.commentsRepository.findBySlug(articleSlug);
 
     if (!article) {
@@ -51,7 +58,7 @@ export class CommentsService {
   async getComments(
     articleSlug: string,
     currentUserId?: number,
-  ): Promise<ReturnedComment[]> {
+  ): Promise<IComment[]> {
     const article = await this.commentsRepository.findBySlug(articleSlug);
 
     if (!article) {

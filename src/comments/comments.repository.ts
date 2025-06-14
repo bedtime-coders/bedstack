@@ -1,12 +1,20 @@
 import type { Database } from '@/database.providers';
-import { articles, comments } from '@articles/articles.model';
+import { articles } from '@articles/articles.schema';
+import type { ArticleRow } from '@articles/interfaces/article-row.interface';
+import { comments } from '@comments/schema/comments.schema';
 import { and, desc, eq } from 'drizzle-orm';
-import type { CommentToCreate } from './comments.schema';
+
+// TODO: Move & Re-evaluate this type. It's really just a band-aid.
+type CreateCommentDto = {
+  body: string;
+  articleId: number;
+  authorId: number;
+};
 
 export class CommentsRepository {
   constructor(private readonly db: Database) {}
 
-  async create(commentData: CommentToCreate) {
+  async create(commentData: CreateCommentDto) {
     const [comment] = await this.db
       .insert(comments)
       .values(commentData)
@@ -55,12 +63,21 @@ export class CommentsRepository {
     return result;
   }
 
-  async findBySlug(slug: string) {
+  async findBySlug(slug: string): Promise<ArticleRow | null> {
     const result = await this.db.query.articles.findFirst({
       where: eq(articles.slug, slug),
+      with: {
+        author: {
+          with: {
+            followers: true,
+          },
+        },
+        favoritedBy: true,
+        tags: true,
+      },
     });
 
-    return result;
+    return result ?? null;
   }
 
   async delete(commentId: number, authorId: number) {

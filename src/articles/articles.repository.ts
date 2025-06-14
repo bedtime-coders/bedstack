@@ -1,181 +1,178 @@
-import type {
-  ArticleToCreate,
-  ArticleToUpdate,
-} from '@/articles/articles.schema';
 import type { Database } from '@/database.providers';
-import { userFollows, users } from '@/users/users.model';
-import { articles, favoriteArticles } from '@articles/articles.model';
 import { articleTags } from '@tags/tags.model';
+import { userFollows, users } from '@users/users.model';
 import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
+import { articles, favoriteArticles } from './articles.schema';
+import type {
+  ArticleFeedRow,
+  ArticleRow,
+  NewArticleRow,
+  UpdateArticleRow,
+} from './interfaces';
+
+type FindFilters = {
+  tag?: string;
+  author?: string;
+  favorited?: string;
+};
+
+type FindOptions = {
+  offset: number;
+  limit: number;
+  currentUserId?: number;
+  followedAuthorIds?: number[];
+};
 
 export class ArticlesRepository {
   constructor(private readonly db: Database) {}
 
-  async find({
-    currentUserId,
-    offset,
-    limit,
-    tag,
-    author,
-    favorited,
-    followedAuthors,
-  }: {
-    currentUserId: number | null;
-    offset: number;
-    limit: number;
-    tag?: string;
-    author?: string;
-    favorited?: string;
-    followedAuthors?: boolean;
-  }) {
+  async find(
+    { author, tag, favorited }: FindFilters,
+    { offset, limit, currentUserId, followedAuthorIds }: FindOptions,
+  ): Promise<{ articles: ArticleFeedRow[]; articlesCount: number }> {
     const authorFilters = [];
     if (author) {
       authorFilters.push(eq(users.username, author));
     }
-    if (followedAuthors && currentUserId) {
-      authorFilters.push(
-        inArray(
-          users.id,
-          this.db
-            .select({ followedAuthors: userFollows.followedId })
-            .from(userFollows)
-            .where(eq(userFollows.followerId, currentUserId)),
-        ),
-      );
+
+    if (followedAuthorIds?.length) {
+      authorFilters.push(inArray(users.id, followedAuthorIds));
     }
 
-    const authorsWithFollowersCTE = this.db.$with('authorsWithFollowers').as(
-      this.db
-        .select({
-          authorId: users.id,
-          authorUsername: users.username,
-          authorBio: users.bio,
-          authorImage: users.image,
-          authorFollowing:
-            sql<boolean>`coalesce(${currentUserId} = any(array_agg(user_follows.follower_id)), false)`.as(
-              'authorFollowing',
-            ),
-        })
-        .from(users)
-        .leftJoin(userFollows, eq(users.id, userFollows.followedId))
-        .where(and(...authorFilters))
-        .groupBy(users.id),
-    );
-
-    const articleFilters = [];
-    if (favorited) {
-      articleFilters.push(eq(users.username, favorited));
-    }
-
-    const articlesWithLikesCTE = this.db.$with('articlesWithLikes').as(
-      this.db
-        .select({
-          articleId: articles.id,
-          favorited:
-            sql<boolean>`coalesce(${currentUserId} = any(array_agg(favorite_articles.user_id)), false)`.as(
-              'favorited',
-            ),
-          favoriteCount: sql<number>`count(*)::integer`.as('favoriteCount'),
-        })
-        .from(articles)
-        .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id))
-        .leftJoin(users, eq(users.id, favoriteArticles.userId))
-        .where(and(...articleFilters))
-        .groupBy(articles.id),
-    );
-
-    const articlesWithTagsCTE = this.db.$with('articlesWithTags').as(
-      this.db
-        .select({
-          articleId: articles.id,
-          tags: sql<string[]>`
-            array_agg(article_tags.tag_name order by article_tags.tag_name ASC)
-            filter (where article_tags.tag_name is not null)
-          `.as('tags'),
-        })
-        .from(articles)
-        .innerJoin(users, eq(users.id, articles.authorId))
-        .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
-        .where(and(...authorFilters, ...articleFilters))
-        .groupBy(articles.id)
-        // Having can't be used with aliases, the calculation must be repeated
-        .having(
-          tag ? sql`${tag} = any(array_agg(article_tags.tag_name))` : sql`true`,
-        ),
-    );
-
-    const resultsQuery = this.db
-      .with(authorsWithFollowersCTE, articlesWithLikesCTE, articlesWithTagsCTE)
+    const baseQuery = this.db
       .select({
         slug: articles.slug,
         title: articles.title,
         description: articles.description,
-        // Case-when is not natively suppoerted yet
-        // https://github.com/drizzle-team/drizzle-orm/issues/1065
         tagList: sql<string[]>`
-          case 
-            when ${articlesWithTagsCTE.tags} is not null then ${articlesWithTagsCTE.tags}
-            else '{}'::text[]
-          end
-          `.as('tagList'),
+          coalesce(
+            array_agg(article_tags.tag_name order by article_tags.tag_name ASC)
+            filter (where article_tags.tag_name is not null),
+            '{}'::text[]
+          )
+        `.as('tagList'),
         createdAt: articles.createdAt,
         updatedAt: articles.updatedAt,
-        favorited: articlesWithLikesCTE.favorited,
-        favoritesCount: articlesWithLikesCTE.favoriteCount,
+        favorited: sql<boolean>`
+          coalesce(
+            exists (
+              select 1 from ${favoriteArticles}
+              where ${favoriteArticles.articleId} = ${articles.id}
+              and ${favoriteArticles.userId} = ${currentUserId ?? sql`null`}
+            ),
+            false
+          )
+        `.as('favorited'),
+        favoritesCount:
+          sql<number>`count(distinct favorite_articles.user_id)::integer`.as(
+            'favoriteCount',
+          ),
         author: {
-          username: authorsWithFollowersCTE.authorUsername,
-          bio: authorsWithFollowersCTE.authorBio,
-          image: authorsWithFollowersCTE.authorImage,
-          following: authorsWithFollowersCTE.authorFollowing,
+          username: users.username,
+          bio: users.bio,
+          image: users.image,
+          following: sql<boolean>`
+            coalesce(
+              exists (
+                select 1 from ${userFollows}
+                where ${userFollows.followedId} = ${users.id}
+                and ${userFollows.followerId} = ${currentUserId ?? sql`null`}
+              ),
+              false
+            )
+          `.as('following'),
         },
       })
       .from(articles)
-      .innerJoin(
-        articlesWithLikesCTE,
-        eq(articlesWithLikesCTE.articleId, articles.id),
-      )
-      .innerJoin(
-        authorsWithFollowersCTE,
-        eq(authorsWithFollowersCTE.authorId, articles.authorId),
-      )
-      .innerJoin(
-        articlesWithTagsCTE,
-        eq(articlesWithTagsCTE.articleId, articles.id),
-      )
-      .orderBy(desc(articles.createdAt))
-      .as('results');
+      .innerJoin(users, eq(users.id, articles.authorId))
+      .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
+      .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id));
 
-    const limitedResults = await this.db
-      .select()
-      .from(resultsQuery)
+    // Create a separate count query that only includes filtering conditions
+    const countQuery = this.db
+      .select({ id: articles.id })
+      .from(articles)
+      .innerJoin(users, eq(users.id, articles.authorId))
+      .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
+      .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id));
+
+    // Apply tag filter if specified
+    if (tag) {
+      const tagFilter = and(
+        ...authorFilters,
+        sql`exists (
+          select 1 from ${articleTags}
+          where ${articleTags.articleId} = ${articles.id}
+          and ${articleTags.tagName} = ${tag}
+        )`,
+      );
+      baseQuery.where(tagFilter);
+      countQuery.where(tagFilter);
+    } else {
+      // Only apply author filters if no tag filter
+      const authorFilter = and(...authorFilters);
+      baseQuery.where(authorFilter);
+      countQuery.where(authorFilter);
+    }
+
+    // Apply favorited filter if specified
+    if (favorited) {
+      const favoritedByUser = await this.db
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.username, favorited))
+        .limit(1);
+
+      if (!favoritedByUser[0]) {
+        // If user doesn't exist, return no results
+        return { articles: [], articlesCount: 0 };
+      }
+
+      const favoritedFilter = and(
+        sql`exists (
+          select 1 from ${favoriteArticles}
+          where ${favoriteArticles.articleId} = ${articles.id}
+          and ${favoriteArticles.userId} = ${favoritedByUser[0].id}
+        )`,
+      );
+      baseQuery.where(favoritedFilter);
+      countQuery.where(favoritedFilter);
+    }
+
+    const limitedResults = await baseQuery
+      .groupBy(articles.id, users.id)
+      .orderBy(desc(articles.createdAt))
       .limit(limit)
       .offset(offset);
 
     const resultsCount = await this.db
       .select({ count: count() })
-      .from(resultsQuery);
+      .from(countQuery.as('count_query'));
 
-    return { articles: limitedResults, articlesCount: resultsCount[0].count };
+    return {
+      articles: limitedResults,
+      articlesCount: resultsCount[0].count,
+    };
   }
 
-  async findBySlug(slug: string) {
-    const result = await this.db.query.articles.findFirst({
-      where: eq(articles.slug, slug),
-      with: {
-        author: {
-          with: {
-            followers: true,
+  async findBySlug(slug: string): Promise<ArticleRow | null> {
+    return (
+      (await this.db.query.articles.findFirst({
+        where: eq(articles.slug, slug),
+        with: {
+          author: {
+            with: {
+              followers: true,
+            },
           },
+          favoritedBy: true,
+          tags: true,
         },
-        favoritedBy: true,
-        tags: true,
-      },
-    });
-    if (!result) return null;
-    return result;
+      })) ?? null
+    );
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<ArticleRow | null> {
     const result = await this.db.query.articles.findFirst({
       where: eq(articles.id, id),
       with: {
@@ -188,37 +185,46 @@ export class ArticlesRepository {
         tags: true,
       },
     });
-    if (!result) return null;
-    return result;
+    return result ?? null;
   }
 
-  async createArticle(article: ArticleToCreate) {
+  /**
+   * @param article - The article to create
+   * @returns The created article or null if the article was not created successfully
+   */
+  async createArticle(article: NewArticleRow): Promise<ArticleRow | null> {
     const results = await this.db.insert(articles).values(article).returning();
+
     const newArticle = results[0];
-    return this.findById(newArticle.id);
+    return await this.findById(newArticle.id);
   }
 
+  /**
+   * @param slug - The slug of the article to update
+   * @param article - The article to update
+   * @param currentUserId - The ID of the user updating the article
+   * @returns The updated article or null if the article was not updated successfully
+   */
   async updateArticle(
-    articleId: number,
-    article: ArticleToUpdate,
+    slug: string,
+    article: UpdateArticleRow,
     currentUserId: number,
-  ) {
-    const filteredArticle = Object.fromEntries(
-      Object.entries(article).filter(([_, value]) => value !== undefined),
-    );
-    await this.db
+  ): Promise<ArticleRow | null> {
+    const results = await this.db
       .update(articles)
       .set({
-        ...filteredArticle,
+        ...article,
         updatedAt: new Date(),
       })
-      .where(
-        and(eq(articles.id, articleId), eq(articles.authorId, currentUserId)),
-      );
+      .where(and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)))
+      .returning();
+
+    const updatedArticle = results[0];
+    return await this.findById(updatedArticle.id);
   }
 
-  async deleteArticle(slug: string, currentUserId: number) {
-    return await this.db
+  async deleteArticle(slug: string, currentUserId: number): Promise<void> {
+    await this.db
       .delete(articles)
       .where(
         and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)),

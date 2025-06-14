@@ -1,6 +1,7 @@
 import { exit } from 'node:process';
+import { comments } from '@/comments/schema';
 import { db } from '@/database.providers';
-import { articles, comments, favoriteArticles } from '@articles/articles.model';
+import { articles, favoriteArticles } from '@articles/articles.schema';
 import dbConfig from '@db/config';
 import { articleTags, tags } from '@tags/tags.model';
 import { userFollows, users } from '@users/users.model';

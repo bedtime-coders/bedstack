@@ -5,6 +5,9 @@
     "useIgnoreFile": true,
     "clientKind": "git"
   },
+  "files": {
+    "ignore": [".trunk/**"]
+  },
   "organizeImports": {
     "enabled": true
   },

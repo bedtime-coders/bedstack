@@ -13,7 +13,7 @@ export const tagsPlugin = new Elysia().use(setupTags).group(
     app.get('/', async ({ store }) => store.tagsService.getTags(), {
       response: ListTagsResponseSchema,
       detail: {
-        summary: 'List Tags',
+        summary: 'Get Tags',
       },
     }),
 );

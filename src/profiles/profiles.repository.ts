@@ -27,6 +27,15 @@ export class ProfilesRepository {
     return result[0];
   }
 
+  async findFollowedUserIds(currentUserId: number): Promise<number[]> {
+    const results = await this.db
+      .select({ followedId: userFollows.followedId })
+      .from(userFollows)
+      .where(eq(userFollows.followerId, currentUserId));
+
+    return results.map((r) => r.followedId);
+  }
+
   async followUser(currentUserId: number, userToFollow: number) {
     const result = await this.db
       .insert(userFollows)
@@ -46,5 +55,22 @@ export class ProfilesRepository {
       )
       .returning();
     return result[0];
+  }
+
+  async findFollowByUsers(
+    followedId: number,
+    followerId: number,
+  ): Promise<boolean> {
+    const result = await this.db
+      .select({ id: userFollows.followedId })
+      .from(userFollows)
+      .where(
+        and(
+          eq(userFollows.followedId, followedId),
+          eq(userFollows.followerId, followerId),
+        ),
+      )
+      .limit(1);
+    return result.length > 0;
   }
 }

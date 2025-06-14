@@ -1,4 +1,4 @@
-import { articles, favoriteArticles } from '@/articles/articles.model';
+import { articles, favoriteArticles } from '@articles/articles.schema';
 import { relations, sql } from 'drizzle-orm';
 import {
   date,
