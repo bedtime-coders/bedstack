@@ -14,7 +14,7 @@ import jwt from '@elysiajs/jwt';
 import { swagger } from '@elysiajs/swagger';
 import { Elysia, NotFoundError, ValidationError } from 'elysia';
 import { pick } from 'radashi';
-import { env } from '../../env.config';
+import { env } from '../env.config';
 import { description, title, version } from '../package.json';
 
 /**
