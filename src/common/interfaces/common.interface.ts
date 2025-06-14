@@ -47,7 +47,17 @@ export type SystemFields = 'id' | 'createdAt' | 'updatedAt';
  * @param TTable - The table type
  * @returns The new row type
  */
-export type InferNewRow<TTable extends Table> = Omit<
-  InferInsertModel<TTable>,
-  SystemFields
->;
+export type InferNewRow<
+  TTable extends Table,
+  TConfig extends {
+    dbColumnNames: boolean;
+    override?: boolean;
+  } = {
+    dbColumnNames: false;
+    override: false;
+  },
+> = Omit<InferInsertModel<TTable, TConfig>, SystemFields>;
+
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
