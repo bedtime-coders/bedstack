@@ -1,11 +1,11 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 
-export const CreateArticleDto = Type.Object({
-  article: Type.Object({
-    title: Type.String({ minLength: 1 }),
-    description: Type.String({ minLength: 1 }),
-    body: Type.String({ minLength: 1 }),
-    tagList: Type.Optional(Type.Array(Type.String({ minLength: 1 }))),
+export const CreateArticleDto = t.Object({
+  article: t.Object({
+    title: t.String({ minLength: 1 }),
+    description: t.String({ minLength: 1 }),
+    body: t.String({ minLength: 1 }),
+    tagList: t.Optional(t.Array(t.String({ minLength: 1 }))),
   }),
 });
-export type CreateArticleDto = Static<typeof CreateArticleDto>;
+export type CreateArticleDto = typeof CreateArticleDto.static;

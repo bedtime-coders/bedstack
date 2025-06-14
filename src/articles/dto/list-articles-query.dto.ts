@@ -1,12 +1,12 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 import { ArticleFeedQueryDto } from './article-feed-query.dto';
 
-export const ListArticlesQueryDto = Type.Composite([
+export const ListArticlesQueryDto = t.Composite([
   ArticleFeedQueryDto,
-  Type.Object({
-    tag: Type.Optional(Type.String({ minLength: 1 })),
-    author: Type.Optional(Type.String({ minLength: 1 })),
-    favorited: Type.Optional(Type.String({ minLength: 1 })),
+  t.Object({
+    tag: t.Optional(t.String({ minLength: 1 })),
+    author: t.Optional(t.String({ minLength: 1 })),
+    favorited: t.Optional(t.String({ minLength: 1 })),
   }),
 ]);
-export type ListArticlesQueryDto = Static<typeof ListArticlesQueryDto>;
+export type ListArticlesQueryDto = typeof ListArticlesQueryDto.static;

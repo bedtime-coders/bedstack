@@ -5,7 +5,7 @@ import {
   MIN_LIMIT,
   MIN_OFFSET,
 } from '@/common/constants';
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 
 /**
  * DTO for article feed query parameters.
@@ -13,17 +13,17 @@ import { type Static, Type } from '@sinclair/typebox';
  * - limit: number of items per request (default: DEFAULT_LIMIT, min: MIN_LIMIT, max: MAX_LIMIT)
  * - offset: number of items to skip (default: DEFAULT_OFFSET, min: MIN_OFFSET)
  */
-export const ArticleFeedQueryDto = Type.Object({
-  limit: Type.Optional(
-    Type.Integer({
+export const ArticleFeedQueryDto = t.Object({
+  limit: t.Optional(
+    t.Integer({
       minimum: MIN_LIMIT,
       maximum: MAX_LIMIT,
       default: DEFAULT_LIMIT,
       description: `Number of items per request (between ${MIN_LIMIT} and ${MAX_LIMIT}, defaults to ${DEFAULT_LIMIT})`,
     }),
   ),
-  offset: Type.Optional(
-    Type.Integer({
+  offset: t.Optional(
+    t.Integer({
       minimum: MIN_OFFSET,
       default: DEFAULT_OFFSET,
       description: `Number of items to skip (at least ${MIN_OFFSET}, defaults to ${DEFAULT_OFFSET})`,
@@ -31,4 +31,4 @@ export const ArticleFeedQueryDto = Type.Object({
   ),
 });
 
-export type ArticleFeedQueryDto = Static<typeof ArticleFeedQueryDto>;
+export type ArticleFeedQueryDto = typeof ArticleFeedQueryDto.static;

@@ -1,18 +1,18 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 
-export const CommentResponseDto = Type.Object({
-  comment: Type.Object({
-    id: Type.Number(),
-    body: Type.String(),
-    createdAt: Type.String(),
-    updatedAt: Type.String(),
-    author: Type.Object({
-      username: Type.String(),
-      bio: Type.Union([Type.Null(), Type.String()]),
-      image: Type.Union([Type.Null(), Type.String()]),
-      following: Type.Boolean(),
+export const CommentResponseDto = t.Object({
+  comment: t.Object({
+    id: t.Number(),
+    body: t.String(),
+    createdAt: t.String(),
+    updatedAt: t.String(),
+    author: t.Object({
+      username: t.String(),
+      bio: t.Union([t.Null(), t.String()]),
+      image: t.Union([t.Null(), t.String()]),
+      following: t.Boolean(),
     }),
   }),
 });
 
-export type CommentResponseDto = Static<typeof CommentResponseDto>;
+export type CommentResponseDto = typeof CommentResponseDto.static;

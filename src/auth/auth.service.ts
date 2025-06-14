@@ -2,7 +2,6 @@ import { RealWorldError } from '@/common/errors';
 import type { UserRow } from '@/users/interfaces';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
-import { Elysia, error } from 'elysia';
 import { StatusCodes } from 'http-status-codes';
 import * as jose from 'jose';
 import { env } from '../../env.config';
@@ -56,10 +55,14 @@ export class AuthService {
       });
     } catch (err) {
       console.error(err);
-      throw error(StatusCodes.UNAUTHORIZED, 'Invalid token');
+      throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
+        token: ['is invalid'],
+      });
     }
     if (!Value.Check(this.VerifiedJwtSchema, verifiedToken))
-      throw error(StatusCodes.UNAUTHORIZED, 'Invalid token');
+      throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
+        token: ['is invalid'],
+      });
     const userToken = Value.Cast(this.VerifiedJwtSchema, verifiedToken);
     return userToken;
   };
@@ -67,7 +70,6 @@ export class AuthService {
   getUserFromHeaders = async (headers: Headers) => {
     const rawHeader = headers.get('Authorization');
     if (!rawHeader)
-      // throw error(StatusCodes.UNAUTHORIZED, 'Missing authorization header');
       throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
         Authorization: ['is missing'],
       });
@@ -82,7 +84,7 @@ export class AuthService {
     const token = tokenParts?.[1];
     if (!token)
       throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
-        token: ['is missing'],
+        token: ['is missing. Expected header format: "Token jwt"'],
       });
     const userToken = await this.verifyToken(token);
     return userToken.payload.user;

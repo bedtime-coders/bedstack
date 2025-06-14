@@ -1,22 +1,22 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 
-export const ArticleResponseDto = Type.Object({
-  article: Type.Object({
-    slug: Type.String(),
-    title: Type.String(),
-    description: Type.String(),
-    body: Type.String(),
-    tagList: Type.Array(Type.String()),
-    createdAt: Type.String(),
-    updatedAt: Type.String(),
-    favorited: Type.Boolean(),
-    favoritesCount: Type.Number(),
-    author: Type.Object({
-      username: Type.String(),
-      bio: Type.Union([Type.Null(), Type.String()]),
-      image: Type.Union([Type.Null(), Type.String()]),
-      following: Type.Boolean(),
+export const ArticleResponseDto = t.Object({
+  article: t.Object({
+    slug: t.String(),
+    title: t.String(),
+    description: t.String(),
+    body: t.String(),
+    tagList: t.Array(t.String()),
+    createdAt: t.String(),
+    updatedAt: t.String(),
+    favorited: t.Boolean(),
+    favoritesCount: t.Number(),
+    author: t.Object({
+      username: t.String(),
+      bio: t.Union([t.Null(), t.String()]),
+      image: t.Union([t.Null(), t.String()]),
+      following: t.Boolean(),
     }),
   }),
 });
-export type ArticleResponseDto = Static<typeof ArticleResponseDto>;
+export type ArticleResponseDto = typeof ArticleResponseDto.static;

@@ -1,8 +1,8 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 
-export const CreateCommentDto = Type.Object({
-  comment: Type.Object({
-    body: Type.String({ minLength: 1 }),
+export const CreateCommentDto = t.Object({
+  comment: t.Object({
+    body: t.String({ minLength: 1 }),
   }),
 });
-export type CreateCommentDto = Static<typeof CreateCommentDto>;
+export type CreateCommentDto = typeof CreateCommentDto.static;
