@@ -7,10 +7,10 @@ import * as jose from 'jose';
 import { env } from '../../env.config';
 
 export class AuthService {
-  private readonly ALG = env.JWT_ALGORITHM;
+  private readonly ALG = 'HS256';
   private readonly JWT_SECRET = env.JWT_SECRET;
 
-  get VerifiedJwtSchema() {
+  private get VerifiedJwtSchema() {
     return Type.Object({
       payload: Type.Object({
         user: Type.Object({
@@ -44,7 +44,7 @@ export class AuthService {
       .sign(secret);
   };
 
-  verifyToken = async (token: string) => {
+  private verifyToken = async (token: string) => {
     const encoder = new TextEncoder();
     const secret = encoder.encode(this.JWT_SECRET);
 
@@ -67,7 +67,7 @@ export class AuthService {
     return userToken;
   };
 
-  getUserFromHeaders = async (headers: Headers) => {
+  private getUserFromHeaders = async (headers: Headers) => {
     const rawHeader = headers.get('Authorization');
     if (!rawHeader)
       throw new RealWorldError(StatusCodes.UNAUTHORIZED, {

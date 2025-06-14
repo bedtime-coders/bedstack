@@ -1,4 +1,5 @@
 import { Elysia, t } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
 import { setupComments } from './comments.module';
 import {
   CommentResponseDto,
@@ -24,13 +25,13 @@ export const commentsController = new Elysia().use(setupComments).group(
             body.comment,
             await store.authService.getUserIdFromHeader(request.headers),
           );
-          return status(201, toCommentResponse(comment));
+          return status(StatusCodes.CREATED, toCommentResponse(comment));
         },
         {
           beforeHandle: app.store.authService.requireLogin,
           body: CreateCommentDto,
           response: {
-            201: CommentResponseDto,
+            [StatusCodes.CREATED]: CommentResponseDto,
           },
           detail: {
             summary: 'Add Comments to an Article',
@@ -71,7 +72,7 @@ export const commentsController = new Elysia().use(setupComments).group(
             params.id,
             await store.authService.getUserIdFromHeader(request.headers),
           );
-          set.status = 204;
+          set.status = StatusCodes.NO_CONTENT;
         },
         {
           beforeHandle: app.store.authService.requireLogin,
@@ -80,7 +81,7 @@ export const commentsController = new Elysia().use(setupComments).group(
             id: t.Numeric(),
           }),
           response: {
-            204: t.Void(),
+            [StatusCodes.NO_CONTENT]: t.Void(),
           },
           detail: {
             summary: 'Delete Comment',

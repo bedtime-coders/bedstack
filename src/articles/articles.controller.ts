@@ -1,5 +1,6 @@
 import { setupArticles } from '@/articles/articles.module';
 import { Elysia, t } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
 import {
   ArticleFeedQueryDto,
   ArticleResponseDto,
@@ -111,13 +112,13 @@ export const articlesController = new Elysia().use(setupArticles).group(
             toCreateArticleInput(body),
             currentUserId,
           );
-          return status(201, toResponse(article));
+          return status(StatusCodes.CREATED, toResponse(article));
         },
         {
           beforeHandle: app.store.authService.requireLogin,
           body: CreateArticleDto,
           response: {
-            201: ArticleResponseDto,
+            [StatusCodes.CREATED]: ArticleResponseDto,
           },
           detail: {
             summary: 'Create Article',
@@ -160,12 +161,12 @@ export const articlesController = new Elysia().use(setupArticles).group(
             params.slug,
             await store.authService.getUserIdFromHeader(request.headers),
           );
-          set.status = 204;
+          set.status = StatusCodes.NO_CONTENT;
         },
         {
           beforeHandle: app.store.authService.requireLogin,
           response: {
-            204: t.Void({
+            [StatusCodes.NO_CONTENT]: t.Void({
               description: 'No content',
             }),
           },

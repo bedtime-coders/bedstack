@@ -10,9 +10,11 @@ import {
 import { profilesController } from '@/profiles/profiles.controller';
 import { tagsController } from '@/tags/tags.controller';
 import { usersController } from '@/users/users.controller';
+import jwt from '@elysiajs/jwt';
 import { swagger } from '@elysiajs/swagger';
 import { Elysia, NotFoundError, ValidationError } from 'elysia';
 import { pick } from 'radashi';
+import { env } from '../../env.config';
 import { description, title, version } from '../package.json';
 
 /**
@@ -66,6 +68,14 @@ export const setupApp = () => {
           persistAuthorization: true,
         },
         scalarVersion: '1.31.10',
+      }),
+    )
+    .use(
+      jwt({
+        name: 'jwt',
+        secret: env.JWT_SECRET,
+        iss: 'agnyz',
+        exp: '24h',
       }),
     )
     .group('/api', (app) =>

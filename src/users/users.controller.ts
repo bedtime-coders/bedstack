@@ -6,6 +6,7 @@ import {
 } from '@/users/dto';
 import { setupUsers } from '@/users/users.module';
 import { Elysia } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
 
 /**
  * Users controller handling user registration, authentication, and profile management
@@ -26,12 +27,12 @@ export const usersController = new Elysia()
           '',
           async ({ body, store, status }) => {
             const user = await store.usersService.createUser(body.user);
-            return status(201, user);
+            return status(StatusCodes.CREATED, user);
           },
           {
             body: CreateUserDto,
             response: {
-              201: UserResponseDto,
+              [StatusCodes.CREATED]: UserResponseDto,
             },
             detail: {
               summary: 'Registration',
