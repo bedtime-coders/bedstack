@@ -47,8 +47,5 @@
     "pg": "^8.13.3",
     "typescript": "^5.8.3",
     "vitepress": "^1.6.3"
-  },
-  "overrides": {
-    "@sinclair/typebox": "0.34.0"
   }
 }
