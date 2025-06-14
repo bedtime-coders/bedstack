@@ -1,8 +1,4 @@
-export interface CommentRow {
-  id: number;
-  body: string;
-  articleId: number;
-  authorId: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import type { InferSelectModel } from 'drizzle-orm';
+import type { comments } from '../comments.schema';
+
+export type CommentRow = InferSelectModel<typeof comments>;

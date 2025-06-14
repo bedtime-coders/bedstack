@@ -1,10 +1,11 @@
-export type ArticleFeedRow = {
-  slug: string;
-  title: string;
-  description: string;
+import type { InferSelectModel } from 'drizzle-orm';
+import type { articles } from '../articles.schema';
+
+export type ArticleFeedRow = Omit<
+  InferSelectModel<typeof articles>,
+  'id' | 'authorId' | 'body'
+> & {
   tagList: string[];
-  createdAt: Date;
-  updatedAt: Date;
   favorited: boolean;
   favoritesCount: number;
   author: {
