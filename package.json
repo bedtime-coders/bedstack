@@ -38,7 +38,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@faker-js/faker": "^9.6.0",
     "@types/node": "^22.13.10",
     "bun-types": "latest",
     "cross-env": "^7.0.3",
