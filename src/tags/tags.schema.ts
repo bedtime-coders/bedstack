@@ -7,7 +7,6 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
-import { createSelectSchema } from 'drizzle-typebox';
 
 export const tags = pgTable('tags', {
   name: text('name').primaryKey(),
@@ -48,5 +47,3 @@ export const articleTagsRelations = relations(articleTags, ({ one }) => ({
     relationName: 'articlesWithTag',
   }),
 }));
-
-export const tagsSelectSchema = createSelectSchema(tags);
