@@ -17,7 +17,7 @@ hero:
       link: /getting-started
     - theme: alt
       text: View on GitHub
-      link: https://github.com/agnyz/bedstack
+      link: https://github.com/bedtime-coders/bedstack
   image: /logo-mini.png
 
 features:

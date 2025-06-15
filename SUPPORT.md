@@ -11,7 +11,7 @@ Please read through the following guidelines.
 
 ## Asking quality questions
 
-Questions can go to our [Discord server](https://discord.gg/8UcP9QB5AV) or [GitHub discussions](https://github.com/agnyz/bedstack/discussions).
+Questions can go to our [Discord server](https://discord.gg/8UcP9QB5AV) or [GitHub discussions](https://github.com/bedtime-coders/bedstack/discussions).
 
 Help us help you!
 Spend time framing questions and add links and resources.
