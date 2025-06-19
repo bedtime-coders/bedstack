@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/node": "^22.13.10",
+    "@types/node": "^24.0.3",
     "bun-types": "latest",
     "cross-env": "^7.0.3",
     "drizzle-kit": "^0.31.0",
