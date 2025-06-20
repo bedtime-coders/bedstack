@@ -1,13 +1,13 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 
-export const UserResponseDto = Type.Object({
-  user: Type.Object({
-    email: Type.String(),
-    token: Type.String(),
-    username: Type.String(),
-    bio: Type.Union([Type.String(), Type.Null()]),
-    image: Type.Union([Type.String(), Type.Null()]),
+export const UserResponseDto = t.Object({
+  user: t.Object({
+    email: t.String(),
+    token: t.String(),
+    username: t.String(),
+    bio: t.Union([t.String(), t.Null()]),
+    image: t.Union([t.String(), t.Null()]),
   }),
 });
 
-export type UserResponseDto = Static<typeof UserResponseDto>;
+export type UserResponseDto = typeof UserResponseDto.static;

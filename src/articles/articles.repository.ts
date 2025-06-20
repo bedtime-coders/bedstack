@@ -1,7 +1,7 @@
-import type { Database } from '@/database.providers';
+import type { Database } from '@/database/database.providers';
+import { articleTags } from '@/tags/tags.schema';
 import { userFollows, users } from '@/users/users.schema';
-import { articleTags } from '@tags/tags.schema';
-import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
+import { type SQL, and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import { articles, favoriteArticles } from './articles.schema';
 import type {
   ArticleFeedRow,
@@ -14,29 +14,30 @@ type FindFilters = {
   tag?: string;
   author?: string;
   favorited?: string;
+  followedAuthorIds?: number[];
 };
 
 type FindOptions = {
   offset: number;
   limit: number;
   currentUserId?: number;
-  followedAuthorIds?: number[];
 };
 
 export class ArticlesRepository {
   constructor(private readonly db: Database) {}
 
   async find(
-    { author, tag, favorited }: FindFilters,
-    { offset, limit, currentUserId, followedAuthorIds }: FindOptions,
+    { author, tag, favorited, followedAuthorIds }: FindFilters,
+    { offset, limit, currentUserId }: FindOptions,
   ): Promise<{ articles: ArticleFeedRow[]; articlesCount: number }> {
-    const authorFilters = [];
-    if (author) {
-      authorFilters.push(eq(users.username, author));
+    const authorFilters: SQL[] = [];
+
+    if (followedAuthorIds !== undefined) {
+      authorFilters.push(inArray(users.id, followedAuthorIds));
     }
 
-    if (followedAuthorIds?.length) {
-      authorFilters.push(inArray(users.id, followedAuthorIds));
+    if (author !== undefined) {
+      authorFilters.push(eq(users.username, author));
     }
 
     const baseQuery = this.db
@@ -96,8 +97,7 @@ export class ArticlesRepository {
       .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
       .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id));
 
-    // Apply tag filter if specified
-    if (tag) {
+    if (tag !== undefined) {
       const tagFilter = and(
         ...authorFilters,
         sql`exists (
@@ -115,8 +115,7 @@ export class ArticlesRepository {
       countQuery.where(authorFilter);
     }
 
-    // Apply favorited filter if specified
-    if (favorited) {
+    if (favorited !== undefined) {
       const favoritedByUser = await this.db
         .select({ id: users.id })
         .from(users)
@@ -151,7 +150,7 @@ export class ArticlesRepository {
 
     return {
       articles: limitedResults,
-      articlesCount: resultsCount[0].count,
+      articlesCount: resultsCount[0]?.count ?? 0,
     };
   }
 
@@ -196,6 +195,9 @@ export class ArticlesRepository {
     const results = await this.db.insert(articles).values(article).returning();
 
     const newArticle = results[0];
+    if (!newArticle) {
+      return null;
+    }
     return await this.findById(newArticle.id);
   }
 
@@ -220,15 +222,18 @@ export class ArticlesRepository {
       .returning();
 
     const updatedArticle = results[0];
+    if (!updatedArticle) {
+      return null;
+    }
     return await this.findById(updatedArticle.id);
   }
 
-  async deleteArticle(slug: string, currentUserId: number): Promise<void> {
-    await this.db
+  async deleteArticle(slug: string, currentUserId: number): Promise<boolean> {
+    const deletedArticles = await this.db
       .delete(articles)
-      .where(
-        and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)),
-      );
+      .where(and(eq(articles.slug, slug), eq(articles.authorId, currentUserId)))
+      .returning({ id: articles.id });
+    return deletedArticles.length > 0;
   }
 
   async favoriteArticle(slug: string, currentUserId: number) {
@@ -244,18 +249,14 @@ export class ArticlesRepository {
       .values({ articleId: article.id, userId: currentUserId })
       .onConflictDoNothing();
 
-    // Return the updated article state
     return this.findBySlug(slug);
   }
 
   async unfavoriteArticle(slug: string, currentUserId: number) {
     // TODO: Use a transaction to optimize from 1-3 ops to 1 op
     const article = await this.findBySlug(slug);
-    if (!article) {
-      return null;
-    }
+    if (!article) return null;
 
-    // Delete the favorite and get the updated article state
     await this.db
       .delete(favoriteArticles)
       .where(
@@ -265,7 +266,6 @@ export class ArticlesRepository {
         ),
       );
 
-    // Return the updated article state
     return this.findBySlug(slug);
   }
 }

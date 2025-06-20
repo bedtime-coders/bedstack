@@ -3,8 +3,8 @@ import {
   LoginUserDto,
   UpdateUserDto,
   UserResponseDto,
-} from '@users/dto';
-import { setupUsers } from '@users/users.module';
+} from '@/users/dto';
+import { setupUsers } from '@/users/users.module';
 import { Elysia } from 'elysia';
 
 /**
@@ -24,10 +24,15 @@ export const usersController = new Elysia()
       app
         .post(
           '',
-          ({ body, store }) => store.usersService.createUser(body.user),
+          async ({ body, store, status }) => {
+            const user = await store.usersService.createUser(body.user);
+            return status(201, user);
+          },
           {
             body: CreateUserDto,
-            response: UserResponseDto,
+            response: {
+              201: UserResponseDto,
+            },
             detail: {
               summary: 'Registration',
               description: 'Register a new user',

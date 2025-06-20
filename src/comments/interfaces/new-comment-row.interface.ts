@@ -1,5 +1,4 @@
-export interface NewCommentRow {
-  body: string;
-  articleId: number;
-  authorId: number;
-}
+import type { InferNewRow } from '@/common/interfaces';
+import type { comments } from '../comments.schema';
+
+export type NewCommentRow = InferNewRow<typeof comments>;

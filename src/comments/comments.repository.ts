@@ -1,4 +1,4 @@
-import type { Database } from '@/database.providers';
+import type { Database } from '@/database/database.providers';
 import { and, desc, eq } from 'drizzle-orm';
 import { comments } from './comments.schema';
 import type { NewCommentRow } from './interfaces';
@@ -11,7 +11,7 @@ export class CommentsRepository {
       .insert(comments)
       .values(commentData)
       .returning();
-    return comment;
+    return comment ?? null;
   }
 
   /**
@@ -55,9 +55,11 @@ export class CommentsRepository {
     return result;
   }
 
-  async delete(commentId: number, authorId: number) {
-    return await this.db
+  async delete(commentId: number, authorId: number): Promise<boolean> {
+    const deletedComments = await this.db
       .delete(comments)
-      .where(and(eq(comments.id, commentId), eq(comments.authorId, authorId)));
+      .where(and(eq(comments.id, commentId), eq(comments.authorId, authorId)))
+      .returning({ id: comments.id });
+    return deletedComments.length > 0;
   }
 }

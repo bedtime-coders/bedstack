@@ -18,18 +18,20 @@ export const commentsController = new Elysia().use(setupComments).group(
     app
       .post(
         '/',
-        async ({ body, params, store, request }) => {
+        async ({ body, params, store, request, status }) => {
           const comment = await store.commentsService.createComment(
             params.slug,
             body.comment,
             await store.authService.getUserIdFromHeader(request.headers),
           );
-          return toCommentResponse(comment);
+          return status(201, toCommentResponse(comment));
         },
         {
           beforeHandle: app.store.authService.requireLogin,
           body: CreateCommentDto,
-          response: CommentResponseDto,
+          response: {
+            201: CommentResponseDto,
+          },
           detail: {
             summary: 'Add Comments to an Article',
             description: 'Authentication required, returns the created Comment',
@@ -63,12 +65,13 @@ export const commentsController = new Elysia().use(setupComments).group(
       )
       .delete(
         '/:id',
-        async ({ params, store, request }) => {
+        async ({ params, store, request, set }) => {
           await store.commentsService.deleteComment(
             params.slug,
             params.id,
             await store.authService.getUserIdFromHeader(request.headers),
           );
+          set.status = 204;
         },
         {
           beforeHandle: app.store.authService.requireLogin,
@@ -76,6 +79,9 @@ export const commentsController = new Elysia().use(setupComments).group(
             slug: t.String(),
             id: t.Numeric(),
           }),
+          response: {
+            204: t.Void(),
+          },
           detail: {
             summary: 'Delete Comment',
             description: 'Authentication required',

@@ -1,13 +1,17 @@
-import type { ProfileFeed } from './profile-feed.interface';
+import type { InferSelectModel } from 'drizzle-orm';
+import type { articles } from '../articles.schema';
 
-export type ArticleFeedRow = {
-  slug: string;
-  title: string;
-  description: string;
+export type ArticleFeedRow = Omit<
+  InferSelectModel<typeof articles>,
+  'id' | 'authorId' | 'body'
+> & {
   tagList: string[];
-  createdAt: Date;
-  updatedAt: Date;
   favorited: boolean;
   favoritesCount: number;
-  author: ProfileFeed;
+  author: {
+    username: string;
+    bio: string | null;
+    image: string | null;
+    following: boolean;
+  };
 };

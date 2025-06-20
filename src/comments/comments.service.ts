@@ -1,6 +1,8 @@
-import type { ArticlesService } from '@articles/articles.service';
-import { AuthorizationError, BadRequestError } from '@errors';
-import type { ProfilesService } from '@profiles/profiles.service';
+import type { ArticlesService } from '@/articles/articles.service';
+import { RealWorldError } from '@/common/errors';
+import type { ProfilesService } from '@/profiles/profiles.service';
+import { NotFoundError } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
 import type { CommentsRepository } from './comments.repository';
 import type { IComment, NewCommentRow } from './interfaces';
 import { toDomain, toNewCommentRow } from './mappers';
@@ -19,13 +21,14 @@ export class CommentsService {
   ): Promise<IComment> {
     const article = await this.articlesService.findBySlug(articleSlug, null);
 
-    const commentData: NewCommentRow = toNewCommentRow(
-      commentBody,
-      article.id,
-      userId,
-    );
+    const commentData = toNewCommentRow(commentBody, article.id, userId);
 
     const comment = await this.commentsRepository.create(commentData);
+    if (!comment) {
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        comment: ['unexpectedly failed to create'],
+      });
+    }
     const authorProfile = await this.profilesService.findProfileByUserId(
       userId,
       comment.authorId,
@@ -86,21 +89,27 @@ export class CommentsService {
     const comment = await this.commentsRepository.findById(commentId);
 
     if (!comment) {
-      throw new BadRequestError(`Comment with id ${commentId} not found`);
+      throw new NotFoundError('comment');
     }
 
     if (comment.articleId !== article.id) {
-      throw new BadRequestError(
-        `Comment with id ${commentId} does not belong to article ${articleSlug}`,
-      );
+      throw new RealWorldError(StatusCodes.NOT_FOUND, {
+        comment: ['not found in article'],
+      });
     }
 
     if (comment.authorId !== userId) {
-      throw new AuthorizationError(
-        'You can only delete comments that you authored',
-      );
+      throw new RealWorldError(StatusCodes.FORBIDDEN, {
+        comment: ['not owned by user'],
+      });
     }
 
-    await this.commentsRepository.delete(commentId, userId);
+    const deleted = await this.commentsRepository.delete(commentId, userId);
+
+    if (!deleted) {
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        comment: ['unexpectedly failed to deleted'],
+      });
+    }
   }
 }

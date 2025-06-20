@@ -1,4 +1,4 @@
-import type { ProfileFeed } from './profile-feed.interface';
+import type { IProfile } from '@/profiles/interfaces';
 
 export type IArticleFeed = {
   slug: string;
@@ -9,5 +9,5 @@ export type IArticleFeed = {
   updatedAt: Date;
   favorited: boolean;
   favoritesCount: number;
-  author: ProfileFeed;
+  author: IProfile;
 };

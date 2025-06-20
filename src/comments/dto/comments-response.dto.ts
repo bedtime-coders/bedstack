@@ -1,7 +1,7 @@
-import { type Static, Type } from '@sinclair/typebox';
+import { t } from 'elysia';
 import { CommentResponseDto } from './comment-response.dto';
 
-export const CommentsResponseDto = Type.Object({
-  comments: Type.Array(CommentResponseDto.properties.comment),
+export const CommentsResponseDto = t.Object({
+  comments: t.Array(CommentResponseDto.properties.comment),
 });
-export type CommentsResponseDto = Static<typeof CommentsResponseDto>;
+export type CommentsResponseDto = typeof CommentsResponseDto.static;

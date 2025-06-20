@@ -1,4 +1,4 @@
-import type { Database } from '@/database.providers';
+import type { Database } from '@/database/database.providers';
 import type { UserFollowRow } from '@/users/interfaces';
 import { userFollows, users } from '@/users/users.schema';
 import { and, eq } from 'drizzle-orm';
@@ -10,25 +10,19 @@ export class ProfilesRepository {
   async findProfileByUsername(
     targetUsername: string,
   ): Promise<ProfileRow | null> {
-    const result = await this.db.query.users.findMany({
+    const [result] = await this.db.query.users.findMany({
       where: eq(users.username, targetUsername),
       with: { followers: true },
     });
-    if (result.length === 0) {
-      return null;
-    }
-    return result[0];
+    return result ?? null;
   }
 
   async findProfileByUserId(targetUserId: number): Promise<ProfileRow | null> {
-    const result = await this.db.query.users.findMany({
+    const [result] = await this.db.query.users.findMany({
       where: eq(users.id, targetUserId),
       with: { followers: true },
     });
-    if (result.length === 0) {
-      return null;
-    }
-    return result[0];
+    return result ?? null;
   }
 
   async findFollowedUserIds(currentUserId: number): Promise<number[]> {
@@ -43,18 +37,19 @@ export class ProfilesRepository {
   async followUser(
     currentUserId: number,
     userToFollow: number,
-  ): Promise<UserFollowRow> {
+  ): Promise<boolean> {
     const result = await this.db
       .insert(userFollows)
       .values({ followedId: userToFollow, followerId: currentUserId })
-      .returning();
-    return result[0];
+      .onConflictDoNothing()
+      .returning({ id: userFollows.followedId });
+    return result.length > 0;
   }
 
   async unfollowUser(
     currentUserId: number,
     userToUnfollow: number,
-  ): Promise<UserFollowRow | undefined> {
+  ): Promise<boolean> {
     const result = await this.db
       .delete(userFollows)
       .where(
@@ -63,8 +58,8 @@ export class ProfilesRepository {
           eq(userFollows.followerId, currentUserId),
         ),
       )
-      .returning();
-    return result[0];
+      .returning({ id: userFollows.followedId });
+    return result.length > 0;
   }
 
   async findFollowByUsers(

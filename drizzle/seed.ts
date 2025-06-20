@@ -1,5 +1,5 @@
 import { exit } from 'node:process';
-import { db } from '@/database.providers';
+import { db } from '@/database/database.providers';
 import { users } from '@/users/users.schema';
 import { faker } from '@faker-js/faker';
 
