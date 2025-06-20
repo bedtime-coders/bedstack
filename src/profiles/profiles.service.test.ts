@@ -1,6 +1,6 @@
 import { describe, expect, it, mock } from 'bun:test';
-import type { Database } from '@/database.providers';
-import { UsersRepository } from '@users/users.repository';
+import type { Database } from '@/database/database.providers';
+import { UsersRepository } from '@/users/users.repository';
 import { ProfilesRepository } from './profiles.repository';
 import { ProfilesService } from './profiles.service';
 
@@ -10,7 +10,7 @@ describe('ProfilesService', () => {
       super({} as Database);
     }
 
-    override async findByUsername(_targetUsername: string) {
+    override async findProfileByUsername(_targetUsername: string) {
       return null;
     }
   }
@@ -21,16 +21,13 @@ describe('ProfilesService', () => {
     }
   }
 
-  const service = new ProfilesService(
-    new MockProfilesRepository(),
-    new MockUsersRepository(),
-  );
+  const service = new ProfilesService(new MockProfilesRepository());
 
   describe('findByUsername', () => {
     it('should throw NotFoundError when profile is not found', async () => {
-      await expect(service.findByUsername(1, 'testuser')).rejects.toThrow(
-        'Profile not found',
-      );
+      await expect(
+        service.findProfileByUsername(1, 'testuser'),
+      ).rejects.toThrow('Profile not found');
     });
   });
 });
