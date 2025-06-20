@@ -13,8 +13,8 @@ describe('UsersService', () => {
     password: 'hashedpassword',
     bio: '',
     image: '',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   class MockUsersRepository extends UsersRepository {
