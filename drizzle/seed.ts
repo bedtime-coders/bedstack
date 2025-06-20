@@ -1,12 +1,12 @@
 import { exit } from 'node:process';
-import { db } from '@/database/database.providers';
-import { users } from '@/users/users.schema';
 import { parseArgs } from 'node:util';
 import { articles, favoriteArticles } from '@/articles/articles.schema';
+import { comments } from '@/comments/comments.schema';
+import { db } from '@/database/database.providers';
 import { articleTags, tags } from '@/tags/tags.schema';
+import { users } from '@/users/users.schema';
 import { userFollows } from '@/users/users.schema';
 import { reset, seed } from 'drizzle-seed';
-import { comments } from '@/comments/comments.schema';
 
 const { values } = parseArgs({
   args: Bun.argv,
