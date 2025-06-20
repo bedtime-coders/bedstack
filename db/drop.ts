@@ -1,6 +1,6 @@
 import { exit } from 'node:process';
 import { db } from '@/database.providers';
-import { userFollows, users } from '@/users/users.model';
+import { userFollows, users } from '@/users/users.schema';
 import { articles, favoriteArticles } from '@articles/articles.schema';
 import { comments } from '@comments/comments.schema';
 import dbConfig from '@db/config';

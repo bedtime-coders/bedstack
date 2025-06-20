@@ -1,5 +1,5 @@
 import { setupArticles } from '@articles/articles.module';
-import { Elysia, t } from 'elysia';
+import { Elysia } from 'elysia';
 import {
   ArticleFeedQueryDto,
   ArticleResponseDto,
