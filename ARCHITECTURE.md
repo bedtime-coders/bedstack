@@ -6,9 +6,9 @@ This service uses a modular **Layered Architecture** inspired by the [NestJS phi
 
 We separate the system into 3 main layers:
 
-1. **Controller** – Talks to the client
-2. **Service** – Handles the business logic
-3. **Repository** – Interacts with the database
+1. **Controller** - Talks to the client
+2. **Service** - Handles the business logic
+3. **Repository** - Interacts with the database
 
 Each domain feature (e.g. `articles`, `profiles`, `tags`) is isolated into its own module, containing these layers plus:
 
