@@ -1,12 +1,12 @@
 import { describe, expect, it, mock } from 'bun:test';
-import type { Database } from '@/database.providers';
-import type { AuthService } from '@auth/auth.service';
+import type { AuthService } from '@/auth/auth.service';
+import type { Database } from '@/database/database.providers';
+import type { UserRow } from './interfaces';
 import { UsersRepository } from './users.repository';
-import type { UserInDb } from './users.schema';
 import { UsersService } from './users.service';
 
 describe('UsersService', () => {
-  const mockUser: UserInDb = {
+  const mockUser: UserRow = {
     id: 1,
     email: 'test@example.com',
     username: 'testuser',
@@ -19,7 +19,7 @@ describe('UsersService', () => {
 
   class MockUsersRepository extends UsersRepository {
     constructor() {
-      super({} as Database);
+      super({} as unknown as Database);
     }
 
     override async findById() {
