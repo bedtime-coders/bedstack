@@ -1,0 +1,10 @@
+ALTER TABLE "user_follows" ALTER COLUMN "created_at" SET DATA TYPE timestamp;
+ALTER TABLE "user_follows" ALTER COLUMN "created_at" SET DEFAULT now();
+ALTER TABLE "user_follows" ALTER COLUMN "updated_at" SET DATA TYPE timestamp;
+ALTER TABLE "user_follows" ALTER COLUMN "updated_at" SET DEFAULT now();
+ALTER TABLE "users" ALTER COLUMN "bio" DROP DEFAULT;
+ALTER TABLE "users" ALTER COLUMN "image" DROP DEFAULT;
+ALTER TABLE "users" ALTER COLUMN "created_at" SET DATA TYPE timestamp;
+ALTER TABLE "users" ALTER COLUMN "created_at" SET DEFAULT now();
+ALTER TABLE "users" ALTER COLUMN "updated_at" SET DATA TYPE timestamp;
+ALTER TABLE "users" ALTER COLUMN "updated_at" SET DEFAULT now();

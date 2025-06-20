@@ -1,8 +1,10 @@
-import type { AuthService } from '@auth/auth.service';
-import { AuthenticationError, BadRequestError } from '@errors';
-import type { UsersRepository } from '@users/users.repository';
-import type { UserInDb, UserToCreate, UserToUpdate } from '@users/users.schema';
+import type { AuthService } from '@/auth/auth.service';
+import { RealWorldError } from '@/common/errors';
+import type { CreateUserInput, UpdateUserInput } from '@/users/interfaces';
+import type { UsersRepository } from '@/users/users.repository';
 import { NotFoundError } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
+import { toDomain, toNewUserRow, toResponse, toUpdateUserRow } from './mappers';
 
 export class UsersService {
   constructor(
@@ -13,59 +15,107 @@ export class UsersService {
   async findById(id: number) {
     const user = await this.repository.findById(id);
     if (!user) {
-      throw new NotFoundError('User not found');
+      throw new NotFoundError('user');
     }
-    return await this.generateUserResponse(user);
+    const token = await this.authService.generateToken(user);
+    const domainUser = toDomain(user, token);
+    return toResponse(domainUser);
   }
 
-  async createUser(user: UserToCreate) {
-    user.password = await Bun.password.hash(user.password);
-    const newUser = await this.repository.createUser(user);
-    if (!newUser) {
-      throw new BadRequestError('Email or username is already taken');
-    }
-    return await this.generateUserResponse(newUser);
+  private async isEmailTaken(email: string) {
+    const userWithEmail = await this.repository.findByEmail(email);
+    return userWithEmail !== null;
   }
 
-  async updateUser(id: number, user: UserToUpdate) {
+  private async isUsernameTaken(username: string) {
+    const userWithUsername = await this.repository.findByUsername(username);
+    return userWithUsername !== null;
+  }
+
+  async createUser(input: CreateUserInput) {
+    if (await this.isEmailTaken(input.email)) {
+      throw new RealWorldError(StatusCodes.CONFLICT, {
+        'user.email': ['already taken'],
+      });
+    }
+
+    if (await this.isUsernameTaken(input.username)) {
+      throw new RealWorldError(StatusCodes.CONFLICT, {
+        'user.username': ['already taken'],
+      });
+    }
+
+    const newUser = toNewUserRow(input);
+    newUser.password = await Bun.password.hash(newUser.password);
+    const createdUser = await this.repository.createUser(newUser);
+    if (!createdUser) {
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        user: ['was not created'],
+      });
+    }
+    const token = await this.authService.generateToken(createdUser);
+    const domainUser = toDomain(createdUser, token);
+    return toResponse(domainUser);
+  }
+
+  async updateUser(id: number, input: UpdateUserInput) {
     // Emails are unique, if the user is trying to change their email,
     // we need to check if the new email is already taken
     const currentUser = await this.repository.findById(id);
     if (!currentUser) {
-      throw new NotFoundError('User not found');
+      throw new NotFoundError('user');
     }
-    if (user.email && user.email !== currentUser.email) {
-      const userWithEmail = await this.repository.findByEmail(user.email);
+    if (input.email && input.email !== currentUser.email) {
+      const userWithEmail = await this.repository.findByEmail(input.email);
       if (userWithEmail) {
-        throw new BadRequestError('Email is already taken');
+        throw new RealWorldError(StatusCodes.CONFLICT, {
+          'user.email': ['already taken'],
+        });
       }
     }
 
-    if (user.password) user.password = await Bun.password.hash(user.password);
-    const updatedUser = await this.repository.updateUser(currentUser.id, user);
-    return await this.generateUserResponse(updatedUser);
+    // Check if username is taken
+    if (input.username && input.username !== currentUser.username) {
+      const userWithUsername = await this.repository.findByUsername(
+        input.username,
+      );
+      if (userWithUsername) {
+        throw new RealWorldError(StatusCodes.CONFLICT, {
+          'user.username': ['already taken'],
+        });
+      }
+    }
+
+    const userUpdate = toUpdateUserRow(input);
+    if (userUpdate.password) {
+      userUpdate.password = await Bun.password.hash(userUpdate.password);
+    }
+    const updatedUser = await this.repository.updateUser(
+      currentUser.id,
+      userUpdate,
+    );
+    if (!updatedUser) {
+      throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        user: ['was not updated'],
+      });
+    }
+    const token = await this.authService.generateToken(updatedUser);
+    const domainUser = toDomain(updatedUser, token);
+    return toResponse(domainUser);
   }
 
   async loginUser(email: string, password: string) {
     const user = await this.repository.findByEmail(email);
     if (!user) {
-      throw new NotFoundError('User not found');
+      throw new NotFoundError('user');
     }
     if (!(await Bun.password.verify(password, user.password))) {
-      throw new AuthenticationError('Invalid password');
+      throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
+        'user.password': ['invalid'],
+      });
     }
-    return await this.generateUserResponse(user);
-  }
-
-  async generateUserResponse(user: UserInDb) {
-    return {
-      user: {
-        email: user.email,
-        bio: user.bio,
-        image: user.image,
-        username: user.username,
-        token: await this.authService.generateToken(user),
-      },
-    };
+    const token = await this.authService.generateToken(user);
+    const domainUser = toDomain(user, token);
+    return toResponse(domainUser);
   }
 }

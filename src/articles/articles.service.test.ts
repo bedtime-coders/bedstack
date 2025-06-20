@@ -1,7 +1,7 @@
 import { describe, expect, it, mock } from 'bun:test';
-import type { Database } from '@/database.providers';
-import type { ProfilesService } from '@profiles/profiles.service';
-import type { TagsService } from '@tags/tags.service';
+import type { Database } from '@/database/database.providers';
+import type { ProfilesService } from '@/profiles/profiles.service';
+import type { TagsService } from '@/tags/tags.service';
 import { ArticlesRepository } from './articles.repository';
 import { ArticlesService } from './articles.service';
 
@@ -40,10 +40,8 @@ describe('ArticlesService', () => {
   );
 
   describe('findBySlug', () => {
-    it('should throw NotFoundError when article is not found', async () => {
-      await expect(service.findBySlug('test-article')).rejects.toThrow(
-        'Article not found',
-      );
+    it('should throw NotFoundError when article is not found', () => {
+      expect(() => service.findBySlug('test-article')).toThrow('article');
     });
   });
 });

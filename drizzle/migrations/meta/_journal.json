@@ -1,0 +1,83 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1695849229878,
+      "tag": "0000_perpetual_blazing_skull",
+      "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1696448227599,
+      "tag": "0001_glorious_spectrum",
+      "breakpoints": false
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1696453057809,
+      "tag": "0002_aberrant_the_hunter",
+      "breakpoints": false
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1697458638871,
+      "tag": "0003_tan_darwin",
+      "breakpoints": false
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1697465890546,
+      "tag": "0004_abandoned_maestro",
+      "breakpoints": false
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1742021370316,
+      "tag": "0005_little_paladin",
+      "breakpoints": false
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1742050755293,
+      "tag": "0006_goofy_diamondback",
+      "breakpoints": false
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1742359518221,
+      "tag": "0007_thin_eternals",
+      "breakpoints": false
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1742736884028,
+      "tag": "0008_tough_wolfsbane",
+      "breakpoints": false
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1749820535911,
+      "tag": "0009_ambitious_matthew_murdock",
+      "breakpoints": false
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1750433823539,
+      "tag": "0010_chubby_carnage",
+      "breakpoints": false
+    }
+  ]
+}
