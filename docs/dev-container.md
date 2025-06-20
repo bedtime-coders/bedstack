@@ -46,4 +46,4 @@ For now, you must _rebuild_ the container using `⌘` `⇧` `P`
 
 ## What's Next?
 
-* Please report any issues you encounter with the dev container in [GitHub Issues, with the `devcontainers` label](https://github.com/bedtime-coders/bedstack/labels/devcontainers).
+- Please report any issues you encounter with the dev container in [GitHub Issues, with the `devcontainers` label](https://github.com/bedtime-coders/bedstack/labels/devcontainers).
