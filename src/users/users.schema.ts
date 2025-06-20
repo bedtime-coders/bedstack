@@ -1,12 +1,12 @@
 import { articles, favoriteArticles } from '@/articles/articles.schema';
 import { relations, sql } from 'drizzle-orm';
 import {
-  date,
   integer,
   pgTable,
   primaryKey,
   serial,
   text,
+  timestamp,
 } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
@@ -16,8 +16,8 @@ export const users = pgTable('users', {
   image: text('image'),
   password: text('password').notNull(),
   username: text('username').notNull().unique(),
-  createdAt: date('created_at').default(sql`CURRENT_DATE`).notNull(),
-  updatedAt: date('updated_at').default(sql`CURRENT_DATE`).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 export const userRelations = relations(users, ({ many }) => ({
@@ -36,8 +36,8 @@ export const userFollows = pgTable(
     followerId: integer('follower_id')
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
-    createdAt: date('created_at').default(sql`CURRENT_DATE`).notNull(),
-    updatedAt: date('updated_at').default(sql`CURRENT_DATE`).notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
   (table) => [primaryKey({ columns: [table.followedId, table.followerId] })],
 );
