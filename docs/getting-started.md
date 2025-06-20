@@ -46,4 +46,4 @@ $ bun dev
 * Once you're ready to contribute, check out our [contributing guide](https://github.com/bedtime-coders/bedstack/blob/main/CONTRIBUTING.md). We're excited to have you!
 * If you're looking for a place to start, check out our [good first issues](https://github.com/bedtime-coders/bedstack/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
 * If you need support, check out our [support page](https://github.com/bedtime-coders/bedstack/blob/main/SUPPORT.md).
-* If have any questions or just want to chat, join our [Discord server](https://discord.gg/8UcP9QB5AV) or [GitHub Discussions](https://github.com/bedtime-coders/bedstack/discussions).
+* If you have any questions or just want to chat, join our [Discord server](https://discord.gg/8UcP9QB5AV) or [GitHub Discussions](https://github.com/bedtime-coders/bedstack/discussions).
