@@ -12,10 +12,10 @@ import { profilesController } from '@/profiles/profiles.controller';
 import { tagsController } from '@/tags/tags.controller';
 import { usersController } from '@/users/users.controller';
 import { swagger } from '@elysiajs/swagger';
+import { DrizzleQueryError } from 'drizzle-orm/errors';
 import { Elysia, NotFoundError, ValidationError } from 'elysia';
 import { pick } from 'radashi';
 import { description, title, version } from '../package.json';
-import { DrizzleQueryError } from 'drizzle-orm/errors';
 
 /**
  * Add all plugins to the app
