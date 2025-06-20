@@ -12,7 +12,7 @@
 </div>
 
 > [!TIP]
-> ⚡ **New!** We've created a _stripped_ version of Bedstack, with only the essential features for rapid prototyping . Check it out: [Bedstack (Stripped)](https://github.com/bedtime-coders/bedstack-stripped)
+> ⚡ **New!** We've created a _stripped_ version of Bedstack, with only the essential features for rapid prototyping. Check it out: [Bedstack (Stripped)](https://github.com/bedtime-coders/bedstack-stripped)
 
 ## Quickstart
 
