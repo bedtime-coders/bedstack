@@ -1,5 +1,5 @@
-import { RealWorldError } from '@/common/errors';
 import { env } from '@/core/env';
+import { RealWorldError } from '@/shared/errors';
 import type { UserRow } from '@/users/interfaces';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';

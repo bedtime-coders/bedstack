@@ -1,14 +1,14 @@
 import { articlesController } from '@/articles/articles.controller';
 import { commentsController } from '@/comments/comments.controller';
-import { DEFAULT_ERROR_MESSAGE } from '@/common/constants';
+import { profilesController } from '@/profiles/profiles.controller';
+import { DEFAULT_ERROR_MESSAGE } from '@/shared/constants';
 import {
   RealWorldError,
   formatDBError,
   formatNotFoundError,
   formatValidationError,
   isElysiaError,
-} from '@/common/errors';
-import { profilesController } from '@/profiles/profiles.controller';
+} from '@/shared/errors';
 import { tagsController } from '@/tags/tags.controller';
 import { usersController } from '@/users/users.controller';
 import { swagger } from '@elysiajs/swagger';

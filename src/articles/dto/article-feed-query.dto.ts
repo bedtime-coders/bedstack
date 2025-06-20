@@ -4,7 +4,7 @@ import {
   MAX_LIMIT,
   MIN_LIMIT,
   MIN_OFFSET,
-} from '@/common/constants';
+} from '@/shared/constants';
 import { t } from 'elysia';
 
 /**

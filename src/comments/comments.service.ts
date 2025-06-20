@@ -1,6 +1,6 @@
 import type { ArticlesService } from '@/articles/articles.service';
-import { RealWorldError } from '@/common/errors';
 import type { ProfilesService } from '@/profiles/profiles.service';
+import { RealWorldError } from '@/shared/errors';
 import { NotFoundError } from 'elysia';
 import { StatusCodes } from 'http-status-codes';
 import type { CommentsRepository } from './comments.repository';

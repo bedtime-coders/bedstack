@@ -12,7 +12,7 @@ src/
 ├── database.providers.ts # Database providers
 ├── main.ts               # Entry point
 ├── ...resources/         # All resource modules directly under `src/`
-├── common/               # Common constants, interfaces, and utilities\
+├── shared/               # Shared constants, interfaces, and utilities\
 scripts/                  # Scripts managed by `package.json`
 drizzle/                  # Drizzle migrations and scripts
 drizzle.config.ts         # Drizzle configuration
@@ -64,12 +64,12 @@ resource/
 - Does **not** export db tables, these are found as schemas inside feature folders
 - Does **not** export Drizzle config and migrations, these are found in `drizzle.config.ts` and `drizzle/` (from the root of the project) respectively
 
-#### `common/`
+#### `shared/`
 
-Global utilities, middleware, and common concerns.
+Global utilities, middleware, and shared concerns.
 
 ```plaintext
-common/
+shared/
 ├── constants/                 # All global constants, grouped by domain
 │   ├── auth.constants.ts
 │   ├── validation.constants.ts
@@ -85,10 +85,10 @@ common/
 ```
 
 > [!NOTE]
-> The `common/` folder is a catch-all for things that are not specific to a single feature. It's organized by purpose, not by type/domain. That's why it can have both `errors/` (domain) and `utils/` (type) folders.
+> The `shared/` folder is a catch-all for things that are not specific to a single feature. It's organized by purpose, not by type/domain. That's why it can have both `errors/` (domain) and `utils/` (type) folders.
 
 > [!WARNING]
-> Avoid dumping everything into `common/` by default. If a util, constant, or interface is only used in one feature - keep it inside that feature's folder. Promote it to `common/` only when it's reused.
+> Avoid dumping everything into `shared/` by default. If a util, constant, or interface is only used in one feature - keep it inside that feature's folder. Promote it to `shared/` only when it's reused.
 
 > [!TIP]
 > Only one `constants/` folder exists across the project - do not spread constants into individual features unless strictly private to that feature.

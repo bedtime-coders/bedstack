@@ -1,5 +1,5 @@
 import type { AuthService } from '@/auth/auth.service';
-import { RealWorldError } from '@/common/errors';
+import { RealWorldError } from '@/shared/errors';
 import type { CreateUserInput, UpdateUserInput } from '@/users/interfaces';
 import type { UsersRepository } from '@/users/users.repository';
 import { NotFoundError } from 'elysia';

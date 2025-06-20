@@ -1,5 +1,5 @@
 import { setupArticles } from '@/articles/articles.module';
-import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '@/common/constants';
+import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '@/shared/constants';
 import { Elysia, t } from 'elysia';
 import {
   ArticleFeedQueryDto,

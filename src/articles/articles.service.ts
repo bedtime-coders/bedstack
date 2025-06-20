@@ -1,7 +1,7 @@
 import type { ArticlesRepository } from '@/articles/articles.repository';
-import { RealWorldError } from '@/common/errors';
-import { slugify } from '@/common/utils';
 import type { ProfilesService } from '@/profiles/profiles.service';
+import { RealWorldError } from '@/shared/errors';
+import { slugify } from '@/shared/utils';
 import type { TagsService } from '@/tags/tags.service';
 import { NotFoundError } from 'elysia';
 import { StatusCodes } from 'http-status-codes';
