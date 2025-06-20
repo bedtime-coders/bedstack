@@ -108,7 +108,7 @@ export class CommentsService {
 
     if (!deleted) {
       throw new RealWorldError(StatusCodes.INTERNAL_SERVER_ERROR, {
-        comment: ['unexpectedly failed to deleted'],
+        comment: ['unexpectedly failed to delete'],
       });
     }
   }
