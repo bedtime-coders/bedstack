@@ -48,18 +48,18 @@ export default defineConfig({
       },
       {
         text: "Developer's Guide",
-        link: 'https://github.com/agnyz/bedstack/blob/main/CONTRIBUTING.md',
+        link: 'https://github.com/bedtime-coders/bedstack/blob/main/CONTRIBUTING.md',
       },
       {
         text: 'Support',
-        link: 'https://github.com/agnyz/bedstack/blob/main/SUPPORT.md',
+        link: 'https://github.com/bedtime-coders/bedstack/blob/main/SUPPORT.md',
       },
     ],
 
     socialLinks: [
       {
         icon: 'github',
-        link: 'https://github.com/agnyz/bedstack',
+        link: 'https://github.com/bedtime-coders/bedstack',
       },
       {
         icon: 'discord',
@@ -73,7 +73,8 @@ export default defineConfig({
       },
     },
     editLink: {
-      pattern: 'https://github.com/agnyz/bedstack/edit/main/docs/:path',
+      pattern:
+        'https://github.com/bedtime-coders/bedstack/edit/main/docs/:path',
       text: 'Edit this page on GitHub',
     },
   },

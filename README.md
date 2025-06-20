@@ -7,7 +7,7 @@
 
 [RealWorld](https://realworld-docs.netlify.app/) example app for [Bun](https://bun.sh/) + [ElysiaJS](https://elysiajs.com/) + [Drizzle](https://orm.drizzle.team/)
 
-[![Tests Status](https://github.com/agnyz/bedstack/actions/workflows/tests.yml/badge.svg?event=push&branch=main)](https://github.com/agnyz/bedstack/actions/workflows/tests.yml?query=branch%3Amain) [![Fully compliant with the RealWorld API spec](https://img.shields.io/badge/RealWorld%20API-compatible-success?labelColor=2f1c42)](https://realworld-docs.netlify.app/specifications/backend/endpoints) [![Featured on CodebaseShow](https://img.shields.io/badge/CodebaseShow-approved-success?labelColor=2c3669)](https://codebase.show/projects/realworld?category=backend&language=typescript) [![GitHub License](https://img.shields.io/github/license/agnyz/bedstack)](https://github.com/agnyz/bedstack/blob/main/LICENSE) [![Star bedstack on GitHub](https://img.shields.io/github/stars/agnyz/bedstack)](https://github.com/agnyz/bedstack)
+[![Tests Status](https://github.com/bedtime-coders/bedstack/actions/workflows/tests.yml/badge.svg?event=push&branch=main)](https://github.com/bedtime-coders/bedstack/actions/workflows/tests.yml?query=branch%3Amain) [![Fully compliant with the RealWorld API spec](https://img.shields.io/badge/RealWorld%20API-compatible-success?labelColor=2f1c42)](https://realworld-docs.netlify.app/specifications/backend/endpoints) [![Featured on CodebaseShow](https://img.shields.io/badge/CodebaseShow-approved-success?labelColor=2c3669)](https://codebase.show/projects/realworld?category=backend&language=typescript) [![GitHub License](https://img.shields.io/github/license/bedtime-coders/bedstack)](https://github.com/bedtime-coders/bedstack/blob/main/LICENSE) [![Star bedstack on GitHub](https://img.shields.io/github/stars/bedtime-coders/bedstack)](https://github.com/bedtime-coders/bedstack) 
 
 ## Let's share a BED - join our [Discord server](https://discord.gg/8UcP9QB5AV)
 
@@ -17,11 +17,11 @@
 
 1. **Clone and install dependencies**
 
-   ```sh
-   gh repo clone agnyz/bedstack
-   cd bedstack
-   bun i
-   ```
+    ```sh
+    gh repo clone bedtime-coders/bedstack
+    cd bedstack
+    bun i
+    ```
 
 2. **Create a `.env` file**
 

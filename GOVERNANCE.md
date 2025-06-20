@@ -27,7 +27,7 @@ We are a group of open-source developers who develop, use, promote the Elysia Re
 
 - **Transparency**
 
-  While the decision-making process is not always public, the results of the decision making process must be public. Decisions will be made after thoughtful consideration of the community's input through [Discord](https://discord.gg/8UcP9QB5AV) and [GitHub Discussions](https://github.com/agnyz/bedstack/discussions).
+  While the decision-making process is not always public, the results of the decision making process must be public. Decisions will be made after thoughtful consideration of the community's input through [Discord](https://discord.gg/8UcP9QB5AV) and [GitHub Discussions](https://github.com/bedtime-coders/bedstack/discussions).
 
 - **Automation**
 
