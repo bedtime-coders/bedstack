@@ -1,3 +1,4 @@
+import type { DrizzleQueryError } from 'drizzle-orm/errors';
 import type { NotFoundError, ValidationError } from 'elysia';
 
 // Defined temporarily until Elysia exports the type
@@ -66,6 +67,15 @@ export function formatNotFoundError(error: NotFoundError) {
   return {
     errors: {
       [error.message.toLowerCase()]: 'not found',
+    },
+  };
+}
+
+export function formatDBError(error: DrizzleQueryError) {
+  console.error(error);
+  return {
+    errors: {
+      database: 'error occurred',
     },
   };
 }

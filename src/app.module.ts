@@ -3,6 +3,7 @@ import { commentsController } from '@/comments/comments.controller';
 import { DEFAULT_ERROR_MESSAGE } from '@/common/constants';
 import {
   RealWorldError,
+  formatDBError,
   formatNotFoundError,
   formatValidationError,
   isElysiaError,
@@ -14,6 +15,7 @@ import { swagger } from '@elysiajs/swagger';
 import { Elysia, NotFoundError, ValidationError } from 'elysia';
 import { pick } from 'radashi';
 import { description, title, version } from '../package.json';
+import { DrizzleQueryError } from 'drizzle-orm/errors';
 
 /**
  * Add all plugins to the app
@@ -36,10 +38,18 @@ export const setupApp = () => {
         return formatNotFoundError(error);
       }
 
+      // db errors
+      if (error instanceof DrizzleQueryError) {
+        return formatDBError(error);
+      }
+
       // Generic error message
       const reason = isElysiaError(error)
         ? error.response
         : DEFAULT_ERROR_MESSAGE;
+
+      console.error(error);
+
       return {
         errors: {
           [code]: [reason],
