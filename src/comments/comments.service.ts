@@ -1,7 +1,6 @@
 import type { ArticlesService } from '@articles/articles.service';
 import { AuthorizationError, BadRequestError } from '@errors';
 import type { ProfilesService } from '@profiles/profiles.service';
-import { NotFoundError } from 'elysia';
 import type { CommentsRepository } from './comments.repository';
 import type { IComment, NewCommentRow } from './interfaces';
 import { toDomain, toNewCommentRow } from './mappers';

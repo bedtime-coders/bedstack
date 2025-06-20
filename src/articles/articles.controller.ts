@@ -1,5 +1,5 @@
 import { setupArticles } from '@articles/articles.module';
-import { Elysia, t } from 'elysia';
+import { Elysia } from 'elysia';
 import {
   ArticleFeedQueryDto,
   ArticleResponseDto,
@@ -74,7 +74,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
           detail: {
             summary: 'Feed Articles',
             description:
-              'Can also take `limit` and `offeset` query parameters like List Articles\n\nAuthentication required, will return multiple articles created by followed users, ordered by most recent first.',
+              'Can also take `limit` and `offset` query parameters like List Articles\n\nAuthentication required, will return multiple articles created by followed users, ordered by most recent first.',
             security: [
               {
                 tokenAuth: [],
