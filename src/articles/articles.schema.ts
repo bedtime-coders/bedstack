@@ -18,7 +18,10 @@ export const articles = table('articles', {
   description: text('description').notNull(),
   body: text('body').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
   authorId: integer('author_id')
     .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
@@ -34,7 +37,10 @@ export const favoriteArticles = table(
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date()),
   },
   (table) => [primaryKey({ columns: [table.articleId, table.userId] })],
 );

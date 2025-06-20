@@ -17,7 +17,10 @@ export const users = pgTable('users', {
   password: text('password').notNull(),
   username: text('username').notNull().unique(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
 });
 
 export const userRelations = relations(users, ({ many }) => ({
@@ -37,7 +40,10 @@ export const userFollows = pgTable(
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date()),
   },
   (table) => [primaryKey({ columns: [table.followedId, table.followerId] })],
 );

@@ -11,7 +11,10 @@ import {
 export const tags = pgTable('tags', {
   name: text('name').primaryKey(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
 });
 
 export const tagRelations = relations(tags, ({ many }) => ({
@@ -30,7 +33,10 @@ export const articleTags = pgTable(
       .references(() => tags.name, { onDelete: 'cascade' })
       .notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date()),
   },
   (table) => [primaryKey({ columns: [table.articleId, table.tagName] })],
 );
