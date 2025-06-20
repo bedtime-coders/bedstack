@@ -1,4 +1,5 @@
 import { Elysia } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
 import {
   CreateUserDto,
   LoginUserDto,
@@ -26,12 +27,12 @@ export const usersController = new Elysia()
           '',
           async ({ body, store, status }) => {
             const user = await store.usersService.createUser(body.user);
-            return status(201, user);
+            return status(StatusCodes.CREATED, user);
           },
           {
             body: CreateUserDto,
             response: {
-              201: UserResponseDto,
+              [StatusCodes.CREATED]: UserResponseDto,
             },
             detail: {
               summary: 'Registration',
