@@ -97,24 +97,29 @@ export class ArticlesRepository {
       .leftJoin(articleTags, eq(articleTags.articleId, articles.id))
       .leftJoin(favoriteArticles, eq(favoriteArticles.articleId, articles.id));
 
+    // Accumulate all filters into a single combined filter
+    const allFilters: SQL[] = [];
+
+    // Add author filters
+    if (authorFilters.length > 0) {
+      const authorFilter = and(...authorFilters);
+      if (authorFilter) {
+        allFilters.push(authorFilter);
+      }
+    }
+
+    // Add tag filter
     if (tag !== undefined) {
-      const tagFilter = and(
-        ...authorFilters,
+      allFilters.push(
         sql`exists (
           select 1 from ${articleTags}
           where ${articleTags.articleId} = ${articles.id}
           and ${articleTags.tagName} = ${tag}
         )`,
       );
-      baseQuery.where(tagFilter);
-      countQuery.where(tagFilter);
-    } else {
-      // Only apply author filters if no tag filter
-      const authorFilter = and(...authorFilters);
-      baseQuery.where(authorFilter);
-      countQuery.where(authorFilter);
     }
 
+    // Add favorited filter
     if (favorited !== undefined) {
       const favoritedByUser = await this.db
         .select({ id: users.id })
@@ -127,15 +132,20 @@ export class ArticlesRepository {
         return { articles: [], articlesCount: 0 };
       }
 
-      const favoritedFilter = and(
+      allFilters.push(
         sql`exists (
           select 1 from ${favoriteArticles}
           where ${favoriteArticles.articleId} = ${articles.id}
           and ${favoriteArticles.userId} = ${favoritedByUser[0].id}
         )`,
       );
-      baseQuery.where(favoritedFilter);
-      countQuery.where(favoritedFilter);
+    }
+
+    // Apply the combined filter to both queries
+    if (allFilters.length > 0) {
+      const combinedFilter = and(...allFilters);
+      baseQuery.where(combinedFilter);
+      countQuery.where(combinedFilter);
     }
 
     const limitedResults = await baseQuery
