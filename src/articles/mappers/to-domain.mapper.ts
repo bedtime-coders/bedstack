@@ -26,9 +26,11 @@ export function toDomain(
       username: article.author.username,
       bio: article.author.bio,
       image: article.author.image,
-      following: article.author.followers.some(
-        (follower) => follower.followerId === currentUserId,
-      ),
+      following: currentUserId
+        ? article.author.followers.some(
+            (follower) => follower.followerId === currentUserId,
+          )
+        : false,
     },
   };
 }
