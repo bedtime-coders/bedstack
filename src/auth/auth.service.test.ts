@@ -1,5 +1,4 @@
-import { describe, expect, it, mock } from 'bun:test';
-import { AuthenticationError } from '@errors';
+import { describe, expect, it } from 'bun:test';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
