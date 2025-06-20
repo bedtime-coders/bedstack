@@ -1,6 +1,6 @@
-# Deploy VitePress site to Pages
+# Deploy VitePress site to GitHub Pages
 
-name: docs
+name: Documentation
 
 on:
   push:

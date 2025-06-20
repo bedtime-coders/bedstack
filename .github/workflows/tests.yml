@@ -1,6 +1,6 @@
 # Run tests (e.g. build) on pull requests
 
-name: tests
+name: Tests
 
 on:
   pull_request:

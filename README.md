@@ -3,17 +3,16 @@
 <img src="docs/public/logo-mini.png" alt="Logo for Bedstack RealWorld example" width=200>
 <h1>Bedstack</h1>
 
-[bedstack.js.org](https://bedstack.js.org)
+[![Tests Status](https://github.com/bedtime-coders/bedstack/actions/workflows/tests.yml/badge.svg?event=push&branch=main&)](https://github.com/bedtime-coders/bedstack/actions/workflows/tests.yml?query=branch%3Amain+event%3Apush) [![Discord](https://img.shields.io/discord/1164270344115335320?label=Chat&color=5865f4&logo=discord&labelColor=121214)
+](https://discord.gg/8UcP9QB5AV) [![Bun](https://img.shields.io/badge/Bun-14151a?logo=bun&logoColor=fbf0df)](https://bun.sh/) [![ElysiaJS](https://custom-icon-badges.demolab.com/badge/ElysiaJS-0f172b.svg?logo=elysia)](https://elysiajs.com/) [![Drizzle](https://img.shields.io/badge/Drizzle-C5F74F?logo=drizzle&logoColor=000)](https://drizzle.team/) [![Biome](https://img.shields.io/badge/Biome-24272f?logo=biome&logoColor=f6f6f9)](https://biomejs.dev/) [![Scalar](https://img.shields.io/badge/Scalar-080808?logo=scalar&logoColor=e7e7e7)](https://scalar.com/) [![License](https://custom-icon-badges.demolab.com/github/license/bedtime-coders/bedstack?label=License&color=blue&logo=law&labelColor=0d1117)](https://github.com/bedtime-coders/bedstack/blob/main/LICENSE) [![Star](https://custom-icon-badges.demolab.com/github/stars/bedtime-coders/bedstack?logo=star&logoColor=373737&label=Star)](https://github.com/bedtime-coders/bedstack/stargazers/)
 
 [RealWorld](https://realworld-docs.netlify.app/) example app for [Bun](https://bun.sh/) + [ElysiaJS](https://elysiajs.com/) + [Drizzle](https://orm.drizzle.team/)
 
-[![Tests Status](https://github.com/bedtime-coders/bedstack/actions/workflows/tests.yml/badge.svg?event=push&branch=main)](https://github.com/bedtime-coders/bedstack/actions/workflows/tests.yml?query=branch%3Amain) [![Fully compliant with the RealWorld API spec](https://img.shields.io/badge/RealWorld%20API-compatible-success?labelColor=2f1c42)](https://realworld-docs.netlify.app/specifications/backend/endpoints) [![Featured on CodebaseShow](https://img.shields.io/badge/CodebaseShow-approved-success?labelColor=2c3669)](https://codebase.show/projects/realworld?category=backend&language=typescript) [![GitHub License](https://img.shields.io/github/license/bedtime-coders/bedstack)](https://github.com/bedtime-coders/bedstack/blob/main/LICENSE) [![Star bedstack on GitHub](https://img.shields.io/github/stars/bedtime-coders/bedstack)](https://github.com/bedtime-coders/bedstack) 
-
-## Let's share a BED - join our [Discord server](https://discord.gg/8UcP9QB5AV)
+[bedstack.js.org](https://bedstack.js.org)
 
 </div>
 
-### Quickstart
+## Quickstart
 
 1. **Clone and install dependencies**
 
@@ -55,7 +54,7 @@
    bun run test # not `bun test`!
    ```
 
-### Building for production
+## Building for production
 
 > [!TIP]
 > See more info in ElysiaJS's [Building for production](https://elysiajs.com/tutorial.html#build-for-production) guide.
@@ -72,6 +71,6 @@
    bun preview
    ```
 
-### Contributing
+## Contributing
 
 See [Developer's Guide](CONTRIBUTING.md).

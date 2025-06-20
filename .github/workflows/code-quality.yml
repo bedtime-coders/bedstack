@@ -1,6 +1,6 @@
-# Check linting on pull requests
+# Check code quality on pull requests
 
-name: lint
+name: Code Quality
 
 on:
   pull_request:
