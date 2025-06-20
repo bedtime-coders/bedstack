@@ -1,5 +1,5 @@
-import { describe, expect, it, mock } from 'bun:test';
-import type { Database } from '@/database.providers';
+import { describe, expect, it } from 'bun:test';
+import type { Database } from '@/database/database.providers';
 import { TagsRepository } from './tags.repository';
 import { TagsService } from './tags.service';
 
@@ -9,7 +9,7 @@ describe('TagsService', () => {
       super({} as Database);
     }
 
-    override async getTags() {
+    override async findTags() {
       return [];
     }
   }
@@ -19,7 +19,7 @@ describe('TagsService', () => {
   describe('getTags', () => {
     it('should return empty tags array when no tags exist', async () => {
       const result = await service.getTags();
-      expect(result).toEqual({ tags: [] });
+      expect(result).toEqual([]);
     });
   });
 });
