@@ -20,13 +20,19 @@
     "docs": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "db": "./scripts/create-start-container-with-env.sh",
+    "db": "docker compose up",
+    "db:start": "docker compose up -d",
+    "db:stop": "docker compose stop",
+    "db:restart": "docker compose restart",
+    "db:down": "docker compose down",
+    "db:remove": "docker compose down -v",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:seed": "bun drizzle/seed.ts",
     "db:studio": "drizzle-kit studio",
-    "db:reset": "bun drizzle/reset.ts"
+    "db:reset": "bun drizzle/reset.ts",
+    "db:config": "docker compose config"
   },
   "dependencies": {
     "@elysiajs/bearer": "^1.3.0",

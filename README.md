@@ -32,10 +32,10 @@
 
    Use the provided example values or replace them with your own.
 
-3. **Ensure Docker daemon is running and spin up the Postgres container**
+3. **Ensure Docker daemon is running and start the database service**
 
    ```sh
-   bun db
+   bun db:start
    ```
 
 4. **Migrate the schema to the database**
@@ -55,6 +55,12 @@
    ```sh
    bun run test # not `bun test`!
    ```
+
+7. **(Optional) Start the [database studio](https://orm.drizzle.team/drizzle-studio/overview)**
+   ```bash
+   bun db:studio
+   ```
+
 
 ## Building for production
 
