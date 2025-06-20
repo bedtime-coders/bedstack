@@ -1,10 +1,10 @@
 import { RealWorldError } from '@/common/errors';
+import { env } from '@/core/env';
 import type { UserRow } from '@/users/interfaces';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
 import { StatusCodes } from 'http-status-codes';
 import * as jose from 'jose';
-import { env } from '../../env.config';
 
 export class AuthService {
   private readonly ALG = env.JWT_ALGORITHM;

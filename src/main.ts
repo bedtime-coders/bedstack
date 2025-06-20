@@ -2,6 +2,8 @@ import { setupApp } from '@/app.module';
 import chalk from 'chalk';
 import { Elysia } from 'elysia';
 
+console.info(chalk.gray('Starting Bedstack'));
+
 new Elysia()
   .use(setupApp)
   .get('/', ({ redirect }) => redirect('/swagger'))

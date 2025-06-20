@@ -2,6 +2,7 @@ import { exit } from 'node:process';
 import { parseArgs } from 'node:util';
 import { articles, favoriteArticles } from '@/articles/articles.schema';
 import { comments } from '@/comments/comments.schema';
+import { env } from '@/core/env';
 import { db } from '@/database/database.providers';
 import { articleTags, tags } from '@/tags/tags.schema';
 import { users } from '@/users/users.schema';
@@ -18,7 +19,7 @@ const { values } = parseArgs({
 });
 
 if (values.reset) {
-  const nodeEnv = process.env.NODE_ENV;
+  const nodeEnv = env.NODE_ENV;
   if (!nodeEnv || !['development', 'test'].includes(nodeEnv)) {
     console.error(
       '❌ Database reset is only allowed in development or test environments.',

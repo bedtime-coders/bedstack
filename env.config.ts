@@ -1,15 +1,38 @@
-import { Type } from '@sinclair/typebox';
-import { Value } from '@sinclair/typebox/value';
+import { defineEnv } from '@/core/env/define-env.util';
+import { t } from 'elysia';
 
-const envSchema = Type.Object({
-  POSTGRES_DB: Type.String(),
-  POSTGRES_USER: Type.String(),
-  POSTGRES_PASSWORD: Type.String(),
-  POSTGRES_HOST: Type.String(),
-  POSTGRES_PORT: Type.String(),
-  JWT_SECRET: Type.String(),
-  JWT_ALGORITHM: Type.String(),
+export default defineEnv({
+  POSTGRES_DB: t.String({
+    default: 'conduit',
+  }),
+  POSTGRES_USER: t.String({
+    default: 'postgres',
+  }),
+  POSTGRES_PASSWORD: t.String({
+    default: 'postgres',
+  }),
+  POSTGRES_HOST: t.String({
+    default: '0.0.0.0',
+  }),
+  POSTGRES_PORT: t.Number({
+    min: 1,
+    max: 65535,
+    default: 5432,
+  }),
+  JWT_ALGORITHM: t.String(),
+  PORT: t.Number({
+    min: 1,
+    max: 65535,
+    default: 3000,
+  }),
+  JWT_SECRET: t.String(),
+  NODE_ENV: t.Union(
+    [t.Literal('development'), t.Literal('production'), t.Literal('test')],
+    {
+      default: 'development',
+    },
+  ),
+  LOG_LEVEL: t.Union([t.Literal('debug'), t.Literal('info')], {
+    default: 'info',
+  }),
 });
-// TODO: this is ugly, find a better way to do this
-if (!Value.Check(envSchema, Bun.env)) throw new Error('Invalid env variables');
-export const env = Value.Cast(envSchema, Bun.env);
