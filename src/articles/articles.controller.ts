@@ -1,4 +1,5 @@
 import { setupArticles } from '@/articles/articles.module';
+import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '@/common/constants';
 import { Elysia, t } from 'elysia';
 import {
   ArticleFeedQueryDto,
@@ -27,7 +28,13 @@ export const articlesController = new Elysia().use(setupArticles).group(
               request.headers,
             );
 
-          const { offset = 0, limit = 20, tag, author, favorited } = query;
+          const {
+            offset = DEFAULT_OFFSET,
+            limit = DEFAULT_LIMIT,
+            tag,
+            author,
+            favorited,
+          } = query;
 
           return toFeedResponse(
             await store.articlesService.find(
@@ -53,7 +60,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
             request.headers,
           );
 
-          const { offset = 0, limit = 20 } = query;
+          const { offset = DEFAULT_OFFSET, limit = DEFAULT_LIMIT } = query;
 
           const { articles, articlesCount } = await store.articlesService.find(
             {},
