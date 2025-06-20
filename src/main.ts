@@ -1,11 +1,12 @@
 import { setupApp } from '@/app.module';
+import chalk from 'chalk';
 import { Elysia } from 'elysia';
 
-const app = new Elysia()
+new Elysia()
   .use(setupApp)
   .get('/', ({ redirect }) => redirect('/swagger'))
-  .listen(3000);
-
-console.log(
-  `🦊 Elysia is running! Access Swagger UI at http://${app.server?.hostname}:${app.server?.port}/swagger`,
-);
+  .listen(3000, ({ hostname, port }) => {
+    console.info(
+      `Bedstack is up and running on ${chalk.blue(`http://${hostname}:${port}`)}`,
+    );
+  });
