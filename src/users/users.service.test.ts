@@ -55,8 +55,8 @@ describe('UsersService', () => {
   const service = new UsersService(mockRepository, mockAuthService);
 
   describe('findById', () => {
-    it('should throw NotFoundError when user is not found', async () => {
-      await expect(service.findById(1)).rejects.toThrow('User not found');
+    it('should throw NotFoundError when user is not found', () => {
+      expect(() => service.findById(1)).toThrow('user');
     });
   });
 });

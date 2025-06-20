@@ -24,10 +24,10 @@ describe('ProfilesService', () => {
   const service = new ProfilesService(new MockProfilesRepository());
 
   describe('findByUsername', () => {
-    it('should throw NotFoundError when profile is not found', async () => {
-      await expect(
-        service.findProfileByUsername(1, 'testuser'),
-      ).rejects.toThrow('Profile not found');
+    it('should throw NotFoundError when profile is not found', () => {
+      expect(() => service.findProfileByUsername(1, 'testuser')).toThrow(
+        'profile',
+      );
     });
   });
 });

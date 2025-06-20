@@ -54,7 +54,6 @@ export class AuthService {
         algorithms: [this.ALG],
       });
     } catch (err) {
-      console.error(err);
       throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
         token: ['is invalid'],
       });

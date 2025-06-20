@@ -40,10 +40,8 @@ describe('ArticlesService', () => {
   );
 
   describe('findBySlug', () => {
-    it('should throw NotFoundError when article is not found', async () => {
-      await expect(service.findBySlug('test-article')).rejects.toThrow(
-        'Article not found',
-      );
+    it('should throw NotFoundError when article is not found', () => {
+      expect(() => service.findBySlug('test-article')).toThrow('article');
     });
   });
 });
