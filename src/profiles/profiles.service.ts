@@ -1,5 +1,5 @@
-import type { ProfilesRepository } from '@/profiles/profiles.repository';
 import { NotFoundError } from 'elysia';
+import type { ProfilesRepository } from '@/profiles/profiles.repository';
 import type { IProfile } from './interfaces';
 import { toDomain } from './mappers';
 

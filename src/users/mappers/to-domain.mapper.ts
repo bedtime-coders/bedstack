@@ -1,5 +1,5 @@
-import type { UserRow } from '../interfaces/user-row.interface';
 import type { IUser } from '../interfaces/user.interface';
+import type { UserRow } from '../interfaces/user-row.interface';
 
 /**
  * Map a user row to a domain user

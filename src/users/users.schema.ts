@@ -1,5 +1,4 @@
-import { articles, favoriteArticles } from '@/articles/articles.schema';
-import { relations, sql } from 'drizzle-orm';
+import { relations } from 'drizzle-orm';
 import {
   integer,
   pgTable,
@@ -8,6 +7,7 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+import { articles, favoriteArticles } from '@/articles/articles.schema';
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey().notNull(),

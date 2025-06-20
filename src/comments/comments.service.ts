@@ -1,10 +1,10 @@
+import { NotFoundError } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
 import type { ArticlesService } from '@/articles/articles.service';
 import type { ProfilesService } from '@/profiles/profiles.service';
 import { RealWorldError } from '@/shared/errors';
-import { NotFoundError } from 'elysia';
-import { StatusCodes } from 'http-status-codes';
 import type { CommentsRepository } from './comments.repository';
-import type { IComment, NewCommentRow } from './interfaces';
+import type { IComment } from './interfaces';
 import { toDomain, toNewCommentRow } from './mappers';
 
 export class CommentsService {

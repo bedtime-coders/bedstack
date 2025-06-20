@@ -1,5 +1,5 @@
-import type { CommentRow } from '../interfaces/comment-row.interface';
 import type { IComment } from '../interfaces/comment.interface';
+import type { CommentRow } from '../interfaces/comment-row.interface';
 
 type ToCommentsDomainAuthor = {
   username: string;

@@ -1,6 +1,3 @@
-import { comments } from '@/comments/comments.schema';
-import { articleTags } from '@/tags/tags.schema';
-import { users } from '@/users/users.schema';
 import { relations } from 'drizzle-orm';
 import {
   integer,
@@ -10,6 +7,9 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+import { comments } from '@/comments/comments.schema';
+import { articleTags } from '@/tags/tags.schema';
+import { users } from '@/users/users.schema';
 
 export const articles = table('articles', {
   id: serial('id').primaryKey(),

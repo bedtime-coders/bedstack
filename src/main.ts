@@ -1,6 +1,6 @@
-import { setupApp } from '@/app.module';
 import chalk from 'chalk';
 import { Elysia } from 'elysia';
+import { setupApp } from '@/app.module';
 
 console.info(chalk.gray('Starting Bedstack'));
 

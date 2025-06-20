@@ -1,5 +1,5 @@
-import type { ProfileRow } from '../interfaces/profile-row.interface';
 import type { IProfile } from '../interfaces/profile.interface';
+import type { ProfileRow } from '../interfaces/profile-row.interface';
 
 /**
  * Map a profile row to a domain profile

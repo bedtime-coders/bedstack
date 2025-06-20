@@ -43,7 +43,7 @@
     "radashi": "^12.5.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "2.0.0",
     "@types/node": "^24.0.3",
     "bun-types": "latest",
     "cross-env": "^7.0.3",
@@ -53,7 +53,9 @@
     "typescript": "^5.8.3",
     "vitepress": "^1.6.3"
   },
-  "trustedDependencies": ["@biomejs/biome"],
+  "trustedDependencies": [
+    "@biomejs/biome"
+  ],
   "overrides": {
     "@sinclair/typebox": "0.34.34"
   }

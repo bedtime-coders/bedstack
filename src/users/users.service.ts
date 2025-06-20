@@ -1,9 +1,9 @@
+import { NotFoundError } from 'elysia';
+import { StatusCodes } from 'http-status-codes';
 import type { AuthService } from '@/auth/auth.service';
 import { RealWorldError } from '@/shared/errors';
 import type { CreateUserInput, UpdateUserInput } from '@/users/interfaces';
 import type { UsersRepository } from '@/users/users.repository';
-import { NotFoundError } from 'elysia';
-import { StatusCodes } from 'http-status-codes';
 import { toDomain, toNewUserRow, toResponse, toUpdateUserRow } from './mappers';
 
 export class UsersService {

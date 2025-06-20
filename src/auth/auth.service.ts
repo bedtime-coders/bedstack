@@ -1,10 +1,10 @@
-import { env } from '@/core/env';
-import { RealWorldError } from '@/shared/errors';
-import type { UserRow } from '@/users/interfaces';
 import { Type } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
 import { StatusCodes } from 'http-status-codes';
 import * as jose from 'jose';
+import { env } from '@/core/env';
+import { RealWorldError } from '@/shared/errors';
+import type { UserRow } from '@/users/interfaces';
 
 export class AuthService {
   private readonly ALG = env.JWT_ALGORITHM;
@@ -53,7 +53,7 @@ export class AuthService {
       verifiedToken = await jose.jwtVerify(token, secret, {
         algorithms: [this.ALG],
       });
-    } catch (err) {
+    } catch {
       throw new RealWorldError(StatusCodes.UNAUTHORIZED, {
         token: ['is invalid'],
       });
@@ -89,11 +89,7 @@ export class AuthService {
     return userToken.payload.user;
   };
 
-  requireLogin = async ({
-    request: { headers },
-  }: {
-    request: Request;
-  }) => {
+  requireLogin = async ({ request: { headers } }: { request: Request }) => {
     await this.getUserFromHeaders(headers);
   };
 

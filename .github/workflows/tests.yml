@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        bun: ['1.1.43', 'latest']
+        bun: ['1.2.3', 'latest']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        bun: ['1.1.43', 'latest']
+        bun: ['1.2.3', 'latest']
     services:
       postgres:
         image: postgres:16
@@ -97,13 +97,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        bun: ['1.1.43', 'latest']
+        bun: ['1.2.3', 'latest']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.bun }}-bun-
       - name: Setup Bun

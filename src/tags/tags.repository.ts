@@ -1,5 +1,5 @@
-import type { Database } from '@/database/database.providers';
 import { and, eq, inArray } from 'drizzle-orm';
+import type { Database } from '@/database/database.providers';
 import type {
   ArticleTagRow,
   NewArticleTagRow,

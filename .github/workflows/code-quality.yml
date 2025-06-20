@@ -16,17 +16,22 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - name: Reviewdog (Checks)
-        uses: mongolyy/reviewdog-action-biome@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-check
-          level: error
-          biome_flags: "--diagnostic-level=error"
-      - name: Reviewdog (PR)
-        uses: mongolyy/reviewdog-action-biome@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
-          level: error
-          biome_flags: "--diagnostic-level=error"
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+      - name: Run Biome
+        run: biome ci .
+      # TODO: Uncomment this when `reviewdog-action-biome` supports Biome 2.0
+      # - name: Reviewdog (Checks)
+      #   uses: mongolyy/reviewdog-action-biome@v1
+      #   with:
+      #     github_token: ${{ secrets.github_token }}
+      #     reporter: github-pr-check
+      #     level: error
+      #     biome_flags: "--diagnostic-level=error"
+      # - name: Reviewdog (PR)
+      #   uses: mongolyy/reviewdog-action-biome@v1
+      #   with:
+      #     github_token: ${{ secrets.github_token }}
+      #     reporter: github-pr-review
+      #     level: error
+      #     biome_flags: "--diagnostic-level=error"

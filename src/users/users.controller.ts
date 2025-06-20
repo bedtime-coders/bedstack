@@ -1,3 +1,4 @@
+import { Elysia } from 'elysia';
 import {
   CreateUserDto,
   LoginUserDto,
@@ -5,7 +6,6 @@ import {
   UserResponseDto,
 } from '@/users/dto';
 import { setupUsers } from '@/users/users.module';
-import { Elysia } from 'elysia';
 
 /**
  * Users controller handling user registration, authentication, and profile management

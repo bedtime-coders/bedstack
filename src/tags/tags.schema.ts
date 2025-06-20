@@ -1,4 +1,3 @@
-import { articles } from '@/articles/articles.schema';
 import { relations } from 'drizzle-orm';
 import {
   integer,
@@ -7,6 +6,7 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+import { articles } from '@/articles/articles.schema';
 
 export const tags = pgTable('tags', {
   name: text('name').primaryKey(),

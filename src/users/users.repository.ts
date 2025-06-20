@@ -1,7 +1,7 @@
+import { eq } from 'drizzle-orm';
 import type { Database } from '@/database/database.providers';
 import type { NewUserRow, UpdateUserRow } from '@/users/interfaces';
 import { users } from '@/users/users.schema';
-import { eq } from 'drizzle-orm';
 
 export class UsersRepository {
   constructor(private readonly db: Database) {}

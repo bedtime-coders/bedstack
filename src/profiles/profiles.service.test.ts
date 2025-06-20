@@ -1,6 +1,5 @@
-import { describe, expect, it, mock } from 'bun:test';
+import { describe, expect, it } from 'bun:test';
 import type { Database } from '@/database/database.providers';
-import { UsersRepository } from '@/users/users.repository';
 import { ProfilesRepository } from './profiles.repository';
 import { ProfilesService } from './profiles.service';
 
@@ -12,12 +11,6 @@ describe('ProfilesService', () => {
 
     override async findProfileByUsername(_targetUsername: string) {
       return null;
-    }
-  }
-
-  class MockUsersRepository extends UsersRepository {
-    constructor() {
-      super({} as Database);
     }
   }
 

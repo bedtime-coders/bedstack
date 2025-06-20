@@ -1,5 +1,5 @@
-import type { NewArticleTagRow, TagRow } from './interfaces/tag-row.interface';
 import type { IArticleTag, ITag } from './interfaces/tag.interface';
+import type { NewArticleTagRow } from './interfaces/tag-row.interface';
 import { toArticleTagDomain, toDomain } from './mappers';
 import type { TagsRepository } from './tags.repository';
 

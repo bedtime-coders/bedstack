@@ -1,5 +1,5 @@
-import type { Database } from '@/database/database.providers';
 import { and, desc, eq } from 'drizzle-orm';
+import type { Database } from '@/database/database.providers';
 import { comments } from './comments.schema';
 import type { NewCommentRow } from './interfaces';
 

@@ -1,7 +1,7 @@
-import { articles } from '@/articles/articles.schema';
-import { users } from '@/users/users.schema';
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { articles } from '@/articles/articles.schema';
+import { users } from '@/users/users.schema';
 
 export const comments = pgTable('comments', {
   id: serial('id').primaryKey(),

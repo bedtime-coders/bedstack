@@ -1,5 +1,5 @@
-import { defineEnv } from '@/core/env/define-env.util';
 import { t } from 'elysia';
+import { defineEnv } from '@/core/env/define-env.util';
 
 export default defineEnv({
   POSTGRES_DB: t.String({

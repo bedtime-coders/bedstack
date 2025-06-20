@@ -4,7 +4,10 @@ import type { IArticleFeed } from '../interfaces';
 export function toFeedResponse({
   articles,
   articlesCount,
-}: { articles: IArticleFeed[]; articlesCount?: number }): ArticlesResponseDto {
+}: {
+  articles: IArticleFeed[];
+  articlesCount?: number;
+}): ArticlesResponseDto {
   const articlesResponse = articles.map((article) => ({
     slug: article.slug,
     title: article.title,
