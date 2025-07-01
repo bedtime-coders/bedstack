@@ -81,7 +81,7 @@ It's ok to have multiple commits in a single PR, you don't need to rebase or for
 
 ### Lint
 
-We use [Biome](https://biomejs.dev/) for both linting and formatting with [a few custom rules](./biome.json). It is an ultra-fast, Rust based linter and formatter.
+We use [Biome](https://biomejs.dev/) for both linting and formatting with [a few custom rules](./biome.jsonc). It is an ultra-fast, Rust based linter and formatter.
 
 <table><tr><td>
 

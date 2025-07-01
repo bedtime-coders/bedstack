@@ -16,7 +16,7 @@ src/
 scripts/                  # Scripts managed by `package.json`
 drizzle/                  # Drizzle migrations and scripts
 drizzle.config.ts         # Drizzle configuration
-biome.json                # Biome configuration
+biome.jsonc               # Biome configuration
 package.json              # Package metadata
 bun.lockb                 # Bun lockfile
 tsconfig.json             # TypeScript configuration
