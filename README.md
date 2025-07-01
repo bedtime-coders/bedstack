@@ -12,8 +12,9 @@
 </div>
 
 > [!TIP]
-> ⚡ **New!** We've created a _stripped_ version of Bedstack, with only the essential features for rapid prototyping. Check it out: [Bedstack (Stripped)](https://github.com/bedtime-coders/bedstack-stripped)
->
+> ⚡ **New!** Our Prisma-based alternative to Bedstack was just approved on CodebaseShow. Check it out: [Bepstack](https://github.com/bedtime-coders/bepstack)
+
+> [!TIP]
 > ⚡ **New!** We've added support for [Drizzle v1 Beta](https://orm.drizzle.team/roadmap) in _Bedstack (Stripped)_. Check it out: [`drizzle-v1` in Bedstack (Stripped)](https://github.com/bedtime-coders/bedstack-stripped/tree/drizzle-v1)
 
 ## Quickstart
