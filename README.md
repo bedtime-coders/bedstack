@@ -12,9 +12,9 @@
 </div>
 
 > [!TIP]
-> ⚡ **New!** We've created a _stripped_ version of Bedstack, with only the essential features for rapid prototyping. Check it out: https://github.com/bedtime-coders/bedstack-stripped
+> ⚡ **New!** We've created a _stripped_ version of Bedstack, with only the essential features for rapid prototyping. Check it out: [Bedstack (Stripped)](https://github.com/bedtime-coders/bedstack-stripped)
 >
-> ⚡ **New!** We've added support for [Drizzle v1](https://orm.drizzle.team/roadmap) in _Bedstack (Stripped)_. Check it out: https://github.com/bedtime-coders/bedstack-stripped/tree/drizzle-v1
+> ⚡ **New!** We've added support for [Drizzle v1 Beta](https://orm.drizzle.team/roadmap) in _Bedstack (Stripped)_. Check it out: [`drizzle-v1` in Bedstack (Stripped)](https://github.com/bedtime-coders/bedstack-stripped/tree/drizzle-v1)
 
 ## Quickstart
 
