@@ -15,7 +15,7 @@
 > ⚡ **New!** Our Prisma-based alternative to Bedstack was just approved on CodebaseShow. Check it out: [Bepstack](https://github.com/bedtime-coders/bepstack)
 
 > [!TIP]
-> ⚡ **New!** We've added support for [Drizzle v1 Beta](https://orm.drizzle.team/roadmap) in _Bedstack (Stripped)_. Check it out: [`drizzle-v1` in Bedstack (Stripped)](https://github.com/bedtime-coders/bedstack-stripped/tree/drizzle-v1)
+> ⚡ **New!** We've added support for [Drizzle v1 Beta](https://orm.drizzle.team/roadmap) in _Bedstack (Stripped)_. Check it out: [`bedstack-stripped/tree/drizzle-v1`](https://github.com/bedtime-coders/bedstack-stripped/tree/drizzle-v1)
 
 ## Quickstart
 
