@@ -21,7 +21,7 @@ jobs:
         bun: ['1.2.3', 'latest']
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lockb') }}
@@ -67,7 +67,7 @@ jobs:
       JWT_ALGORITHM: HS256
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lockb') }}
@@ -100,7 +100,7 @@ jobs:
         bun: ['1.2.3', 'latest']
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lock') }}
