@@ -5,12 +5,12 @@ name: Tests
 on:
   pull_request:
     paths-ignore:
-      - 'docs/**'
+      - "apps/www/**"
   push:
     branches:
       - main
     paths-ignore:
-      - 'docs/**'
+      - "apps/www/**"
   workflow_dispatch:
 
 jobs:
@@ -18,13 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        bun: ['1.2.3', 'latest']
+        bun: ["1.3.2", "latest"]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/cache@v5
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.bun }}-bun-
       - name: Setup Bun
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        bun: ['1.2.3', 'latest']
+        bun: ["1.3.2", "latest"]
     services:
       postgres:
         image: postgres:16
@@ -63,14 +63,14 @@ jobs:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: bedstack_test
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/bedstack_test
-      JWT_SECRET: test-secret
-      JWT_ALGORITHM: HS256
+      JWT_SECRET: "test-secret"
+      JWT_ALGORITHM: "HS256"
     steps:
       - uses: actions/checkout@v6
       - uses: actions/cache@v5
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.bun }}-bun-
       - name: Setup Bun
@@ -81,12 +81,14 @@ jobs:
         run: bun install
       - name: Setup test database
         run: |
-          # Run migrations and seed
+          # Run migrations
           bun run db:migrate
-      - name: Start server in background
-        run: bun run dev &
       - name: Wait for server
         run: |
+          # Start server in background via turbo
+          # We use --filter=conduit to only start the relevant app
+          # We use --ui stream to avoid TUI in CI
+          bun x turbo dev --filter=conduit --ui stream &
           timeout 30s bash -c 'until curl -s http://localhost:3000/api/health > /dev/null; do sleep 1; done'
       - name: Run API Tests
         run: bun run test:api
@@ -97,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        bun: ['1.2.3', 'latest']
+        bun: ["1.3.2", "latest"]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/cache@v5

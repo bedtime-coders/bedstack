@@ -1,12 +1,14 @@
 # Deploy VitePress site to GitHub Pages
 
-name: Documentation
+name: Deploy bedstack.js.org
 
 on:
   push:
     branches: [main]
     paths:
-      - "docs/**"
+      - "apps/www/**"
+      - "package.json"
+      - "bun.lock"
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -33,7 +35,7 @@ jobs:
       - uses: actions/cache@v5
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-latest-bun-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.os }}-latest-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-latest-bun-
 
@@ -49,11 +51,11 @@ jobs:
       - name: Build with VitePress
         run: |
           bun run docs:build
-          touch docs/.vitepress/dist/.nojekyll
+          touch apps/www/.vitepress/dist/.nojekyll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: docs/.vitepress/dist
+          path: apps/www/.vitepress/dist
 
   deploy:
     name: Deploy Docs
