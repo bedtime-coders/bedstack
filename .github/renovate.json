@@ -1,0 +1,50 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "config:js-app"],
+  "ignorePaths": ["**/node_modules/**"],
+  "schedule": ["on friday"],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
+  "osvVulnerabilityAlerts": true,
+  "dependencyDashboard": true,
+  "updateInternalDeps": true,
+  "timezone": "Asia/Almaty",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["* 10 * * 5"],
+    "automerge": true,
+    "automergeType": "pr"
+  },
+  "automerge": false,
+  "automergeType": "pr",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch"],
+      "minimumReleaseAge": "2 days"
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "minimumReleaseAge": "14 days"
+    },
+    {
+      "groupName": "the Bun group",
+      "matchManagers": ["npm", "bun"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": ">=1.0.0",
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "groupName": "the GitHub Actions group",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeType": "pr"
+    }
+  ]
+}
