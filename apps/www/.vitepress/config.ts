@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress';
 import pkg from '../../../package.json';
+
 const { description, title } = pkg;
 
 // https://vitepress.dev/reference/site-config
