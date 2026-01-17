@@ -1,5 +1,7 @@
 {
   "name": "www",
+  "title": "bedstack.js.org",
+  "description": "The stack you don't want to sleep on",
   "version": "0.0.0",
   "type": "module",
   "private": true,
