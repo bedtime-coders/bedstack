@@ -1,4 +1,28 @@
 {
   "projectName": "bedstack",
-  "projectOwner": "yamcodes"
+  "projectOwner": "yamcodes",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "yamcodes",
+      "name": "Yam C Borodetsky",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2014360?v=4",
+      "profile": "https://yam.codes",
+      "contributions": [
+        "question",
+        "ideas",
+        "design",
+        "doc",
+        "bug",
+        "example",
+        "infra",
+        "test"
+      ]
+    }
+  ]
 }
