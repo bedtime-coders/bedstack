@@ -8,9 +8,9 @@
   "scripts": {
     "start": "bun run src/main.ts",
     "dev": "bun run --watch src/main.ts",
-    "build": "./scripts/build.sh",
+    "build": "./bin/build.sh",
     "preview": "./server",
-    "test:api": "cross-env APIURL=http://localhost:3000/api ./scripts/api-tests/run-api-tests.sh",
+    "test:api": "cross-env APIURL=http://localhost:3000/api ./bin/api-tests/run-api-tests.sh",
     "test:unit": "bun test",
     "test": "bun test:api && bun test:unit",
     "typecheck": "tsc --noEmit",
