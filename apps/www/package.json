@@ -10,5 +10,8 @@
   },
   "dependencies": {
     "vitepress": "^1.6.4"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
   }
 }
