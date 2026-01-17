@@ -1,15 +1,42 @@
 {
-  "$schema": "https://turborepo.dev/schema.json",
+  "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", ".vitepress/dist/**"]
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["^build", "transit"],
+      "inputs": ["**/*.ts", "**/*.tsx", "**/*.vue"]
     },
     "dev": {
+      "cache": false,
       "persistent": true,
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["^build", "transit"]
+    },
+    "test:api": {
+      "dependsOn": ["^build", "transit"]
+    },
+    "test:unit": {
+      "dependsOn": ["^build", "transit"]
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "clean": {
+      "cache": false,
+      "dependsOn": ["^clean"]
+    },
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
+    "//#fix": {
+      "cache": false
+    },
+    "//#check": {
       "cache": false
     }
   }
