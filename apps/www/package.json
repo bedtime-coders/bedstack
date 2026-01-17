@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vitepress dev",
+    "build": "vitepress build",
     "clean": "rimraf node_modules",
     "typecheck": "tsc --noEmit"
   },
