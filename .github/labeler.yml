@@ -1,0 +1,22 @@
+# Configuration for GitHub PR Labeler
+# https://github.com/actions/labeler
+
+conduit:
+  - changed-files:
+      - any-glob-to-any-file: "apps/conduit/**/*"
+
+www:
+  - changed-files:
+      - any-glob-to-any-file: "apps/www/**/*"
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file: ["**/*.md"]
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file: ["**/*.test.ts", "**/*.test.tsx"]
+
+"github actions":
+  - changed-files:
+      - any-glob-to-any-file: "**/.github/**/*"
