@@ -68,11 +68,14 @@ export function formatValidationError(error: ValidationError) {
     // 🧼 Remove redundant prefix: "Property 'user.image' should be ..."
     message = message.replace(/^Property '.*?' should /i, 'should ');
 
-    if (!result[path]) {
-      result[path] = [];
+    if (path) {
+      let messages = result[path];
+      if (!messages) {
+        messages = [];
+        result[path] = messages;
+      }
+      messages.push(message);
     }
-
-    result[path].push(message);
   }
 
   // Remove duplicates in each path’s messages

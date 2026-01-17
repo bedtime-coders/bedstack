@@ -14,8 +14,8 @@ import {
  * - offset: number of items to skip (default: DEFAULT_OFFSET, min: MIN_OFFSET)
  */
 export const ArticleFeedQueryDto = type({
-  'limit?': `${MIN_LIMIT} <= number.integer <= ${MAX_LIMIT} = ${DEFAULT_LIMIT}`,
-  'offset?': `number.integer >= ${MIN_OFFSET} = ${DEFAULT_OFFSET}`,
+  limit: `${MIN_LIMIT} <= number.integer <= ${MAX_LIMIT} = ${DEFAULT_LIMIT}`,
+  offset: `number.integer >= ${MIN_OFFSET} = ${DEFAULT_OFFSET}`,
 });
 
 export type ArticleFeedQueryDto = typeof ArticleFeedQueryDto.infer;

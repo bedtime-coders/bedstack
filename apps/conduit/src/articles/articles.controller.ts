@@ -1,3 +1,4 @@
+import { type } from 'arktype';
 import { Elysia } from 'elysia';
 import { StatusCodes } from 'http-status-codes';
 import { setupArticles } from '@/articles/articles.module';
@@ -173,7 +174,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
         {
           beforeHandle: app.store.authService.requireLogin,
           response: {
-            [StatusCodes.NO_CONTENT]: 'void',
+            [StatusCodes.NO_CONTENT]: type('undefined'),
           },
           detail: {
             summary: 'Delete Article',
