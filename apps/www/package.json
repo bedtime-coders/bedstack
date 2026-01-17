@@ -1,9 +1,14 @@
 {
   "name": "www",
   "version": "0.0.0",
+  "type": "module",
   "private": true,
   "scripts": {
+    "dev": "vitepress dev",
     "clean": "rimraf node_modules",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "vitepress": "^1.6.4"
   }
 }
