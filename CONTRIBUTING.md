@@ -5,7 +5,7 @@ Hey there! Contributing to this project is highly encouraged. Community help is 
 > [!IMPORTANT]
 > Before submitting your contribution, please take a moment and read through the following guidelines.
 
-## 👨‍💻 Repository Setup
+## Repository Setup
 
 This project uses [Bun](https://bun.com) as a runtime as well as a package manager. It's a modern, fast, and lightweight alternative to [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/). To install Bun on POSIX systems (like Ubuntu or macOS), run the following command:
 
@@ -15,7 +15,7 @@ curl -fsSL https://bun.com/install | bash
 
 Otherwise, visit the [Bun installation page](https://bun.com/docs/installation) for installation options.
 
-## 💡 Commands
+## Commands
 
 ### `bun dev`
 
@@ -44,7 +44,7 @@ Start the documentation dev server. Use `bun docs:build` to build the docs for p
 
 Print a full list of available scripts.
 
-## 🙌 The Road to a Great Pull Request
+## The Road to a Great Pull Request
 
 ### Discuss First
 
@@ -77,7 +77,7 @@ This will let GitHub know the issues are linked, and automatically close them on
 
 It's ok to have multiple commits in a single PR; changes do not need to be rebased or force pushed, as Squash and Merge will be used to combine the commits into one when merging.
 
-## 📖 References
+## References
 
 ### Lint
 
