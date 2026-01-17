@@ -1,30 +1,30 @@
 {
-	"name": "bedstack",
-	"type": "module",
-	"private": true,
-	"scripts": {
-		"build": "turbo run build",
-		"dev": "turbo run dev --ui tui",
-		"typecheck": "turbo run typecheck",
-		"docs": "turbo run dev --filter=www",
-		"www": "turbo run dev --filter=www",
-		"fix": "node bin/fix.js",
-		"fix:unsafe": "node bin/fix.js --unsafe",
-		"check": "biome check && manypkg check",
-		"check:errors": "biome check --diagnostic-level=error",
-		"clean": "turbo run clean && rimraf dist node_modules",
-		"test": "turbo run test",
-		"contributors:add": "all-contributors add",
-		"contributors:generate": "all-contributors generate"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "2.3.11",
-		"@manypkg/cli": "0.25.1",
-		"all-contributors-cli": "^6.26.1",
-		"rimraf": "^6.1.2",
-		"turbo": "2.7.4",
-		"typescript": "^5.9.3"
-	},
+  "name": "bedstack",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --ui tui",
+    "typecheck": "turbo run typecheck",
+    "docs": "turbo run dev --filter=www",
+    "www": "turbo run dev --filter=www",
+    "fix": "node bin/fix.js",
+    "fix:unsafe": "node bin/fix.js --unsafe",
+    "check": "biome check && manypkg check",
+    "check:errors": "biome check --diagnostic-level=error",
+    "clean": "turbo run clean && rimraf dist node_modules",
+    "test": "turbo run test",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.11",
+    "@manypkg/cli": "0.25.1",
+    "all-contributors-cli": "^6.26.1",
+    "rimraf": "^6.1.2",
+    "turbo": "2.7.4",
+    "typescript": "^5.9.3"
+  },
   "trustedDependencies": [
     "@biomejs/biome"
   ],

@@ -1,9 +1,9 @@
 {
-	"name": "www",
-	"version": "0.0.0",
-	"private": true,
-	"scripts": {
-		"clean": "rimraf node_modules",
-		"typecheck": "tsc --noEmit"
-	}
+  "name": "www",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "rimraf node_modules",
+    "typecheck": "tsc --noEmit"
+  }
 }

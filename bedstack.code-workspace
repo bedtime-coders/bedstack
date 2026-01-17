@@ -1,29 +1,29 @@
 {
-	"settings": {
-		"files.associations": {
-			"turbo.json": "jsonc",
-			"tsconfig*.json": "jsonc",
-			".github/renovate.json": "jsonc",
-			"renovate.json": "jsonc",
-			"*.css": "tailwindcss"
-		}
-	},
-	"folders": [
-		{
-			"path": ".",
-			"name": "~"
-		},
-		{
-			"path": "apps",
-			"name": "apps"
-		},
-		{
-			"path": "apps/conduit",
-			"name": "  conduit (Bedstack)"
-		},
-		{
-			"path": "apps/www",
-			"name": "  www (bedstack.js.org)"
-		},
-	]
+  "settings": {
+    "files.associations": {
+      "turbo.json": "jsonc",
+      "tsconfig*.json": "jsonc",
+      ".github/renovate.json": "jsonc",
+      "renovate.json": "jsonc",
+      "*.css": "tailwindcss"
+    }
+  },
+  "folders": [
+    {
+      "path": ".",
+      "name": "~"
+    },
+    {
+      "path": "apps",
+      "name": "apps"
+    },
+    {
+      "path": "apps/conduit",
+      "name": "  conduit (Bedstack)"
+    },
+    {
+      "path": "apps/www",
+      "name": "  www (bedstack.js.org)"
+    }
+  ]
 }

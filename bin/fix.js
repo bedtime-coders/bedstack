@@ -9,27 +9,27 @@
  *   node bin/fix.js --unsafe           # Run biome with --unsafe flag
  */
 
-import { execSync } from "node:child_process";
-import { argv, env } from "node:process";
+import { execSync } from 'node:child_process';
+import { argv, env } from 'node:process';
 
 const args = argv.slice(2);
 
-const skipManypkgFlag = args.includes("--skip-manypkg");
-const skipManypkgEnv = env.SKIP_MANYPKG === "true" || env.SKIP_MANYPKG === "1";
+const skipManypkgFlag = args.includes('--skip-manypkg');
+const skipManypkgEnv = env.SKIP_MANYPKG === 'true' || env.SKIP_MANYPKG === '1';
 
 const skipManypkg = skipManypkgFlag || skipManypkgEnv;
 
-const unsafe = args.includes("--unsafe");
+const unsafe = args.includes('--unsafe');
 
 // Always run biome formatting
-const biomeArgs = unsafe ? ["--write", "--unsafe", "."] : ["--write", "."];
-console.log("Running biome check...");
-execSync(`pnpm exec biome check ${biomeArgs.join(" ")}`, { stdio: "inherit" });
+const biomeArgs = unsafe ? ['--write', '--unsafe', '.'] : ['--write', '.'];
+console.log('Running biome check...');
+execSync(`bun biome check ${biomeArgs.join(' ')}`, { stdio: 'inherit' });
 
 // Conditionally run manypkg fix
 if (!skipManypkg) {
-	console.log("Running manypkg fix...");
-	execSync("pnpm exec manypkg fix", { stdio: "inherit" });
+  console.log('Running manypkg fix...');
+  execSync('bun manypkg fix', { stdio: 'inherit' });
 } else {
-	console.log("Skipping manypkg fix (SKIP_MANYPKG or --skip-manypkg)");
+  console.log('Skipping manypkg fix (SKIP_MANYPKG or --skip-manypkg)');
 }
