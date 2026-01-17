@@ -38,12 +38,6 @@ features:
     link: https://orm.drizzle.team/
     icon:
       src: /drizzle-logo.png
-
-  - title: ArkType
-    details: The first and only runtime validator that can 1:1 match your TypeScript types. Fast, concise, and natively integrated for a "pit of success" experience.
-    link: https://arktype.io/
-    icon:
-      src: /ark-logo.png
 ---
 
 <style>
