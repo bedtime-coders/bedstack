@@ -36,16 +36,7 @@ export default defineConfig({
         ],
         collapsed: false,
       },
-      {
-        text: 'Experimental',
-        items: [
-          {
-            text: 'Developing in a Dev Container',
-            link: '/dev-container',
-          },
-        ],
-        collapsed: true,
-      },
+
       {
         text: "Developer's Guide",
         link: 'https://github.com/bedtime-coders/bedstack/blob/main/CONTRIBUTING.md',
