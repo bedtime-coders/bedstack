@@ -16,12 +16,25 @@
       "contributions": [
         "question",
         "ideas",
-        "design",
         "doc",
         "bug",
         "example",
         "infra",
         "test"
+      ]
+    },
+    {
+      "login": "Hajbo",
+      "name": "Hajbo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35660161?v=4",
+      "profile": "https://github.com/Hajbo",
+      "contributions": [
+        "infra",
+        "code",
+        "design",
+        "ideas",
+        "test",
+        "question"
       ]
     }
   ]
