@@ -44,3 +44,6 @@ yarn-error.log*
 
 # build files
 server
+
+# Turborepo
+.turbo
