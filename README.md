@@ -12,7 +12,7 @@
 </div>
 
 > [!TIP]
-> ⚡ We support [Drizzle v1 Beta](https://orm.drizzle.team/roadmap)! Check it out: [`drizzle-v1` branch](https://github.com/bedtime-coders/bedstack-stripped/tree/drizzle-v1)
+> ⚡ Bedstack supports [Drizzle v1 Beta](https://orm.drizzle.team/roadmap)! Check it out: [`drizzle-v1` branch](https://github.com/bedtime-coders/bedstack-stripped/tree/drizzle-v1)
 
 <br/>
 <br/>
