@@ -1,8 +1,9 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 
-export const CreateCommentDto = t.Object({
-  comment: t.Object({
-    body: t.String({ minLength: 1 }),
-  }),
+export const CreateCommentDto = type({
+  comment: {
+    body: 'string > 0',
+  },
 });
-export type CreateCommentDto = typeof CreateCommentDto.static;
+
+export type CreateCommentDto = typeof CreateCommentDto.infer;

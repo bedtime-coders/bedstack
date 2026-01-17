@@ -1,18 +1,18 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 
-export const CommentResponseDto = t.Object({
-  comment: t.Object({
-    id: t.Number(),
-    body: t.String(),
-    createdAt: t.String(),
-    updatedAt: t.String(),
-    author: t.Object({
-      username: t.String(),
-      bio: t.Union([t.Null(), t.String()]),
-      image: t.Union([t.Null(), t.String()]),
-      following: t.Boolean(),
-    }),
-  }),
+export const CommentResponseDto = type({
+  comment: {
+    id: 'number',
+    body: 'string',
+    createdAt: 'string',
+    updatedAt: 'string',
+    author: {
+      username: 'string',
+      'bio?': 'string | null',
+      'image?': 'string | null',
+      following: 'boolean',
+    },
+  },
 });
 
-export type CommentResponseDto = typeof CommentResponseDto.static;
+export type CommentResponseDto = typeof CommentResponseDto.infer;

@@ -1,7 +1,7 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 
-export const TagsResponseDto = t.Object({
-  tags: t.Array(t.String()),
+export const TagsResponseDto = type({
+  tags: 'string[]',
 });
 
-export type TagsResponseDto = typeof TagsResponseDto.static;
+export type TagsResponseDto = typeof TagsResponseDto.infer;

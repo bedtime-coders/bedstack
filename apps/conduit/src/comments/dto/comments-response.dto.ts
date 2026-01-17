@@ -1,7 +1,8 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 import { CommentResponseDto } from './comment-response.dto';
 
-export const CommentsResponseDto = t.Object({
-  comments: t.Array(CommentResponseDto.properties.comment),
+export const CommentsResponseDto = type({
+  comments: CommentResponseDto.get('comment').array(),
 });
-export type CommentsResponseDto = typeof CommentsResponseDto.static;
+
+export type CommentsResponseDto = typeof CommentsResponseDto.infer;

@@ -1,30 +1,24 @@
-import { t } from 'elysia';
+import { regex } from 'arkregex';
+import { type } from 'arktype';
 
-export const CreateUserDto = t.Object({
-  user: t.Object({
-    email: t.String({
-      format: 'email',
-      minLength: 3,
-      maxLength: 255,
-      description: 'must be a valid email address',
-    }),
-    password: t.String({
-      minLength: 8,
-      maxLength: 100,
-      pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d@$!%*?&]{8,}$',
-      description:
-        'must be at least 8 characters and contain uppercase, lowercase, and numbers',
-    }),
-    username: t.String({
-      minLength: 3,
-      maxLength: 50,
-      pattern: '^[a-zA-Z0-9_-]+$',
-      description:
-        'must be 3-50 characters and contain only letters, numbers, underscores, and hyphens',
-    }),
-    bio: t.Optional(t.String({ maxLength: 1000 })),
-    image: t.Optional(t.String({ format: 'uri' })),
-  }),
+export const CreateUserDto = type({
+  user: {
+    email: 'string.email',
+    password: type(
+      regex('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d@$!%*?&]{8,}$'),
+    )
+      .and('8 <= string <= 100')
+      .describe(
+        'at least 8 characters and contain uppercase, lowercase, and numbers',
+      ),
+    username: type(regex('^[a-zA-Z0-9_-]+$'))
+      .and('3 <= string <= 50')
+      .describe(
+        '3-50 characters and contain only letters, numbers, underscores, and hyphens',
+      ),
+    'bio?': 'string <= 1000',
+    'image?': 'string.url',
+  },
 });
 
-export type CreateUserDto = typeof CreateUserDto.static;
+export type CreateUserDto = typeof CreateUserDto.infer;

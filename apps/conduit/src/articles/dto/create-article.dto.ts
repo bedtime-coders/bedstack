@@ -1,11 +1,12 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 
-export const CreateArticleDto = t.Object({
-  article: t.Object({
-    title: t.String({ minLength: 1 }),
-    description: t.String({ minLength: 1 }),
-    body: t.String({ minLength: 1 }),
-    tagList: t.Optional(t.Array(t.String({ minLength: 1 }))),
-  }),
+export const CreateArticleDto = type({
+  article: {
+    title: 'string > 0',
+    description: 'string > 0',
+    body: 'string > 0',
+    'tagList?': 'string[]',
+  },
 });
-export type CreateArticleDto = typeof CreateArticleDto.static;
+
+export type CreateArticleDto = typeof CreateArticleDto.infer;

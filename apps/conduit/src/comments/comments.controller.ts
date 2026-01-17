@@ -1,4 +1,5 @@
-import { Elysia, t } from 'elysia';
+import { type } from 'arktype';
+import { Elysia } from 'elysia';
 import { StatusCodes } from 'http-status-codes';
 import { setupComments } from './comments.module';
 import {
@@ -32,8 +33,8 @@ export const commentsController = new Elysia().use(setupComments).group(
           body: CreateCommentDto,
           response: {
             [StatusCodes.CREATED]: CommentResponseDto,
-            [StatusCodes.UNAUTHORIZED]: t.Void({
-              description: 'Authentication required',
+            [StatusCodes.UNAUTHORIZED]: type({
+              errors: 'Record<string, string[]>',
             }),
           },
           detail: {
@@ -79,14 +80,12 @@ export const commentsController = new Elysia().use(setupComments).group(
         },
         {
           beforeHandle: app.store.authService.requireLogin,
-          params: t.Object({
-            slug: t.String(),
-            id: t.Numeric(),
+          params: type({
+            slug: 'string',
+            id: 'string.numeric.parse',
           }),
           response: {
-            [StatusCodes.NO_CONTENT]: t.Void({
-              description: 'No content',
-            }),
+            [StatusCodes.NO_CONTENT]: type('undefined'),
           },
           detail: {
             summary: 'Delete Comment',

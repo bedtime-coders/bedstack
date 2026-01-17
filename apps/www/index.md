@@ -23,7 +23,7 @@ hero:
 features:
   - title: Bun
     details: All-in-one JavaScript runtime & toolkit designed for speed, complete with a bundler, test runner, and Node.js-compatible package manager.
-    link: https://bun.sh/
+    link: https://bun.com/
     icon:
       src: /bun-press-kit/logo-centered.svg
 

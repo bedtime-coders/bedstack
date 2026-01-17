@@ -1,12 +1,12 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 
-export const profileResponseSchema = t.Object({
-  profile: t.Object({
-    username: t.String(),
-    bio: t.Union([t.String(), t.Null()]),
-    image: t.Union([t.String(), t.Null()]),
-    following: t.Boolean(),
-  }),
+export const profileResponseSchema = type({
+  profile: {
+    username: 'string',
+    'bio?': 'string | null',
+    'image?': 'string | null',
+    following: 'boolean',
+  },
 });
 
-export type ProfileResponseDto = typeof profileResponseSchema.static;
+export type ProfileResponseDto = typeof profileResponseSchema.infer;

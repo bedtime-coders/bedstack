@@ -1,13 +1,13 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 
-export const UserResponseDto = t.Object({
-  user: t.Object({
-    email: t.String(),
-    token: t.String(),
-    username: t.String(),
-    bio: t.Union([t.String(), t.Null()]),
-    image: t.Union([t.String(), t.Null()]),
-  }),
+export const UserResponseDto = type({
+  user: {
+    email: 'string',
+    token: 'string',
+    username: 'string',
+    bio: 'string | null',
+    image: 'string | null',
+  },
 });
 
-export type UserResponseDto = typeof UserResponseDto.static;
+export type UserResponseDto = typeof UserResponseDto.infer;

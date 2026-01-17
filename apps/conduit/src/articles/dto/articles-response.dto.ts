@@ -1,8 +1,9 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 import { ArticleResponseDto } from './article-response.dto';
 
-export const ArticlesResponseDto = t.Object({
-  articles: t.Array(t.Omit(ArticleResponseDto.properties.article, ['body'])),
-  articlesCount: t.Number(),
+export const ArticlesResponseDto = type({
+  articles: ArticleResponseDto.get('article').omit('body').array(),
+  articlesCount: 'number',
 });
-export type ArticlesResponseDto = typeof ArticlesResponseDto.static;
+
+export type ArticlesResponseDto = typeof ArticlesResponseDto.infer;

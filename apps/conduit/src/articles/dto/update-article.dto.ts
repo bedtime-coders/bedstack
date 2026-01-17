@@ -1,7 +1,8 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 import { CreateArticleDto } from './create-article.dto';
 
-export const UpdateArticleDto = t.Object({
-  article: t.Partial(CreateArticleDto.properties.article),
+export const UpdateArticleDto = type({
+  article: CreateArticleDto.get('article').partial(),
 });
-export type UpdateArticleDto = typeof UpdateArticleDto.static;
+
+export type UpdateArticleDto = typeof UpdateArticleDto.infer;

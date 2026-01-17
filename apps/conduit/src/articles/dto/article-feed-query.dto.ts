@@ -1,4 +1,4 @@
-import { t } from 'elysia';
+import { type } from 'arktype';
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
@@ -13,22 +13,9 @@ import {
  * - limit: number of items per request (default: DEFAULT_LIMIT, min: MIN_LIMIT, max: MAX_LIMIT)
  * - offset: number of items to skip (default: DEFAULT_OFFSET, min: MIN_OFFSET)
  */
-export const ArticleFeedQueryDto = t.Object({
-  limit: t.Optional(
-    t.Integer({
-      minimum: MIN_LIMIT,
-      maximum: MAX_LIMIT,
-      default: DEFAULT_LIMIT,
-      description: `Number of items per request (between ${MIN_LIMIT} and ${MAX_LIMIT}, defaults to ${DEFAULT_LIMIT})`,
-    }),
-  ),
-  offset: t.Optional(
-    t.Integer({
-      minimum: MIN_OFFSET,
-      default: DEFAULT_OFFSET,
-      description: `Number of items to skip (at least ${MIN_OFFSET}, defaults to ${DEFAULT_OFFSET})`,
-    }),
-  ),
+export const ArticleFeedQueryDto = type({
+  limit: `${MIN_LIMIT} <= number.integer <= ${MAX_LIMIT} = ${DEFAULT_LIMIT}`,
+  offset: `number.integer >= ${MIN_OFFSET} = ${DEFAULT_OFFSET}`,
 });
 
-export type ArticleFeedQueryDto = typeof ArticleFeedQueryDto.static;
+export type ArticleFeedQueryDto = typeof ArticleFeedQueryDto.infer;

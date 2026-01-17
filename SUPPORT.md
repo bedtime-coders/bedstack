@@ -4,16 +4,16 @@ This article explains where to get help with Bedstack.
 Please read through the following guidelines.
 
 > [!WARNING]
-> Before participating in our community, please read our
+> Before participating in the community, please read the
 > [code of conduct](CODE_OF_CONDUCT.md).
 > By interacting with this repository, organization, or community you agree to
 > abide by its terms.
 
 ## Asking quality questions
 
-Questions can go to our [Discord server](https://discord.gg/8UcP9QB5AV) or [GitHub discussions](https://github.com/bedtime-coders/bedstack/discussions).
+Questions can go to the [Discord server](https://discord.gg/8UcP9QB5AV) or [GitHub discussions](https://github.com/bedtime-coders/bedstack/discussions).
 
-Help us help you!
+Clear questions are easier to answer.
 Spend time framing questions and add links and resources.
 Spending the extra time up front can help save everyone time in the long run.
 Here are some tips:
@@ -29,7 +29,7 @@ Here are some tips:
 *   Provide sample code, such as a [CodeSandbox](https://codesandbox.io/) or video, if possible
 *   Screenshots can help, but if there’s important text such as code or error
     messages in them, please also provide those as text
-*   The more time you put into asking your question, the better we can help you
+*   The more time put into asking a question, the better the community can provide assistance
 
 ## Contributions
 
