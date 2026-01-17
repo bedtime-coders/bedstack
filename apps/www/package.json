@@ -12,6 +12,7 @@
     "vitepress": "^1.6.4"
   },
   "devDependencies": {
+    "@types/node": "^25.0.9",
     "typescript": "catalog:"
   }
 }

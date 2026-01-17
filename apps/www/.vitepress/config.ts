@@ -2,7 +2,6 @@ import { defineConfig } from 'vitepress';
 import pkg from '../../../package.json';
 
 const { description, title } = pkg;
-const x: number = 'error';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
