@@ -35,7 +35,7 @@ yarn-error.log*
 !.env.example
 
 # build files
-server/
+server
 
 # Turborepo
 .turbo
