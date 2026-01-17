@@ -14,7 +14,7 @@ We carefully chose some of the latest and greatest technologies from the bleedin
 
 - **[ElysiaJS](https://elysiajs.com/)** - TypeScript framework supercharged by Bun with End-to-End Type Safety, unified type system and outstanding developer experience.
 
-- **[Drizzle](https://orm.drizzle.team/)** - Lightweight, performant, typesafe, non lactose, gluten-free, flexible, serverless-ready, and headless TypeScript ORM with both relational and SQL-like query APIs.
+- **[Drizzle](https://orm.drizzle.team/)** - Lightweight, performant, typesafe, non-lactose, gluten-free, flexible, serverless-ready, and headless TypeScript ORM with both relational and SQL-like query APIs.
 
 While not part of the flashy acronym, these tools are also core to Bedstack’s philosophy:
 

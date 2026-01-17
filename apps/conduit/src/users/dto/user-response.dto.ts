@@ -5,8 +5,8 @@ export const UserResponseDto = type({
     email: 'string',
     token: 'string',
     username: 'string',
-    'bio?': 'string | null',
-    'image?': 'string | null',
+    bio: 'string | null',
+    image: 'string | null',
   },
 });
 

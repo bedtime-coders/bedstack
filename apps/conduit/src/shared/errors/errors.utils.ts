@@ -48,6 +48,10 @@ export function formatValidationError(error: ValidationError) {
       }
     }
 
+    if (!path || path === '/') {
+      path = 'general';
+    }
+
     let message: string;
     if ('message' in err && typeof err.message === 'string') {
       message = err.message;

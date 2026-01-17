@@ -33,7 +33,9 @@ export const commentsController = new Elysia().use(setupComments).group(
           body: CreateCommentDto,
           response: {
             [StatusCodes.CREATED]: CommentResponseDto,
-            [StatusCodes.UNAUTHORIZED]: type('undefined'),
+            [StatusCodes.UNAUTHORIZED]: type({
+              errors: 'Record<string, string[]>',
+            }),
           },
           detail: {
             summary: 'Add Comments to an Article',
@@ -71,7 +73,7 @@ export const commentsController = new Elysia().use(setupComments).group(
         async ({ params, store, request, set }) => {
           await store.commentsService.deleteComment(
             params.slug,
-            Number(params.id),
+            params.id,
             await store.authService.getUserIdFromHeader(request.headers),
           );
           set.status = StatusCodes.NO_CONTENT;
