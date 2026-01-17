@@ -4,7 +4,7 @@ Bedstack is a bleeding-edge tech stack for building backend applications with Ty
 
 Bedstack’s philosophy is simple on the surface, powerful underneath. It is designed to guide developers into the pit of success by default. Strong type safety is not optional, and the stack remains flexible enough to support complex, real production use cases, as demonstrated by its [RealWorld](https://github.com/gothinkster/realworld) example project.
 
-This [repository](https://github.com/bedtime-coders/bedstack) implements the RealWorld backend specification. By design, it is fully interchangeable with other RealWorld backend implementations and works with any RealWorld-compatible frontend.
+This [repository](https://github.com/yamcodes/bedstack) implements the RealWorld backend specification. By design, it is fully interchangeable with other RealWorld backend implementations and works with any RealWorld-compatible frontend.
 
 ## Core technologies
 

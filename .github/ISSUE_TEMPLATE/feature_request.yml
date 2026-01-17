@@ -1,6 +1,6 @@
 name: 🚀 New feature proposal
 description: Propose a new feature to be added to Bedstack
-labels: ['enhancement: pending triage']
+labels: ["enhancement: pending triage"]
 body:
   - type: markdown
     attributes:
@@ -10,7 +10,7 @@ body:
     id: feature-description
     attributes:
       label: Clear and concise description of the problem
-      description: 'As a developer using Bedstack I want [goal / wish] so that [benefit]. If you intend to submit a PR for this issue, tell us in the description. Thanks!'
+      description: "As a developer using Bedstack I want [goal / wish] so that [benefit]. If you intend to submit a PR for this issue, tell us in the description. Thanks!"
     validations:
       required: true
   - type: textarea
@@ -36,7 +36,7 @@ body:
       label: Validations
       description: Before submitting the FR, please make sure you do the following
       options:
-        - label: Read the [Contributing Guide](https://github.com/bedtime-coders/bedstack/blob/main/CONTRIBUTING.md).
+        - label: Read the [Contributing Guide](https://github.com/yamcodes/bedstack/blob/main/CONTRIBUTING.md).
           required: true
         - label: Read the `README.md`.
           required: true

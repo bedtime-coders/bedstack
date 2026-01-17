@@ -10,7 +10,7 @@ body:
 
         - Read the `README.md`
         - Ask on [Discord](https://discord.gg/8UcP9QB5AV)
-        - Ask on [GitHub Discussions](https://github.com/bedtime-coders/bedstack/discussions)
+        - Ask on [GitHub Discussions](https://github.com/yamcodes/bedstack/discussions)
   - type: textarea
     id: bug-description
     attributes:
@@ -40,11 +40,11 @@ body:
       label: Validations
       description: Before submitting the issue, please make sure you do the following
       options:
-        - label: Read the [Contributing Guidelines](https://github.com/bedtime-coders/bedstack/blob/main/CONTRIBUTING.md).
+        - label: Read the [Contributing Guidelines](https://github.com/yamcodes/bedstack/blob/main/CONTRIBUTING.md).
           required: true
-        - label: Check that there isn't [already an issue](https://github.com/bedtime-coders/bedstack/issues) that reports the same bug.
+        - label: Check that there isn't [already an issue](https://github.com/yamcodes/bedstack/issues) that reports the same bug.
           required: true
-        - label: Check that this is a concrete bug. For Q&A, open a [GitHub Discussion](https://github.com/bedtime-coders/bedstack/discussions).
+        - label: Check that this is a concrete bug. For Q&A, open a [GitHub Discussion](https://github.com/yamcodes/bedstack/discussions).
           required: true
         - label: The provided reproduction is a [minimal reproducible example](https://stackoverflow.com/help/minimal-reproducible-example) of the bug.
           required: true

@@ -38,7 +38,7 @@ export class AuthService {
     })
       .setProtectedHeader({ alg: this.ALG })
       .setIssuedAt()
-      .setIssuer('bedtime-coders')
+      .setIssuer('yamcodes')
       .setAudience(user.email)
       .setExpirationTime('24h')
       .sign(secret);
