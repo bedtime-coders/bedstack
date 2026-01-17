@@ -1,5 +1,6 @@
-import { Elysia, t } from 'elysia';
+import { Elysia } from 'elysia';
 import { StatusCodes } from 'http-status-codes';
+import { z } from 'zod';
 import { setupArticles } from '@/articles/articles.module';
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '@/shared/constants';
 import {
@@ -173,9 +174,7 @@ export const articlesController = new Elysia().use(setupArticles).group(
         {
           beforeHandle: app.store.authService.requireLogin,
           response: {
-            [StatusCodes.NO_CONTENT]: t.Void({
-              description: 'No content',
-            }),
+            [StatusCodes.NO_CONTENT]: z.void(),
           },
           detail: {
             summary: 'Delete Article',

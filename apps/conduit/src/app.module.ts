@@ -28,7 +28,7 @@ export const setupApp = () => {
         set.status = error.status;
         return pick(error, ['errors']);
       }
-      // Elysia validation errors (TypeBox based)
+      // Elysia validation errors (Zod or TypeBox based)
       if (error instanceof ValidationError) {
         return formatValidationError(error);
       }
