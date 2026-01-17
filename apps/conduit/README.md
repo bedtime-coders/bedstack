@@ -63,10 +63,10 @@
    ```
 
 
-## Building for production
+## Deploy to production
 
 > [!TIP]
-> See more info in ElysiaJS's [Building for production](https://elysiajs.com/tutorial.html#build-for-production) guide.
+> See more info in ElysiaJS's [Deploy to production](https://elysiajs.com/patterns/deploy) guide.
 
 1. **Build the app**
 

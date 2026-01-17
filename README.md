@@ -64,24 +64,6 @@
    bun db:studio
    ```
 
-
-## Building for production
-
-> [!TIP]
-> See more info in ElysiaJS's [Building for production](https://elysiajs.com/tutorial.html#build-for-production) guide.
-
-1. **Build the app**
-
-   ```sh
-   bun run build # not `bun build`!
-   ```
-
-2. **Run the server**
-
-   ```sh
-   bun preview
-   ```
-
 ## Contributing
 
 See [Developer's Guide](CONTRIBUTING.md).
