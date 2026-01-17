@@ -1,18 +1,18 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 
-export const CommentResponseDto = z.object({
-  comment: z.object({
-    id: z.number(),
-    body: z.string(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-    author: z.object({
-      username: z.string(),
-      bio: z.string().nullable(),
-      image: z.string().nullable(),
-      following: z.boolean(),
-    }),
-  }),
+export const CommentResponseDto = type({
+  comment: {
+    id: 'number',
+    body: 'string',
+    createdAt: 'string',
+    updatedAt: 'string',
+    author: {
+      username: 'string',
+      'bio?': 'string | null',
+      'image?': 'string | null',
+      following: 'boolean',
+    },
+  },
 });
 
-export type CommentResponseDto = z.infer<typeof CommentResponseDto>;
+export type CommentResponseDto = typeof CommentResponseDto.infer;

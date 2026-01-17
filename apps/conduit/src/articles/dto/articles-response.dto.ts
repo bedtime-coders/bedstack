@@ -1,9 +1,9 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 import { ArticleResponseDto } from './article-response.dto';
 
-export const ArticlesResponseDto = z.object({
-  articles: z.array(ArticleResponseDto.shape.article.omit({ body: true })),
-  articlesCount: z.number(),
+export const ArticlesResponseDto = type({
+  articles: ArticleResponseDto.get('article').omit('body').array(),
+  articlesCount: 'number',
 });
 
-export type ArticlesResponseDto = z.infer<typeof ArticlesResponseDto>;
+export type ArticlesResponseDto = typeof ArticlesResponseDto.infer;

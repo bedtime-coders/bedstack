@@ -1,27 +1,21 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 
-export const CreateUserDto = z.object({
-  user: z.object({
-    email: z.string().email('must be a valid email address').min(3).max(255),
-    password: z
-      .string()
-      .min(8)
-      .max(100)
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/,
-        'must be at least 8 characters and contain uppercase, lowercase, and numbers',
+export const CreateUserDto = type({
+  user: {
+    email: 'string.email',
+    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/
+      .and('8 <= string <= 100')
+      .describe(
+        'at least 8 characters and contain uppercase, lowercase, and numbers',
       ),
-    username: z
-      .string()
-      .min(3)
-      .max(50)
-      .regex(
-        /^[a-zA-Z0-9_-]+$/,
-        'must be 3-50 characters and contain only letters, numbers, underscores, and hyphens',
+    username: /^[a-zA-Z0-9_-]+$/
+      .and('3 <= string <= 50')
+      .describe(
+        '3-50 characters and contain only letters, numbers, underscores, and hyphens',
       ),
-    bio: z.string().max(1000).nullish(),
-    image: z.string().url().nullish(),
-  }),
+    'bio?': 'string <= 1000',
+    'image?': 'string.url',
+  },
 });
 
-export type CreateUserDto = z.infer<typeof CreateUserDto>;
+export type CreateUserDto = typeof CreateUserDto.infer;

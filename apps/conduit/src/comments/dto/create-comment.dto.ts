@@ -1,8 +1,9 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 
-export const CreateCommentDto = z.object({
-  comment: z.object({
-    body: z.string().min(1),
-  }),
+export const CreateCommentDto = type({
+  comment: {
+    body: 'string > 0',
+  },
 });
-export type CreateCommentDto = z.infer<typeof CreateCommentDto>;
+
+export type CreateCommentDto = typeof CreateCommentDto.infer;

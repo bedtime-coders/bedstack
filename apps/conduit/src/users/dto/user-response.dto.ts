@@ -1,13 +1,13 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 
-export const UserResponseDto = z.object({
-  user: z.object({
-    email: z.string(),
-    token: z.string(),
-    username: z.string(),
-    bio: z.string().nullable(),
-    image: z.string().nullable(),
-  }),
+export const UserResponseDto = type({
+  user: {
+    email: 'string',
+    token: 'string',
+    username: 'string',
+    'bio?': 'string | null',
+    'image?': 'string | null',
+  },
 });
 
-export type UserResponseDto = z.infer<typeof UserResponseDto>;
+export type UserResponseDto = typeof UserResponseDto.infer;

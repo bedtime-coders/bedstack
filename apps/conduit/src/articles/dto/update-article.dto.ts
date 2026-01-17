@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 import { CreateArticleDto } from './create-article.dto';
 
-export const UpdateArticleDto = z.object({
-  article: CreateArticleDto.shape.article.partial(),
+export const UpdateArticleDto = type({
+  article: CreateArticleDto.get('article').partial(),
 });
 
-export type UpdateArticleDto = z.infer<typeof UpdateArticleDto>;
+export type UpdateArticleDto = typeof UpdateArticleDto.infer;

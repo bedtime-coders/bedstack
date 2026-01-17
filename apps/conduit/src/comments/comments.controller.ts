@@ -1,6 +1,6 @@
+import { type } from 'arktype';
 import { Elysia } from 'elysia';
 import { StatusCodes } from 'http-status-codes';
-import { z } from 'zod';
 import { setupComments } from './comments.module';
 import {
   CommentResponseDto,
@@ -33,7 +33,7 @@ export const commentsController = new Elysia().use(setupComments).group(
           body: CreateCommentDto,
           response: {
             [StatusCodes.CREATED]: CommentResponseDto,
-            [StatusCodes.UNAUTHORIZED]: z.void(),
+            [StatusCodes.UNAUTHORIZED]: 'void',
           },
           detail: {
             summary: 'Add Comments to an Article',
@@ -78,12 +78,12 @@ export const commentsController = new Elysia().use(setupComments).group(
         },
         {
           beforeHandle: app.store.authService.requireLogin,
-          params: z.object({
-            slug: z.string(),
-            id: z.coerce.number(),
+          params: type({
+            slug: 'string',
+            id: 'string.numeric.parse',
           }),
           response: {
-            [StatusCodes.NO_CONTENT]: z.void(),
+            [StatusCodes.NO_CONTENT]: 'void',
           },
           detail: {
             summary: 'Delete Comment',

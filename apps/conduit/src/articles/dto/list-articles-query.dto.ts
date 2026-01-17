@@ -1,10 +1,10 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 import { ArticleFeedQueryDto } from './article-feed-query.dto';
 
-export const ListArticlesQueryDto = ArticleFeedQueryDto.extend({
-  tag: z.string().min(1).optional(),
-  author: z.string().min(1).optional(),
-  favorited: z.string().min(1).optional(),
+export const ListArticlesQueryDto = ArticleFeedQueryDto.merge({
+  'tag?': 'string > 0',
+  'author?': 'string > 0',
+  'favorited?': 'string > 0',
 });
 
-export type ListArticlesQueryDto = z.infer<typeof ListArticlesQueryDto>;
+export type ListArticlesQueryDto = typeof ListArticlesQueryDto.infer;

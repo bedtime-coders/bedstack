@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 import {
   DEFAULT_LIMIT,
   DEFAULT_OFFSET,
@@ -13,14 +13,9 @@ import {
  * - limit: number of items per request (default: DEFAULT_LIMIT, min: MIN_LIMIT, max: MAX_LIMIT)
  * - offset: number of items to skip (default: DEFAULT_OFFSET, min: MIN_OFFSET)
  */
-export const ArticleFeedQueryDto = z.object({
-  limit: z.coerce
-    .number()
-    .int()
-    .min(MIN_LIMIT)
-    .max(MAX_LIMIT)
-    .default(DEFAULT_LIMIT),
-  offset: z.coerce.number().int().min(MIN_OFFSET).default(DEFAULT_OFFSET),
+export const ArticleFeedQueryDto = type({
+  'limit?': `${MIN_LIMIT} <= number.integer <= ${MAX_LIMIT} = ${DEFAULT_LIMIT}`,
+  'offset?': `number.integer >= ${MIN_OFFSET} = ${DEFAULT_OFFSET}`,
 });
 
-export type ArticleFeedQueryDto = z.infer<typeof ArticleFeedQueryDto>;
+export type ArticleFeedQueryDto = typeof ArticleFeedQueryDto.infer;

@@ -1,10 +1,10 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 
-export const LoginUserDto = z.object({
-  user: z.object({
-    email: z.string().email('must be a valid email address').min(3).max(255),
-    password: z.string(),
-  }),
+export const LoginUserDto = type({
+  user: {
+    email: 'string.email',
+    password: 'string',
+  },
 });
 
-export type LoginUserDto = z.infer<typeof LoginUserDto>;
+export type LoginUserDto = typeof LoginUserDto.infer;

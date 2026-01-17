@@ -1,12 +1,12 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 
-export const profileResponseSchema = z.object({
-  profile: z.object({
-    username: z.string(),
-    bio: z.string().nullable(),
-    image: z.string().nullable(),
-    following: z.boolean(),
-  }),
+export const profileResponseSchema = type({
+  profile: {
+    username: 'string',
+    'bio?': 'string | null',
+    'image?': 'string | null',
+    following: 'boolean',
+  },
 });
 
-export type ProfileResponseDto = z.infer<typeof profileResponseSchema>;
+export type ProfileResponseDto = typeof profileResponseSchema.infer;

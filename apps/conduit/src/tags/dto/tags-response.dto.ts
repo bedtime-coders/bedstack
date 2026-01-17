@@ -1,7 +1,7 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 
-export const TagsResponseDto = z.object({
-  tags: z.array(z.string()),
+export const TagsResponseDto = type({
+  tags: 'string[]',
 });
 
-export type TagsResponseDto = z.infer<typeof TagsResponseDto>;
+export type TagsResponseDto = typeof TagsResponseDto.infer;

@@ -1,12 +1,12 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 
-export const CreateArticleDto = z.object({
-  article: z.object({
-    title: z.string().min(1),
-    description: z.string().min(1),
-    body: z.string().min(1),
-    tagList: z.array(z.string().min(1)).optional(),
-  }),
+export const CreateArticleDto = type({
+  article: {
+    title: 'string > 0',
+    description: 'string > 0',
+    body: 'string > 0',
+    'tagList?': 'string[]',
+  },
 });
 
-export type CreateArticleDto = z.infer<typeof CreateArticleDto>;
+export type CreateArticleDto = typeof CreateArticleDto.infer;

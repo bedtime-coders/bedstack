@@ -1,7 +1,8 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 import { CommentResponseDto } from './comment-response.dto';
 
-export const CommentsResponseDto = z.object({
-  comments: z.array(CommentResponseDto.shape.comment),
+export const CommentsResponseDto = type({
+  comments: CommentResponseDto.get('comment').array(),
 });
-export type CommentsResponseDto = z.infer<typeof CommentsResponseDto>;
+
+export type CommentsResponseDto = typeof CommentsResponseDto.infer;
