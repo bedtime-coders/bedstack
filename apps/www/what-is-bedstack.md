@@ -18,7 +18,7 @@ We carefully chose some of the latest and greatest technologies from the bleedin
 
 While not part of the flashy acronym, these tools are also core to Bedstack’s philosophy:
 
-- **[ArkType](https://arktype.io/)** - The first and only runtime validator that can 1:1 match your TypeScript types. It aligns strongest with Bedstack's philosophy of being typesafe by default with minimal ceremony.
+- **[ArkType](https://arktype.io/)** - A runtime validator that can 1:1 match TypeScript types. It aligns strongest with Bedstack's philosophy of being typesafe by default with minimal ceremony.
 
 - **[Biome](https://biomejs.dev/)** - A toolchain for web projects, aiming to provide a fast, reliable, and user-friendly experience for formatting, linting, and other code quality tasks.
 
