@@ -1,12 +1,12 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 
-export const profileResponseSchema = t.Object({
-  profile: t.Object({
-    username: t.String(),
-    bio: t.Union([t.String(), t.Null()]),
-    image: t.Union([t.String(), t.Null()]),
-    following: t.Boolean(),
+export const profileResponseSchema = z.object({
+  profile: z.object({
+    username: z.string(),
+    bio: z.string().nullable(),
+    image: z.string().nullable(),
+    following: z.boolean(),
   }),
 });
 
-export type ProfileResponseDto = typeof profileResponseSchema.static;
+export type ProfileResponseDto = z.infer<typeof profileResponseSchema>;

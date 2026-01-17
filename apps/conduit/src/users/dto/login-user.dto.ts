@@ -1,15 +1,10 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 
-export const LoginUserDto = t.Object({
-  user: t.Object({
-    email: t.String({
-      format: 'email',
-      minLength: 3,
-      maxLength: 255,
-      description: 'must be a valid email address',
-    }),
-    password: t.String(),
+export const LoginUserDto = z.object({
+  user: z.object({
+    email: z.string().email('must be a valid email address').min(3).max(255),
+    password: z.string(),
   }),
 });
 
-export type LoginUserDto = typeof LoginUserDto.static;
+export type LoginUserDto = z.infer<typeof LoginUserDto>;

@@ -1,22 +1,23 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 
-export const ArticleResponseDto = t.Object({
-  article: t.Object({
-    slug: t.String(),
-    title: t.String(),
-    description: t.String(),
-    body: t.String(),
-    tagList: t.Array(t.String()),
-    createdAt: t.String(),
-    updatedAt: t.String(),
-    favorited: t.Boolean(),
-    favoritesCount: t.Number(),
-    author: t.Object({
-      username: t.String(),
-      bio: t.Union([t.Null(), t.String()]),
-      image: t.Union([t.Null(), t.String()]),
-      following: t.Boolean(),
+export const ArticleResponseDto = z.object({
+  article: z.object({
+    slug: z.string(),
+    title: z.string(),
+    description: z.string(),
+    body: z.string(),
+    tagList: z.array(z.string()),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    favorited: z.boolean(),
+    favoritesCount: z.number(),
+    author: z.object({
+      username: z.string(),
+      bio: z.string().nullable(),
+      image: z.string().nullable(),
+      following: z.boolean(),
     }),
   }),
 });
-export type ArticleResponseDto = typeof ArticleResponseDto.static;
+
+export type ArticleResponseDto = z.infer<typeof ArticleResponseDto>;

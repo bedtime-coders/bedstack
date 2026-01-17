@@ -1,7 +1,7 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 
-export const TagsResponseDto = t.Object({
-  tags: t.Array(t.String()),
+export const TagsResponseDto = z.object({
+  tags: z.array(z.string()),
 });
 
-export type TagsResponseDto = typeof TagsResponseDto.static;
+export type TagsResponseDto = z.infer<typeof TagsResponseDto>;

@@ -1,8 +1,8 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 
-export const CreateCommentDto = t.Object({
-  comment: t.Object({
-    body: t.String({ minLength: 1 }),
+export const CreateCommentDto = z.object({
+  comment: z.object({
+    body: z.string().min(1),
   }),
 });
-export type CreateCommentDto = typeof CreateCommentDto.static;
+export type CreateCommentDto = z.infer<typeof CreateCommentDto>;

@@ -1,7 +1,8 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 import { CreateArticleDto } from './create-article.dto';
 
-export const UpdateArticleDto = t.Object({
-  article: t.Partial(CreateArticleDto.properties.article),
+export const UpdateArticleDto = z.object({
+  article: CreateArticleDto.shape.article.partial(),
 });
-export type UpdateArticleDto = typeof UpdateArticleDto.static;
+
+export type UpdateArticleDto = z.infer<typeof UpdateArticleDto>;

@@ -1,18 +1,18 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 
-export const CommentResponseDto = t.Object({
-  comment: t.Object({
-    id: t.Number(),
-    body: t.String(),
-    createdAt: t.String(),
-    updatedAt: t.String(),
-    author: t.Object({
-      username: t.String(),
-      bio: t.Union([t.Null(), t.String()]),
-      image: t.Union([t.Null(), t.String()]),
-      following: t.Boolean(),
+export const CommentResponseDto = z.object({
+  comment: z.object({
+    id: z.number(),
+    body: z.string(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    author: z.object({
+      username: z.string(),
+      bio: z.string().nullable(),
+      image: z.string().nullable(),
+      following: z.boolean(),
     }),
   }),
 });
 
-export type CommentResponseDto = typeof CommentResponseDto.static;
+export type CommentResponseDto = z.infer<typeof CommentResponseDto>;

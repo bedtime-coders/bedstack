@@ -1,13 +1,13 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 
-export const UserResponseDto = t.Object({
-  user: t.Object({
-    email: t.String(),
-    token: t.String(),
-    username: t.String(),
-    bio: t.Union([t.String(), t.Null()]),
-    image: t.Union([t.String(), t.Null()]),
+export const UserResponseDto = z.object({
+  user: z.object({
+    email: z.string(),
+    token: z.string(),
+    username: z.string(),
+    bio: z.string().nullable(),
+    image: z.string().nullable(),
   }),
 });
 
-export type UserResponseDto = typeof UserResponseDto.static;
+export type UserResponseDto = z.infer<typeof UserResponseDto>;

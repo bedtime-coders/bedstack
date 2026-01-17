@@ -39,11 +39,31 @@ export function formatValidationError(error: ValidationError) {
   const result: Record<string, string[]> = {};
 
   for (const err of error.all) {
-    const path = 'path' in err ? parsePath(err.path) : 'general';
-    let message =
-      'schema' in err
-        ? (err.schema.description ?? err.summary ?? 'Invalid value')
-        : (err.summary ?? 'Invalid value');
+    let path = 'general';
+    if ('path' in err) {
+      if (Array.isArray(err.path)) {
+        path = err.path.join('.');
+      } else if (typeof err.path === 'string') {
+        path = parsePath(err.path);
+      }
+    }
+
+    let message: string;
+    if ('message' in err && typeof err.message === 'string') {
+      message = err.message;
+    } else if (
+      'schema' in err &&
+      err.schema &&
+      typeof err.schema === 'object' &&
+      'description' in err.schema &&
+      typeof err.schema.description === 'string'
+    ) {
+      message = err.schema.description;
+    } else if ('summary' in err && typeof err.summary === 'string') {
+      message = err.summary;
+    } else {
+      message = 'Invalid value';
+    }
 
     // 🧼 Remove redundant prefix: "Property 'user.image' should be ..."
     message = message.replace(/^Property '.*?' should /i, 'should ');

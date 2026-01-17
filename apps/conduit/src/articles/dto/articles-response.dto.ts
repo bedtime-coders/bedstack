@@ -1,8 +1,9 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 import { ArticleResponseDto } from './article-response.dto';
 
-export const ArticlesResponseDto = t.Object({
-  articles: t.Array(t.Omit(ArticleResponseDto.properties.article, ['body'])),
-  articlesCount: t.Number(),
+export const ArticlesResponseDto = z.object({
+  articles: z.array(ArticleResponseDto.shape.article.omit({ body: true })),
+  articlesCount: z.number(),
 });
-export type ArticlesResponseDto = typeof ArticlesResponseDto.static;
+
+export type ArticlesResponseDto = z.infer<typeof ArticlesResponseDto>;

@@ -1,5 +1,6 @@
-import { Elysia, t } from 'elysia';
+import { Elysia } from 'elysia';
 import { StatusCodes } from 'http-status-codes';
+import { z } from 'zod';
 import { setupComments } from './comments.module';
 import {
   CommentResponseDto,
@@ -32,9 +33,7 @@ export const commentsController = new Elysia().use(setupComments).group(
           body: CreateCommentDto,
           response: {
             [StatusCodes.CREATED]: CommentResponseDto,
-            [StatusCodes.UNAUTHORIZED]: t.Void({
-              description: 'Authentication required',
-            }),
+            [StatusCodes.UNAUTHORIZED]: z.void(),
           },
           detail: {
             summary: 'Add Comments to an Article',
@@ -79,14 +78,12 @@ export const commentsController = new Elysia().use(setupComments).group(
         },
         {
           beforeHandle: app.store.authService.requireLogin,
-          params: t.Object({
-            slug: t.String(),
-            id: t.Numeric(),
+          params: z.object({
+            slug: z.string(),
+            id: z.coerce.number(),
           }),
           response: {
-            [StatusCodes.NO_CONTENT]: t.Void({
-              description: 'No content',
-            }),
+            [StatusCodes.NO_CONTENT]: z.void(),
           },
           detail: {
             summary: 'Delete Comment',

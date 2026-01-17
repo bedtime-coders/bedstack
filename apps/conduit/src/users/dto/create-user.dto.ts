@@ -1,30 +1,27 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 
-export const CreateUserDto = t.Object({
-  user: t.Object({
-    email: t.String({
-      format: 'email',
-      minLength: 3,
-      maxLength: 255,
-      description: 'must be a valid email address',
-    }),
-    password: t.String({
-      minLength: 8,
-      maxLength: 100,
-      pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d@$!%*?&]{8,}$',
-      description:
+export const CreateUserDto = z.object({
+  user: z.object({
+    email: z.string().email('must be a valid email address').min(3).max(255),
+    password: z
+      .string()
+      .min(8)
+      .max(100)
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/,
         'must be at least 8 characters and contain uppercase, lowercase, and numbers',
-    }),
-    username: t.String({
-      minLength: 3,
-      maxLength: 50,
-      pattern: '^[a-zA-Z0-9_-]+$',
-      description:
+      ),
+    username: z
+      .string()
+      .min(3)
+      .max(50)
+      .regex(
+        /^[a-zA-Z0-9_-]+$/,
         'must be 3-50 characters and contain only letters, numbers, underscores, and hyphens',
-    }),
-    bio: t.Optional(t.String({ maxLength: 1000 })),
-    image: t.Optional(t.String({ format: 'uri' })),
+      ),
+    bio: z.string().max(1000).nullish(),
+    image: z.string().url().nullish(),
   }),
 });
 
-export type CreateUserDto = typeof CreateUserDto.static;
+export type CreateUserDto = z.infer<typeof CreateUserDto>;

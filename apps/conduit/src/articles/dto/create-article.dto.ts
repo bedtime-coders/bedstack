@@ -1,11 +1,12 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 
-export const CreateArticleDto = t.Object({
-  article: t.Object({
-    title: t.String({ minLength: 1 }),
-    description: t.String({ minLength: 1 }),
-    body: t.String({ minLength: 1 }),
-    tagList: t.Optional(t.Array(t.String({ minLength: 1 }))),
+export const CreateArticleDto = z.object({
+  article: z.object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+    body: z.string().min(1),
+    tagList: z.array(z.string().min(1)).optional(),
   }),
 });
-export type CreateArticleDto = typeof CreateArticleDto.static;
+
+export type CreateArticleDto = z.infer<typeof CreateArticleDto>;

@@ -1,7 +1,7 @@
-import { t } from 'elysia';
+import { z } from 'zod';
 import { CommentResponseDto } from './comment-response.dto';
 
-export const CommentsResponseDto = t.Object({
-  comments: t.Array(CommentResponseDto.properties.comment),
+export const CommentsResponseDto = z.object({
+  comments: z.array(CommentResponseDto.shape.comment),
 });
-export type CommentsResponseDto = typeof CommentsResponseDto.static;
+export type CommentsResponseDto = z.infer<typeof CommentsResponseDto>;
