@@ -12,10 +12,7 @@
 </div>
 
 > [!TIP]
-> ⚡ **New!** Our Prisma-based alternative to Bedstack was just approved on CodebaseShow. Check it out: [Bepstack](https://github.com/bedtime-coders/bepstack)
-
-> [!TIP]
-> ⚡ **New!** We've added support for [Drizzle v1 Beta](https://orm.drizzle.team/roadmap) in _Bedstack (Stripped)_. Check it out: [`drizzle-v1` branch](https://github.com/bedtime-coders/bedstack-stripped/tree/drizzle-v1)
+> ⚡ We support [Drizzle v1 Beta](https://orm.drizzle.team/roadmap)! Check it out: [`drizzle-v1` branch](https://github.com/bedtime-coders/bedstack-stripped/tree/drizzle-v1)
 
 <br/>
 <br/>

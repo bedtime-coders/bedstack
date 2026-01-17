@@ -8,7 +8,7 @@ This [repository](https://github.com/bedtime-coders/bedstack) implements the Rea
 
 ## Core technologies
 
-We carefully chose some of the latest and greatest technologies from the bleeding edge that share our core philosophy. They are:
+The selected technologies share Bedstack's core philosophy. They are:
 
 - **[Bun](https://bun.com/)** - All-in-one JavaScript runtime & toolkit designed for speed, complete with a bundler, test runner, and Node.js-compatible package manager.
 
@@ -33,7 +33,7 @@ For **experienced developers**, RealWorld is a practical benchmark. It is a stru
 
 ## Why Bun, ElysiaJS, Drizzle, or any of the core technologies?
 
-When [Bun](https://bun.com/) was announced, it promised a simpler and more unified approach to modern TypeScript development. Instead of evaluating it in isolation, we chose to test it under real conditions.
+When [Bun](https://bun.com/) was announced, it promised a simpler and more unified approach to modern TypeScript development. It was tested under real conditions.
 
 The question was simple:
 
@@ -41,6 +41,6 @@ The question was simple:
 
 ElysiaJS, Drizzle, and ArkType were selected because they are designed with Bun and TypeScript-first development in mind, and because they reinforce the same core values.
 
-Bedstack is unapologetically opinionated. A tech stack is not a menu of options, it is a curated path to correct decisions. ArkType was chosen because it offers excellent type inference and makes the correct choice the easiest choice.
+Bedstack is unapologetically opinionated. A tech stack is not a menu of options, it is a curated path to correct decisions. ArkType offers excellent type inference and makes the correct choice the easiest choice.
 
 That said, Bedstack relies on the [Standard Schema](https://github.com/standard-schema/standard-schema) interface. Advanced users can substitute another compliant validator if needed, but ArkType remains the recommended and supported path.
