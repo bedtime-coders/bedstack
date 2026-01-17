@@ -7,13 +7,13 @@ Hey there! We're thrilled that you'd like to contribute to this project. Your he
 
 ## 👨‍💻 Repository Setup
 
-This project uses [Bun](https://bun.sh) as a runtime as well as a package manager. It's a modern, fast, and lightweight alternative to [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/). To install Bun on POSIX systems (like Ubuntu or macOS), run the following command:
+This project uses [Bun](https://bun.com) as a runtime as well as a package manager. It's a modern, fast, and lightweight alternative to [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/). To install Bun on POSIX systems (like Ubuntu or macOS), run the following command:
 
 ```sh
-curl -fsSL https://bun.sh/install | bash
+curl -fsSL https://bun.com/install | bash
 ```
 
-Otherwise, visit the [Bun installation page](https://bun.sh/docs/installation) for installation options.
+Otherwise, visit the [Bun installation page](https://bun.com/docs/installation) for installation options.
 
 ## 💡 Commands
 
@@ -87,7 +87,9 @@ We use [Biome](https://biomejs.dev/) for both linting and formatting with [a few
 
 #### IDE Setup
 
-We recommend using [VS Code](https://code.visualstudio.com/) along with the [Biome extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome).
+We recommend using [VS Code](https://code.visualstudio.com/) along with:
+- [Biome extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) for linting and formatting.
+- [ArkType extension](https://marketplace.visualstudio.com/items?itemName=arktypeio.arkdark) for syntax highlighting and type-safe regex support.
 
 With the settings on the right, you can have auto fix and formatting when you save the code you are editing.
 

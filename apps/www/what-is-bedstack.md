@@ -1,35 +1,46 @@
 # What is Bedstack?
 
-Bedstack is a bleeding-edge tech stack for building backend applications with TypeScript. It's an acronym for [**B**un](https://bun.sh/) + [**E**lysiaJS](https://elysiajs.com/) + [**D**rizzle](https://orm.drizzle.team/).
+Bedstack is a bleeding-edge tech stack for building backend applications with TypeScript. The name is an acronym for [**B**un](https://bun.com/) + [**E**lysiaJS](https://elysiajs.com/) + [**D**rizzle](https://orm.drizzle.team/) + [**A**rkType](https://arktype.io/).
 
-Its core philosophy is simplicity on the surface with immense power underneath; it will make you [fall into the pit of success](https://blog.codinghorror.com/falling-into-the-pit-of-success/). It is typesafe by default, and flexible enough to handle complex use cases as demonstrated by this [RealWorld](https://github.com/gothinkster/realworld) example project.
+Bedstack’s philosophy is simple on the surface, powerful underneath. It is designed to guide developers into the pit of success by default. Strong type safety is not optional, and the stack remains flexible enough to support complex, real production use cases, as demonstrated by its [RealWorld](https://github.com/gothinkster/realworld) example project.
 
-This project is an implementation of the [RealWorld backend spec](https://realworld-docs.netlify.app/specifications/backend/introduction/). By design, it is completely interchangeable with any of the other [backend implementations](https://codebase.show/projects/realworld?category=backend&language=typescript) in the RealWorld family, and can be used with any of the RealWorld [frontend implementations](https://codebase.show/projects/realworld?category=frontend).
+This [repository](https://github.com/bedtime-coders/bedstack) implements the RealWorld backend specification. By design, it is fully interchangeable with other RealWorld backend implementations and works with any RealWorld-compatible frontend.
 
 ## Core technologies
 
 We carefully chose some of the latest and greatest technologies from the bleeding edge that share our core philosophy. They are:
 
-- **[Bun](https://bun.sh/)** - All-in-one JavaScript runtime & toolkit designed for speed, complete with a bundler, test runner, and Node.js-compatible package manager.
+- **[Bun](https://bun.com/)** - All-in-one JavaScript runtime & toolkit designed for speed, complete with a bundler, test runner, and Node.js-compatible package manager.
 
 - **[ElysiaJS](https://elysiajs.com/)** - TypeScript framework supercharged by Bun with End-to-End Type Safety, unified type system and outstanding developer experience.
 
 - **[Drizzle](https://orm.drizzle.team/)** - Lightweight, performant, typesafe, non lactose, gluten-free, flexible, serverless-ready, and headless TypeScript ORM with both relational and SQL-like query APIs.
 
+While not part of the flashy acronym, these tools are also core to Bedstack’s philosophy:
+
+- **[ArkType](https://arktype.io/)** - The first and only runtime validator that can 1:1 match your TypeScript types. It aligns strongest with Bedstack's philosophy of being typesafe by default with minimal ceremony.
+
+- **[Biome](https://biomejs.dev/)** - A toolchain for web projects, aiming to provide a fast, reliable, and user-friendly experience for formatting, linting, and other code quality tasks.
+
+
 ## Why RealWorld?
 
-The RealWorld project is fantastic because it's suitable for developers across the entire spectrum of experience.
+The RealWorld project provides a rare combination of clarity and depth.
 
-**Beginners** will find the dozens of implementations in different languages and frameworks to be a great way to learn new technologies, and to compare their work to the best practices of similar tools. Not sure how to implement a feature? Just look at how [other implementations](https://codebase.show/projects/realworld?category=backend&language=typescript) have done it! They all implement the exact same API, so you can compare them side-by-side.
+For **beginners**, it offers a concrete API and dozens of implementations across languages and frameworks. This makes it easy to learn new tools, compare approaches, and validate understanding against real examples.
 
-**Experts** will find satisfaction in contributing best practice examples to the community, and in helping beginners learn the ropes. They'll also find that the RealWorld spec is a great way to test out new technologies, and to compare them to other tools in the same space. A new tool came out that is all the rage? Just follow the well-defined spec and see how it holds up in the RealWorld!
+For **experienced developers**, RealWorld is a practical benchmark. It is a structured way to evaluate new technologies, stress-test architectural ideas, and contribute high-quality reference implementations back to the community.
 
-## Why Bun, ElysiaJS, and Drizzle?
+## Why Bun, ElysiaJS, Drizzle, or any of the core technologies?
 
-When [Bun](https://bun.sh/) was announced, the community expectedly touted it as a [Node.js killer](https://levelup.gitconnected.com/is-bun-js-the-node-js-killer-ffeb0f89196a). It promised to eliminate many of the hassles that come with TypeScript development, and provide an ecosystem that is unified, performant, and easy to use.
+When [Bun](https://bun.com/) was announced, it promised a simpler and more unified approach to modern TypeScript development. Instead of evaluating it in isolation, we chose to test it under real conditions.
 
-We wanted to put it to the test. We thought:
+The question was simple:
 
-> What better way to test a new tool than to implement a RealWorld app with it?
+> What better way to evaluate a new runtime than to build a full RealWorld backend with it?
 
-We chose other tools on the bleeding edge that have been specifically designed with Bun in mind, like [ElysiaJS](https://elysiajs.com/) and [Drizzle](https://orm.drizzle.team/). We wanted to see how they would work together, and how they compare to other implementations in the RealWorld family.
+ElysiaJS, Drizzle, and ArkType were selected because they are designed with Bun and TypeScript-first development in mind, and because they reinforce the same core values.
+
+Bedstack is unapologetically opinionated. A tech stack is not a menu of options, it is a curated path to correct decisions. ArkType was chosen because it offers best-in-class type inference and makes the correct choice the easiest choice.
+
+That said, Bedstack relies on the [Standard Schema](https://github.com/standard-schema/standard-schema) interface. Advanced users can substitute another compliant validator if needed, but ArkType remains the recommended and supported path.

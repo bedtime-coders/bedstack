@@ -1,7 +1,7 @@
 {
   "name": "bedstack",
   "title": "Bedstack",
-  "description": "The stack you don't want to sleep on",
+  "description": "Bun + ElysiaJS + Drizzle = the stack you don't want to sleep on",
   "type": "module",
   "private": true,
   "scripts": {

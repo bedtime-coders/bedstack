@@ -8,7 +8,7 @@ Getting started with this RealWorld project is as easy as installing a few prere
 
 ### Prerequisites
 
-- [Bun](https://bun.sh/) version 1.0.6 or higher.
+- [Bun](https://bun.com/) version 1.0.6 or higher.
 - Terminal for accessing Bun via its command-line interface (CLI).
 - Text Editor with TypeScript support.
   - We recommend [Visual Studio Code](https://code.visualstudio.com/); other IDEs have been reported to cause issues with ElysiaJS's type inference system.

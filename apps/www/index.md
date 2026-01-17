@@ -23,7 +23,7 @@ hero:
 features:
   - title: Bun
     details: All-in-one JavaScript runtime & toolkit designed for speed, complete with a bundler, test runner, and Node.js-compatible package manager.
-    link: https://bun.sh/
+    link: https://bun.com/
     icon:
       src: /bun-press-kit/logo-centered.svg
 
@@ -38,6 +38,12 @@ features:
     link: https://orm.drizzle.team/
     icon:
       src: /drizzle-logo.png
+
+  - title: ArkType
+    details: The first and only runtime validator that can 1:1 match your TypeScript types. Fast, concise, and natively integrated for a "pit of success" experience.
+    link: https://arktype.io/
+    icon:
+      src: /ark-logo.png
 ---
 
 <style>
