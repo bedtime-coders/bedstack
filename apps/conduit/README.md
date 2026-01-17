@@ -66,7 +66,7 @@
 ## Deploy to production
 
 > [!TIP]
-> See more info in ElysiaJS's [Deploy to production](https://elysiajs.com/patterns/deploy) guide.
+> See more info in ElysiaJS's [Deploy to production](https://elysiajs.com/patterns/deploy) pattern.
 
 1. **Build the app**
 
