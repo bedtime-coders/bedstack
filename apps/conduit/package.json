@@ -14,6 +14,7 @@
     "test:unit": "bun test",
     "test": "bun test:api && bun test:unit",
     "typecheck": "tsc --noEmit",
+    "clean": "rimraf node_modules server",
     "fix": "bun run --cwd ../.. fix",
     "check": "bun run --cwd ../.. check",
     "check:errors": "bun run --cwd ../.. check:errors",
