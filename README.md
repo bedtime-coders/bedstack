@@ -30,9 +30,9 @@
 
 This is a monorepo containing the following codebases:
 
-### [Conduit: Bedstack real world example app](./packages/conduit/README.md)
+### [Conduit: Bedstack real world example app](./apps/conduit)
 
-### [bedstack.js.org: the Bedstack documentation site](./docs/README.md)
+### [bedstack.js.org: the Bedstack documentation site](./apps/www)
 
 More to come soon! Stay tuned.
 
