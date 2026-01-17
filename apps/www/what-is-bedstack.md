@@ -41,6 +41,6 @@ The question was simple:
 
 ElysiaJS, Drizzle, and ArkType were selected because they are designed with Bun and TypeScript-first development in mind, and because they reinforce the same core values.
 
-Bedstack is unapologetically opinionated. A tech stack is not a menu of options, it is a curated path to correct decisions. ArkType was chosen because it offers best-in-class type inference and makes the correct choice the easiest choice.
+Bedstack is unapologetically opinionated. A tech stack is not a menu of options, it is a curated path to correct decisions. ArkType was chosen because it offers excellent type inference and makes the correct choice the easiest choice.
 
 That said, Bedstack relies on the [Standard Schema](https://github.com/standard-schema/standard-schema) interface. Advanced users can substitute another compliant validator if needed, but ArkType remains the recommended and supported path.
