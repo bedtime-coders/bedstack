@@ -36,6 +36,16 @@
         "test",
         "question"
       ]
+    },
+    {
+      "login": "aruaycodes",
+      "name": "Aruay Berdikulova",
+      "avatar_url": "https://avatars.githubusercontent.com/u/57131628?v=4",
+      "profile": "https://github.com/aruaycodes",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
     }
   ]
 }
